@@ -59,7 +59,7 @@ public class EventTypeChildrenGetApi extends PrivateApiComponentBase {
 		}
 
 		eventTypeList = eventTypeMapper.getChildrenByLeftRightCode(eventTypeVo.getLft(), eventTypeVo.getRht());
-		if(CollectionUtils.isNotEmpty(eventTypeList)){
+        if(CollectionUtils.isNotEmpty(eventTypeList)){
             for(EventTypeVo vo : eventTypeList){
                 eventTypeMap.put(vo.getId(), vo);
                 eventTypeIdList.add(vo.getId());
@@ -81,8 +81,7 @@ public class EventTypeChildrenGetApi extends PrivateApiComponentBase {
                 }
             }
         }
-
-		resultObj.put("children",eventTypeVo.getChildren());
+        resultObj.put("children",eventTypeVo.getChildren());
     	return resultObj;
     }
 }
