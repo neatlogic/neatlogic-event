@@ -87,22 +87,6 @@ public class EventTypeTreeForSolutionApi extends PrivateApiComponentBase {
 				}
 			}
 		}
-		/** 删除与X同级却不同父节点且不是关联当前解决方案的节点 */
-		for(EventTypeVo vo : eventTypes){
-			Iterator<EventTypeVo> iterator = eventTypeSet.iterator();
-			while(iterator.hasNext()){
-				EventTypeVo next = iterator.next();
-				if(eventTypes.contains(next)){
-					continue;
-				}
-				if(next.getLayer() == vo.getLayer() && !next.getParentId().equals(vo.getParentId())){
-					iterator.remove();
-					eventTypeIdSet.remove(next.getId());
-					eventTypeMap.remove(next.getId());
-				}
-			}
-		}
-
 		List<Long> eventTypeIdList = eventTypeIdSet.stream().collect(Collectors.toList());
 
 		if(CollectionUtils.isNotEmpty(eventTypeSet) && CollectionUtils.isNotEmpty(eventTypeIdList)){

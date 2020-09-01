@@ -1,26 +1,22 @@
 package codedriver.module.event.api.type;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.alibaba.fastjson.JSONObject;
-import com.google.common.base.Objects;
-
 import codedriver.framework.auth.core.AuthAction;
 import codedriver.framework.common.constvalue.ApiParamType;
 import codedriver.framework.process.exception.event.EventTypeMoveException;
 import codedriver.framework.process.exception.event.EventTypeNotFoundException;
 import codedriver.framework.reminder.core.OperationTypeEnum;
-import codedriver.framework.restful.annotation.Description;
-import codedriver.framework.restful.annotation.Input;
-import codedriver.framework.restful.annotation.OperationType;
-import codedriver.framework.restful.annotation.Output;
-import codedriver.framework.restful.annotation.Param;
+import codedriver.framework.restful.annotation.*;
 import codedriver.framework.restful.core.privateapi.PrivateApiComponentBase;
 import codedriver.module.event.dao.mapper.EventTypeMapper;
 import codedriver.module.event.dto.EventTypeVo;
 import codedriver.module.event.service.EventTypeService;
+import com.alibaba.fastjson.JSONObject;
+import com.google.common.base.Objects;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @AuthAction(name = "EVENT_TYPE_MODIFY")
 @Service
@@ -74,6 +70,7 @@ public class EventTypeMoveApi extends PrivateApiComponentBase {
             parentEventType.setName("root");
             parentEventType.setParentId(EventTypeVo.ROOT_PARENTID);
             parentEventType.setLft(1);
+            parentEventType.setLayer(0);
         }else{
             parentEventType = eventTypeMapper.getEventTypeById(parentId);
             if(parentEventType == null) {
@@ -118,6 +115,23 @@ public class EventTypeMoveApi extends PrivateApiComponentBase {
 		
 		//更新被移动块中节点的左右编码值
         eventTypeMapper.batchUpdateEventTypeLeftRightCodeByLeftRightCode(eventType.getLft() - eventType.getRht(), eventType.getRht() - eventType.getRht(), lft - eventType.getLft() + eventType.getRht());
+
+        //找出被移动节点本身及子节点，计算并更新层级
+        EventTypeVo self = eventTypeMapper.getEventTypeById(eventType.getId());
+        List<EventTypeVo> childrenAndSelf = eventTypeMapper.getChildrenByLeftRightCode(self.getLft(), eventType.getRht());
+        for(EventTypeVo vo :childrenAndSelf){
+            int layer = vo.getLayer() - self.getLayer();
+            vo.setLayer(layer);
+        }
+        self.setLayer(parentEventType.getLayer() + 1);
+        childrenAndSelf.add(self);
+        for(EventTypeVo vo :childrenAndSelf){
+            int layer = vo.getLayer() + self.getLayer();
+            if(!vo.getId().equals(self.getId())){
+                vo.setLayer(layer);
+            }
+            eventTypeMapper.updateEventTypeLayer(vo);
+        }
 
         return null;
     }

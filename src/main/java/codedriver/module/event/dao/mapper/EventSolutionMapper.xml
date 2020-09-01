@@ -89,14 +89,14 @@
 
 	<select id="getEventTypeBySolutionId" parameterType="java.lang.Long" resultType="codedriver.module.event.dto.EventTypeVo">
 		SELECT
-		etv.`id` as id,
-		etv.`name` as name,
-		etv.`parentId` as parentId,
-		etv.`lft` as lft,
-		etv.`rht` as rht,
-		etv.`layer` as layer
+		et.`id` as id,
+		et.`name` as name,
+		et.`parent_id` as parentId,
+		et.`lft` as lft,
+		et.`rht` as rht,
+		et.`layer` as layer
 		from `event_type_solution` ets
-		left join `eventtypeview` etv on ets.`event_type_id` = etv.`id`
+		left join `event_type` et on ets.`event_type_id` = et.`id`
 		WHERE
 		ets.`solution_id` = #{solutionId}
 	</select>
