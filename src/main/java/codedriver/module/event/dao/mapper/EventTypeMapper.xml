@@ -104,7 +104,7 @@
 		a.`layer` as layer
 		FROM `event_type` a
 		WHERE a.`lft` &gt; #{lft} AND a.`rht` &lt; #{rht}
-		and a.`layer` &lt;= #{layer}
+		and a.`layer` &lt; #{layer}
 	</select>
 
 	<select id="calculateLayer" resultType="int">
@@ -169,6 +169,18 @@
 		FROM `event_type` a
 		WHERE a.`parent_id` = #{value}
 		ORDER BY `lft` ASC
+	</select>
+
+	<select id="getEventTypeListByParentId" parameterType="java.lang.Long" resultType="codedriver.module.event.dto.EventTypeVo">
+		SELECT
+		a.`id`,
+		a.`name`,
+		a.`parent_id` AS parentId,
+		a.`lft`,
+		a.`rht`,
+		a.`layer`
+		FROM `event_type` a
+		WHERE a.`parent_id` = #{parentId}
 	</select>
 
 	<select id="checkEventTypeIsExistsByLeftRightCode" resultType="int">

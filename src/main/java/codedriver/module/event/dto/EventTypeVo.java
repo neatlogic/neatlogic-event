@@ -31,7 +31,7 @@ public class EventTypeVo extends BasePageVo {
 	@EntityField(name = "授权对象", type = ApiParamType.JSONARRAY)
 	private List<String> authorityList;
 
-	/** 节点在树的层级，此属性在视图：eventtypeview中 */
+	/** 节点在树的层级*/
 	private Integer layer;
 
 	private List<EventTypeVo> children = new ArrayList<>();

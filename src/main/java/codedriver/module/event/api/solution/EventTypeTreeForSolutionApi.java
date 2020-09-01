@@ -57,8 +57,8 @@ public class EventTypeTreeForSolutionApi extends PrivateApiComponentBase {
 		 * 1、找出所有父节点为ROOT的节点
 		 * 2、根据solutionId找出关联的事件类型列表List<X>
 		 * 2、遍历每个事件类型X，找出其所在树的顶级节点
-		 * 3、查询该树下层级小于等于X的层级的节点，
-		 * 这样就可以找出X的兄弟节点和其所有父节点以及兄弟节点，并做去重
+		 * 3、查询该树下层级小于X的层级的节点，
+		 * 这样就可以找出X所有父节点以及兄弟节点，并做去重
 		 */
 
 		Set<EventTypeVo> eventTypeSet = new HashSet<>();
@@ -68,7 +68,7 @@ public class EventTypeTreeForSolutionApi extends PrivateApiComponentBase {
 		EventTypeVo eventTypeVo = new EventTypeVo();
 		eventTypeVo.setParentId(EventTypeVo.ROOT_ID);
 		List<EventTypeVo> topEventTypeList = eventTypeMapper.searchEventType(eventTypeVo);
-		/** 保存所有顶级节点 */
+		/** 获取所有顶级节点 */
 		eventTypeSet.addAll(topEventTypeList);
 		for(EventTypeVo vo : eventTypeSet){
 			eventTypeMap.put(vo.getId(), vo);
@@ -76,6 +76,7 @@ public class EventTypeTreeForSolutionApi extends PrivateApiComponentBase {
 		}
 
 		List<EventTypeVo> eventTypes = eventSolutionMapper.getEventTypeBySolutionId(id);
+		/** 获取X的所有父节点及所有父节点的兄弟节点 */
 		for(EventTypeVo vo : eventTypes){
 			EventTypeVo topEvent = eventTypeMapper.getTopEventTypeByLftRht(vo.getLft(), vo.getRht());
 			if(topEvent != null){
@@ -85,6 +86,15 @@ public class EventTypeTreeForSolutionApi extends PrivateApiComponentBase {
 					eventTypeMap.put(child.getId(), child);
 					eventTypeIdSet.add(child.getId());
 				}
+			}
+		}
+		/** 获取X的兄弟节点及其自身 */
+		for(EventTypeVo vo : eventTypes){
+			List<EventTypeVo> brotherAndSelf = eventTypeMapper.getEventTypeListByParentId(vo.getParentId());
+			eventTypeSet.addAll(brotherAndSelf);
+			eventTypeIdSet.addAll(brotherAndSelf.stream().map(EventTypeVo::getId).collect(Collectors.toList()));
+			for(EventTypeVo bs : brotherAndSelf){
+				eventTypeMap.put(bs.getId(), bs);
 			}
 		}
 		List<Long> eventTypeIdList = eventTypeIdSet.stream().collect(Collectors.toList());

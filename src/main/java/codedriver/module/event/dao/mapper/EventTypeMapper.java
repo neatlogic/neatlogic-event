@@ -44,6 +44,8 @@ public interface EventTypeMapper {
 
 	public EventTypeVo getEventTypeByParentIdAndStartNum(@Param("parentId") Long parentId, @Param("startNum") int startNum);
 
+	public List<EventTypeVo> getEventTypeListByParentId(@Param("parentId") Long parentId);
+
 	public List<EventTypeVo> getChildrenByLeftRightCode(@Param("lft") Integer lft, @Param("rht") Integer rht);
 
 	public List<AuthorityVo> getAuthorityByEventTypeId(@Param("eventTypId") Long eventTypId);
