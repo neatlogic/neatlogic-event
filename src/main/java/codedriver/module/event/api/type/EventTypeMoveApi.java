@@ -90,7 +90,7 @@ public class EventTypeMoveApi extends PrivateApiComponentBase {
             eventType.setParentId(parentId);
             eventTypeMapper.updateEventTypeParentIdById(eventType);
         }
- 		
+
         //将被移动块中的所有节点的左右编码值设置为<=0
         eventTypeMapper.batchUpdateEventTypeLeftRightCodeByLeftRightCode(eventType.getLft(), eventType.getRht(), -eventType.getRht());
  		//计算被移动块右边的节点移动步长
@@ -118,7 +118,7 @@ public class EventTypeMoveApi extends PrivateApiComponentBase {
 
         //找出被移动节点本身及子节点，计算并更新层级
         EventTypeVo self = eventTypeMapper.getEventTypeById(eventType.getId());
-        List<EventTypeVo> childrenAndSelf = eventTypeMapper.getChildrenByLeftRightCode(self.getLft(), eventType.getRht());
+        List<EventTypeVo> childrenAndSelf = eventTypeMapper.getChildrenByLeftRightCode(self.getLft(), self.getRht());
         for(EventTypeVo vo :childrenAndSelf){
             int layer = vo.getLayer() - self.getLayer();
             vo.setLayer(layer);
