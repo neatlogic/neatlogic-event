@@ -52,7 +52,8 @@
 		`name`,
 		`lft`,
 		`rht`,
-		`parent_id` AS `parentId`
+		`parent_id` AS `parentId`,
+		`layer`
 		FROM `event_type`
 		where 1=1
 		<if test="keyword != null and keyword != ''">
@@ -78,6 +79,39 @@
 		FROM `event_type` a
 		WHERE a.`lft` &lt;= #{lft} AND a.`rht` &gt;= #{rht}
 		ORDER BY `lft` ASC
+	</select>
+
+	<select id="getTopEventTypeByLftRht" resultType="codedriver.module.event.dto.EventTypeVo">
+		SELECT
+		a.`id`,
+		a.`name`,
+		a.`parent_id` AS parentId,
+		a.`lft`,
+		a.`rht`
+		FROM `event_type` a
+		WHERE a.`lft` &lt; #{lft} AND a.`rht` &gt; #{rht}
+		order by a.`lft`
+		limit 1
+	</select>
+
+	<select id="getChildrenByLftRhtLayer" resultType="codedriver.module.event.dto.EventTypeVo">
+		SELECT
+		a.`id`,
+		a.`name`,
+		a.`parent_id` as parentId,
+		a.`lft`,
+		a.`rht`,
+		a.`layer` as layer
+		FROM `event_type` a
+		WHERE a.`lft` &gt; #{lft} AND a.`rht` &lt; #{rht}
+		and a.`layer` &lt; #{layer}
+	</select>
+
+	<select id="calculateLayer" resultType="int">
+		SELECT
+		count(1)
+		FROM `event_type`
+		WHERE `lft` &lt;= #{lft} AND `rht` &gt;= #{rht}
 	</select>
 
 	<select id="getEventTypeSolutionCountAndChildCountListByIdList" parameterType="java.util.List" resultType="codedriver.module.event.dto.EventTypeVo">
@@ -117,7 +151,8 @@
 		(SELECT COUNT(1) FROM `event_type` WHERE `parent_id` = a.`id`) as `childCount`,
 		a.`parent_id` as `parentId`,
 		a.`lft`,
-		a.`rht`
+		a.`rht`,
+		a.`layer`
 		FROM
 		`event_type` a
 		WHERE `id` = #{id}
@@ -136,6 +171,18 @@
 		ORDER BY `lft` ASC
 	</select>
 
+	<select id="getEventTypeListByParentId" parameterType="java.lang.Long" resultType="codedriver.module.event.dto.EventTypeVo">
+		SELECT
+		a.`id`,
+		a.`name`,
+		a.`parent_id` AS parentId,
+		a.`lft`,
+		a.`rht`,
+		a.`layer`
+		FROM `event_type` a
+		WHERE a.`parent_id` = #{parentId}
+	</select>
+
 	<select id="checkEventTypeIsExistsByLeftRightCode" resultType="int">
 	SELECT COUNT(1) FROM `event_type` WHERE `id` = #{id} AND `lft` &gt; #{lft} AND `rht` &lt; #{rht}
 	</select>
@@ -146,7 +193,8 @@
 		a.`name`,
 		a.`parent_id` AS parentId,
 		a.`lft`,
-		a.`rht`
+		a.`rht`,
+		a.`layer`
 		FROM `event_type` a
 		WHERE a.`parent_id` = #{parentId}
 		ORDER BY a.`lft` ASC
@@ -159,7 +207,8 @@
 		a.`name`,
 		a.`parent_id` AS parentId,
 		a.`lft`,
-		a.`rht`
+		a.`rht`,
+		a.`layer`
 		FROM `event_type` a
 		WHERE a.`lft` &gt; #{lft} and a.`rht` &lt; #{rht}
 	</select>
@@ -215,6 +264,12 @@
 		UPDATE `event_type` SET `parent_id` = #{parentId} WHERE `id` = #{id}
 	</update>
 
+	<update id="updateEventTypeLayer" parameterType="codedriver.module.event.dto.EventTypeVo">
+		update `event_type`
+		set `layer` = #{layer}
+		where `id` = #{id}
+	</update>
+
 	<update id="batchUpdateEventTypeLeftRightCodeByLeftRightCode">
 		UPDATE `event_type` SET `lft` = `lft` + #{step}, `rht` = `rht` + #{step} WHERE `lft` &gt;= #{lft} AND `rht` &lt;= #{rht}
 	</update>
@@ -237,13 +292,15 @@
 		`name`,
 		`parent_id`,
 		`lft`,
-		`rht`
+		`rht`,
+		`layer`
 		) VALUES (
 		#{id},
 		#{name},
 		#{parentId},
 		#{lft},
-		#{rht}
+		#{rht},
+		#{layer}
 		)
 	</insert>
 

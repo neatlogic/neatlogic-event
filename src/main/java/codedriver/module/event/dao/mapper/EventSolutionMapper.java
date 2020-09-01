@@ -1,5 +1,6 @@
 package codedriver.module.event.dao.mapper;
 
+import codedriver.module.event.dto.EventTypeVo;
 import org.apache.ibatis.annotations.Param;
 
 import codedriver.module.event.dto.EventSolutionVo;
@@ -17,6 +18,8 @@ public interface EventSolutionMapper {
 	public EventSolutionVo checkSolutionExistsById(@Param("id") Long id);
 
 	public EventSolutionVo checkSolutionExistsByName(@Param("name") String name);
+
+	public List<EventTypeVo> getEventTypeBySolutionId(@Param("solutionId") Long solutionId);
 
 	public int updateSolutionById(EventSolutionVo eventSolutionVo);
 

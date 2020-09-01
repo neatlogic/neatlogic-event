@@ -99,6 +99,9 @@ public class EventTypeSaveApi extends PrivateApiComponentBase{
 			eventTypeMapper.batchUpdateEventTypeLeftCode(eventType.getLft(), 2);
 			eventTypeMapper.batchUpdateEventTypeRightCode(eventType.getLft(), 2);
 
+			//计算层级
+//			int layer = eventTypeMapper.calculateLayer(eventType.getLft(), eventType.getRht());
+			eventType.setLayer(parentEventType.getLayer() + 1);
 			eventTypeMapper.insertEventType(eventType);
 
 			/** 保存授权信息 */

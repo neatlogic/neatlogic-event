@@ -31,9 +31,12 @@ public class EventTypeVo extends BasePageVo {
 	@EntityField(name = "授权对象", type = ApiParamType.JSONARRAY)
 	private List<String> authorityList;
 
+	/** 节点在树的层级*/
+	private Integer layer;
+
 	private List<EventTypeVo> children = new ArrayList<>();
 
-	private int solutionCount;
+	private Integer solutionCount;
 
 	private transient List<AuthorityVo> authorityVoList;
 
@@ -146,11 +149,35 @@ public class EventTypeVo extends BasePageVo {
 		this.authorityVoList = authorityVoList;
 	}
 
-	public int getSolutionCount() {
+	public Integer getSolutionCount() {
 		return solutionCount;
 	}
 
-	public void setSolutionCount(int solutionCount) {
+	public void setSolutionCount(Integer solutionCount) {
 		this.solutionCount = solutionCount;
+	}
+
+	public Integer getLayer() {
+		return layer;
+	}
+
+	public void setLayer(Integer layer) {
+		this.layer = layer;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		EventTypeVo vo = (EventTypeVo) o;
+		return vo.getId().equals(id);
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
 	}
 }
