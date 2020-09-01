@@ -70,33 +70,38 @@ public class EventTypeTreeForSolutionApi extends PrivateApiComponentBase {
 		List<EventTypeVo> topEventTypeList = eventTypeMapper.searchEventType(eventTypeVo);
 		/** 获取所有顶级节点 */
 		eventTypeSet.addAll(topEventTypeList);
-		for(EventTypeVo vo : eventTypeSet){
+		if(CollectionUtils.isNotEmpty(eventTypeSet)){
+			for(EventTypeVo vo : eventTypeSet){
 //			eventTypeMap.put(vo.getId(), vo);
-			eventTypeIdSet.add(vo.getId());
+				eventTypeIdSet.add(vo.getId());
+			}
 		}
 
 		List<EventTypeVo> eventTypes = eventSolutionMapper.getEventTypeBySolutionId(id);
-		/** 获取X的所有父节点及所有父节点的兄弟节点 */
-		for(EventTypeVo vo : eventTypes){
-			EventTypeVo topEvent = eventTypeMapper.getTopEventTypeByLftRht(vo.getLft(), vo.getRht());
-			if(topEvent != null){
-				List<EventTypeVo> children = eventTypeMapper.getChildrenByLftRhtLayer(topEvent.getLft(), topEvent.getRht(), vo.getLayer());
-				for(EventTypeVo child : children){
-					eventTypeSet.add(child);
+		if(CollectionUtils.isNotEmpty(eventTypes)){
+			/** 获取X的所有父节点及所有父节点的兄弟节点 */
+			for(EventTypeVo vo : eventTypes){
+				EventTypeVo topEvent = eventTypeMapper.getTopEventTypeByLftRht(vo.getLft(), vo.getRht());
+				if(topEvent != null){
+					List<EventTypeVo> children = eventTypeMapper.getChildrenByLftRhtLayer(topEvent.getLft(), topEvent.getRht(), vo.getLayer());
+					for(EventTypeVo child : children){
+						eventTypeSet.add(child);
 //					eventTypeMap.put(child.getId(), child);
-					eventTypeIdSet.add(child.getId());
+						eventTypeIdSet.add(child.getId());
+					}
 				}
 			}
-		}
-		/** 获取X的兄弟节点及其自身 */
-		for(EventTypeVo vo : eventTypes){
-			List<EventTypeVo> brotherAndSelf = eventTypeMapper.getEventTypeListByParentId(vo.getParentId());
-			eventTypeSet.addAll(brotherAndSelf);
-			eventTypeIdSet.addAll(brotherAndSelf.stream().map(EventTypeVo::getId).collect(Collectors.toList()));
+			/** 获取X的兄弟节点及其自身 */
+			for(EventTypeVo vo : eventTypes){
+				List<EventTypeVo> brotherAndSelf = eventTypeMapper.getEventTypeListByParentId(vo.getParentId());
+				eventTypeSet.addAll(brotherAndSelf);
+				eventTypeIdSet.addAll(brotherAndSelf.stream().map(EventTypeVo::getId).collect(Collectors.toList()));
 //			for(EventTypeVo bs : brotherAndSelf){
 //				eventTypeMap.put(bs.getId(), bs);
 //			}
+			}
 		}
+
 		List<Long> eventTypeIdList = eventTypeIdSet.stream().collect(Collectors.toList());
 
 		if(CollectionUtils.isNotEmpty(eventTypeSet) && CollectionUtils.isNotEmpty(eventTypeIdList)){
