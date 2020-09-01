@@ -64,4 +64,9 @@ public interface EventTypeMapper {
 
 	public int deleteAuthorityByEventTypeId(@Param("eventTypeId") Long eventTypeId);
 
+    public List<Long> getCurrentUserAuthorizedEventTypeIdList(@Param("userUuid") String userUuid, @Param("teamUuidList") List<String> teamUuidList,
+        @Param("roleUuidList") List<String> roleUuidList);
+
+    public List<EventTypeVo> getEventTypeListByIdList(List<Long> authorizedEventTypeIdList);
+
 }
