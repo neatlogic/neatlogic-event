@@ -87,6 +87,20 @@
 		where `name` = #{name}
 	</select>
 
+	<select id="getEventTypeBySolutionId" parameterType="java.lang.Long" resultType="codedriver.module.event.dto.EventTypeVo">
+		SELECT
+		etv.`id` as id,
+		etv.`name` as name,
+		etv.`parentId` as parentId,
+		etv.`lft` as lft,
+		etv.`rht` as rht,
+		etv.`layer` as layer
+		from `event_type_solution` ets
+		left join `eventtypeview` etv on ets.`event_type_id` = etv.`id`
+		WHERE
+		ets.`solution_id` = #{solutionId}
+	</select>
+
 
 	<update id="updateSolutionById" parameterType="codedriver.module.event.dto.EventSolutionVo">
 		UPDATE `event_solution` set

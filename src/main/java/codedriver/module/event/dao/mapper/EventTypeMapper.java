@@ -22,6 +22,10 @@ public interface EventTypeMapper {
 
 	public List<EventTypeVo> getAncestorsAndSelfByLftRht(@Param("lft") Integer lft, @Param("rht") Integer rht);
 
+	public EventTypeVo getTopEventTypeByLftRht(@Param("lft") Integer lft, @Param("rht") Integer rht);
+
+	public List<EventTypeVo> getChildrenByLftRhtLayer(@Param("lft") Integer lft, @Param("rht") Integer rht,@Param("layer") Integer layer);
+
 	public List<EventTypeVo> getEventTypeSolutionCountAndChildCountListByIdList(List<Long> eventTypeIdList);
 
 	public int checkEventTypeIsExists(Long id);

@@ -80,6 +80,32 @@
 		ORDER BY `lft` ASC
 	</select>
 
+	<select id="getTopEventTypeByLftRht" resultType="codedriver.module.event.dto.EventTypeVo">
+		SELECT
+		a.`id`,
+		a.`name`,
+		a.`parent_id` AS parentId,
+		a.`lft`,
+		a.`rht`
+		FROM `event_type` a
+		WHERE a.`lft` &lt; #{lft} AND a.`rht` &gt; #{rht}
+		order by a.`lft`
+		limit 1
+	</select>
+
+	<select id="getChildrenByLftRhtLayer" resultType="codedriver.module.event.dto.EventTypeVo">
+		SELECT
+		a.`id`,
+		a.`name`,
+		a.`parentId`,
+		a.`lft`,
+		a.`rht`,
+		a.`layer` as layer
+		FROM `eventtypeview` a
+		WHERE a.`lft` &gt; #{lft} AND a.`rht` &lt; #{rht}
+		and a.`layer` &lt;= #{layer}
+	</select>
+
 	<select id="getEventTypeSolutionCountAndChildCountListByIdList" parameterType="java.util.List" resultType="codedriver.module.event.dto.EventTypeVo">
 		SELECT
 		a.`id`,
