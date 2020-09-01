@@ -12,6 +12,7 @@ import codedriver.module.event.dto.EventTypeVo;
 import codedriver.module.event.service.EventTypeService;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Objects;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -119,9 +120,11 @@ public class EventTypeMoveApi extends PrivateApiComponentBase {
         //找出被移动节点本身及子节点，计算并更新层级
         EventTypeVo self = eventTypeMapper.getEventTypeById(eventType.getId());
         List<EventTypeVo> childrenAndSelf = eventTypeMapper.getChildrenByLeftRightCode(self.getLft(), self.getRht());
-        for(EventTypeVo vo :childrenAndSelf){
-            int layer = vo.getLayer() - self.getLayer();
-            vo.setLayer(layer);
+        if(CollectionUtils.isNotEmpty(childrenAndSelf)){
+            for(EventTypeVo vo :childrenAndSelf){
+                int layer = vo.getLayer() - self.getLayer();
+                vo.setLayer(layer);
+            }
         }
         self.setLayer(parentEventType.getLayer() + 1);
         childrenAndSelf.add(self);
