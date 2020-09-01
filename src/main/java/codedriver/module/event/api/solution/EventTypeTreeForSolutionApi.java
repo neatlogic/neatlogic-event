@@ -72,7 +72,7 @@ public class EventTypeTreeForSolutionApi extends PrivateApiComponentBase {
 		eventTypeSet.addAll(topEventTypeList);
 		if(CollectionUtils.isNotEmpty(eventTypeSet)){
 			for(EventTypeVo vo : eventTypeSet){
-//			eventTypeMap.put(vo.getId(), vo);
+//				eventTypeMap.put(vo.getId(), vo);
 				eventTypeIdSet.add(vo.getId());
 			}
 		}
@@ -86,7 +86,7 @@ public class EventTypeTreeForSolutionApi extends PrivateApiComponentBase {
 					List<EventTypeVo> children = eventTypeMapper.getChildrenByLftRhtLayer(topEvent.getLft(), topEvent.getRht(), vo.getLayer());
 					for(EventTypeVo child : children){
 						eventTypeSet.add(child);
-//					eventTypeMap.put(child.getId(), child);
+//						eventTypeMap.put(child.getId(), child);
 						eventTypeIdSet.add(child.getId());
 					}
 				}
@@ -96,9 +96,9 @@ public class EventTypeTreeForSolutionApi extends PrivateApiComponentBase {
 				List<EventTypeVo> brotherAndSelf = eventTypeMapper.getEventTypeListByParentId(vo.getParentId());
 				eventTypeSet.addAll(brotherAndSelf);
 				eventTypeIdSet.addAll(brotherAndSelf.stream().map(EventTypeVo::getId).collect(Collectors.toList()));
-//			for(EventTypeVo bs : brotherAndSelf){
-//				eventTypeMap.put(bs.getId(), bs);
-//			}
+//				for(EventTypeVo bs : brotherAndSelf){
+//					eventTypeMap.put(bs.getId(), bs);
+//				}
 			}
 		}
 
