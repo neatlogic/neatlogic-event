@@ -63,7 +63,7 @@ public class EventTypeTreeForSolutionApi extends PrivateApiComponentBase {
 
 		Set<EventTypeVo> eventTypeSet = new HashSet<>();
 		Set<Long> eventTypeIdSet = new HashSet<>();
-		Map<Long, EventTypeVo> eventTypeMap = new HashMap<>();
+//		Map<Long, EventTypeVo> eventTypeMap = new HashMap<>();
 
 		EventTypeVo eventTypeVo = new EventTypeVo();
 		eventTypeVo.setParentId(EventTypeVo.ROOT_ID);
@@ -71,7 +71,7 @@ public class EventTypeTreeForSolutionApi extends PrivateApiComponentBase {
 		/** 获取所有顶级节点 */
 		eventTypeSet.addAll(topEventTypeList);
 		for(EventTypeVo vo : eventTypeSet){
-			eventTypeMap.put(vo.getId(), vo);
+//			eventTypeMap.put(vo.getId(), vo);
 			eventTypeIdSet.add(vo.getId());
 		}
 
@@ -83,7 +83,7 @@ public class EventTypeTreeForSolutionApi extends PrivateApiComponentBase {
 				List<EventTypeVo> children = eventTypeMapper.getChildrenByLftRhtLayer(topEvent.getLft(), topEvent.getRht(), vo.getLayer());
 				for(EventTypeVo child : children){
 					eventTypeSet.add(child);
-					eventTypeMap.put(child.getId(), child);
+//					eventTypeMap.put(child.getId(), child);
 					eventTypeIdSet.add(child.getId());
 				}
 			}
@@ -93,9 +93,9 @@ public class EventTypeTreeForSolutionApi extends PrivateApiComponentBase {
 			List<EventTypeVo> brotherAndSelf = eventTypeMapper.getEventTypeListByParentId(vo.getParentId());
 			eventTypeSet.addAll(brotherAndSelf);
 			eventTypeIdSet.addAll(brotherAndSelf.stream().map(EventTypeVo::getId).collect(Collectors.toList()));
-			for(EventTypeVo bs : brotherAndSelf){
-				eventTypeMap.put(bs.getId(), bs);
-			}
+//			for(EventTypeVo bs : brotherAndSelf){
+//				eventTypeMap.put(bs.getId(), bs);
+//			}
 		}
 		List<Long> eventTypeIdList = eventTypeIdSet.stream().collect(Collectors.toList());
 
@@ -104,16 +104,17 @@ public class EventTypeTreeForSolutionApi extends PrivateApiComponentBase {
 			rootEventType.setId(EventTypeVo.ROOT_ID);
 			rootEventType.setName("root");
 			rootEventType.setParentId(EventTypeVo.ROOT_PARENTID);
-			eventTypeMap.put(EventTypeVo.ROOT_ID, rootEventType);
+//			eventTypeMap.put(EventTypeVo.ROOT_ID, rootEventType);
+			eventTypeSet.add(rootEventType);
 			List<EventTypeVo> eventTypeSolutionCountAndChildCountList = eventTypeMapper.getEventTypeSolutionCountAndChildCountListByIdList(eventTypeIdList);
 			Map<Long, EventTypeVo> eventTypeSolutionCountAndChildCountMap = new HashMap<>();
 			for(EventTypeVo eventType : eventTypeSolutionCountAndChildCountList) {
 				eventTypeSolutionCountAndChildCountMap.put(eventType.getId(), eventType);
 			}
 			for(EventTypeVo eventType : eventTypeSet) {
-				EventTypeVo parentEventType = eventTypeMap.get(eventType.getParentId());
+				EventTypeVo parentEventType = null;
 				for(EventTypeVo vo : eventTypeSet){
-					if(parentEventType.getId().equals(vo.getId())){
+					if(eventType.getParentId().equals(vo.getId())){
 						parentEventType = vo;
 						break;
 					}
