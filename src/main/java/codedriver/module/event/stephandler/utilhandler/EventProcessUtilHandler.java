@@ -23,6 +23,7 @@ import codedriver.framework.process.constvalue.ProcessTaskStatus;
 import codedriver.framework.process.constvalue.ProcessTaskStepAction;
 import codedriver.framework.process.constvalue.ProcessTaskStepUserStatus;
 import codedriver.framework.process.constvalue.ProcessUserType;
+import codedriver.framework.process.dao.mapper.ProcessTaskStepSubtaskMapper;
 import codedriver.framework.process.dto.ProcessStepVo;
 import codedriver.framework.process.dto.ProcessStepWorkerPolicyVo;
 import codedriver.framework.process.dto.ProcessTaskStepSubtaskVo;
@@ -49,6 +50,9 @@ public class EventProcessUtilHandler extends ProcessStepUtilHandlerBase {
     @Autowired
     private EventTypeMapper eventTypeMapper;
     
+    @Autowired
+    private ProcessTaskStepSubtaskMapper processTaskStepSubtaskMapper;
+    
     @Override
     public String getHandler() {
         return ProcessStepHandler.EVENT.getHandler();
@@ -56,8 +60,7 @@ public class EventProcessUtilHandler extends ProcessStepUtilHandlerBase {
 
     @Override
     public Object getHandlerStepInfo(ProcessTaskStepVo currentProcessTaskStepVo) {
-        // TODO Auto-generated method stub
-        return null;
+        return getHandlerStepInitInfo(currentProcessTaskStepVo);
     }
 
     @Override
@@ -124,7 +127,7 @@ public class EventProcessUtilHandler extends ProcessStepUtilHandlerBase {
         /** 查出processtask_step_subtask表中当前步骤子任务处理人列表 **/        
         Set<String> runningSubtaskUserUuidSet = new HashSet<>();
         Set<String> succeedSubtaskUserUuidSet = new HashSet<>();
-        List<ProcessTaskStepSubtaskVo> processTaskStepSubtaskList = processTaskMapper.getProcessTaskStepSubtaskListByProcessTaskStepId(processTaskStepId);
+        List<ProcessTaskStepSubtaskVo> processTaskStepSubtaskList = processTaskStepSubtaskMapper.getProcessTaskStepSubtaskListByProcessTaskStepId(processTaskStepId);
         for(ProcessTaskStepSubtaskVo subtaskVo : processTaskStepSubtaskList) {
             if(ProcessTaskStatus.RUNNING.getValue().equals(subtaskVo.getStatus())) {
                 runningSubtaskUserUuidSet.add(subtaskVo.getUserUuid());
