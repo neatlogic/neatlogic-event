@@ -6,10 +6,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONArray;
@@ -29,10 +31,24 @@ import codedriver.framework.process.dto.ProcessTaskStepVo;
 import codedriver.framework.process.dto.ProcessTaskStepWorkerVo;
 import codedriver.framework.process.operationauth.core.IOperationAuthHandlerType;
 import codedriver.framework.process.stephandler.core.ProcessStepUtilHandlerBase;
+import codedriver.module.event.api.exception.core.EventNotFoundException;
+import codedriver.module.event.dao.mapper.EventMapper;
+import codedriver.module.event.dao.mapper.EventSolutionMapper;
+import codedriver.module.event.dao.mapper.EventTypeMapper;
+import codedriver.module.event.dto.EventSolutionVo;
+import codedriver.module.event.dto.EventTypeVo;
+import codedriver.module.event.dto.EventVo;
 import codedriver.module.event.operationauth.handler.EventOperationAuthHandlerType;
 @Service
 public class EventProcessUtilHandler extends ProcessStepUtilHandlerBase {
 
+    @Autowired
+    private EventMapper eventMapper;
+    @Autowired
+    private EventSolutionMapper eventSolutionMapper;
+    @Autowired
+    private EventTypeMapper eventTypeMapper;
+    
     @Override
     public String getHandler() {
         return ProcessStepHandler.EVENT.getHandler();
@@ -46,7 +62,26 @@ public class EventProcessUtilHandler extends ProcessStepUtilHandlerBase {
 
     @Override
     public Object getHandlerStepInitInfo(ProcessTaskStepVo currentProcessTaskStepVo) {
-        // TODO Auto-generated method stub
+        Long eventId = eventMapper.getEventIdByProcessTaskStepId(currentProcessTaskStepVo.getId());
+        if(eventId != null) {
+            EventVo eventVo = eventMapper.getEventById(eventId);
+            if(eventVo == null) {
+                throw new EventNotFoundException(eventId);
+            }
+            EventTypeVo eventTypeVo = eventTypeMapper.getEventTypeById(eventVo.getEventTypeId());
+            if(eventTypeVo != null) {
+                List<EventTypeVo> eventTypeList = eventTypeMapper.getAncestorsAndSelfByLftRht(eventTypeVo.getLft(), eventTypeVo.getRht());
+                List<String> eventTypeNameList = eventTypeList.stream().map(EventTypeVo::getName).collect(Collectors.toList());
+                eventVo.setEventTypeNamePath(String.join("/", eventTypeNameList));
+            }
+            if(eventVo.getEventSolutionId() != null) {
+                EventSolutionVo eventSolutionVo = eventSolutionMapper.getSolutionById(eventVo.getEventSolutionId());
+                if(eventSolutionVo != null) {
+                    eventVo.setEventSolutionName(eventSolutionVo.getName());
+                }
+            }
+            return eventVo;
+        }
         return null;
     }
 

@@ -9,9 +9,12 @@ public class EventVo {
     private Long id;
     @EntityField(name = "事件归档类型id", type = ApiParamType.LONG)
     private Long eventTypeId;
+    @EntityField(name = "事件归档类型名称路径", type = ApiParamType.STRING)
+    private String eventTypeNamePath;
     @EntityField(name = "事件解决方案id", type = ApiParamType.LONG)
     private Long eventSolutionId;
-
+    @EntityField(name = "事件解决方案名称", type = ApiParamType.STRING)
+    private String eventSolutionName;
     public Long getId() {
         return id;
     }
@@ -34,6 +37,22 @@ public class EventVo {
 
     public void setEventSolutionId(Long eventSolutionId) {
         this.eventSolutionId = eventSolutionId;
+    }
+
+    public String getEventTypeNamePath() {
+        return eventTypeNamePath;
+    }
+
+    public void setEventTypeNamePath(String eventTypeNamePath) {
+        this.eventTypeNamePath = eventTypeNamePath;
+    }
+
+    public String getEventSolutionName() {
+        return eventSolutionName;
+    }
+
+    public void setEventSolutionName(String eventSolutionName) {
+        this.eventSolutionName = eventSolutionName;
     }
     
 }

@@ -9,9 +9,12 @@ import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.base.Objects;
 
 import codedriver.framework.process.constvalue.ProcessStepHandler;
 import codedriver.framework.process.constvalue.ProcessStepMode;
@@ -24,10 +27,18 @@ import codedriver.framework.process.exception.core.ProcessTaskException;
 import codedriver.framework.process.stephandler.core.ProcessStepHandlerBase;
 import codedriver.framework.process.workerpolicy.core.IWorkerPolicyHandler;
 import codedriver.framework.process.workerpolicy.core.WorkerPolicyHandlerFactory;
+import codedriver.module.event.api.exception.core.EventNotFoundException;
+import codedriver.module.event.dao.mapper.EventMapper;
+import codedriver.module.event.dto.EventVo;
+import codedriver.module.event.dto.ProcessTaskStepEventVo;
 @Service
 public class EventProcessComponent extends ProcessStepHandlerBase {
 
     private final Logger logger = LoggerFactory.getLogger(EventProcessComponent.class);
+    
+    @Autowired
+    private EventMapper eventMapper;
+    
     @Override
     public String getHandler() {
         return ProcessStepHandler.EVENT.getHandler();
@@ -150,7 +161,26 @@ public class EventProcessComponent extends ProcessStepHandlerBase {
 
     @Override
     protected int myComplete(ProcessTaskStepVo currentProcessTaskStepVo) throws ProcessTaskException {
-        return 0;
+        JSONObject paramObj = currentProcessTaskStepVo.getParamObj();
+        JSONObject handlerStepInfoObj = paramObj.getJSONObject("handlerStepInfo");
+        EventVo eventVo = JSON.toJavaObject(handlerStepInfoObj, EventVo.class);
+        if(eventVo != null) {
+            Long eventId = eventMapper.getEventIdByProcessTaskStepId(currentProcessTaskStepVo.getId());
+            if(eventId != null) {
+                EventVo oldEventVo = eventMapper.getEventById(eventId);
+                if(oldEventVo == null) {
+                    throw new EventNotFoundException(eventId);
+                }
+                if(!Objects.equal(eventVo.getEventTypeId(), eventVo.getEventTypeId()) || !Objects.equal(eventVo.getEventSolutionId(), eventVo.getEventSolutionId())) {
+                    eventVo.setId(oldEventVo.getId());
+                    eventMapper.updateEvent(eventVo);
+                }
+            }else {
+                eventMapper.insertEvent(eventVo);
+                eventMapper.insetProcessTaskStepEvent(new ProcessTaskStepEventVo(currentProcessTaskStepVo.getProcessTaskId(), currentProcessTaskStepVo.getId(), eventVo.getId()));
+            }
+        }
+        return 1;
     }
 
     @Override
