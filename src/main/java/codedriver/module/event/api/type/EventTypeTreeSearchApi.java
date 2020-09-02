@@ -1,6 +1,8 @@
 package codedriver.module.event.api.type;
 
+import codedriver.framework.asynchronization.threadlocal.UserContext;
 import codedriver.framework.common.constvalue.ApiParamType;
+import codedriver.framework.dao.mapper.TeamMapper;
 import codedriver.framework.process.exception.event.EventTypeNotFoundException;
 import codedriver.framework.reminder.core.OperationTypeEnum;
 import codedriver.framework.restful.annotation.*;
@@ -18,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Service
 @OperationType(type = OperationTypeEnum.SEARCH)
@@ -25,6 +28,8 @@ public class EventTypeTreeSearchApi extends PrivateApiComponentBase {
 
     @Autowired
     private EventTypeMapper eventTypeMapper;
+    @Autowired
+    private TeamMapper teamMapper;
 
     @Override
     public String getToken() {
@@ -42,8 +47,9 @@ public class EventTypeTreeSearchApi extends PrivateApiComponentBase {
     }
 
     @Input({
-    	@Param(name = "id", type = ApiParamType.LONG, xss = true, desc = "主键ID"),
-    	@Param(name = "keyword", type = ApiParamType.STRING, xss = true, desc = "关键字")
+    	@Param(name = "id", type = ApiParamType.LONG, desc = "主键ID"),
+    	@Param(name = "keyword", type = ApiParamType.STRING, xss = true, desc = "关键字"),
+        @Param(name = "isAuthenticate", type = ApiParamType.ENUM, desc = "是否需要鉴权", rule = "0,1")
     })
     @Output({
     	@Param(name = "children", type = ApiParamType.JSONARRAY, explode = EventTypeVo[].class,desc = "事件类型架构集合")
@@ -53,6 +59,12 @@ public class EventTypeTreeSearchApi extends PrivateApiComponentBase {
     public Object myDoService(JSONObject jsonObj) throws Exception {
     	JSONObject resultObj = new JSONObject();
 		resultObj.put("children", new ArrayList<>());
+		List<Long> authorizedEventTypeIdList = new ArrayList<>();
+		Integer isAuthenticate = jsonObj.getInteger("isAuthenticate");
+		if(Objects.equals(isAuthenticate, 1)) {
+		    List<String> teamUuidList = teamMapper.getTeamUuidListByUserUuid(UserContext.get().getUserUuid(true));
+		    authorizedEventTypeIdList = eventTypeMapper.getCurrentUserAuthorizedEventTypeIdList(UserContext.get().getUserUuid(true), teamUuidList, UserContext.get().getRoleUuidList());
+		}
 		List<EventTypeVo> eventTypeList = new ArrayList<>();
 		Long id = jsonObj.getLong("id");
 		String keyword = jsonObj.getString("keyword");
@@ -63,25 +75,52 @@ public class EventTypeTreeSearchApi extends PrivateApiComponentBase {
 			if(eventTypeVo == null) {
 				throw new EventTypeNotFoundException(id);
 			}
-			eventTypeList = eventTypeMapper.getAncestorsAndSelfByLftRht(eventTypeVo.getLft(), eventTypeVo.getRht());
-			for(EventTypeVo eventType : eventTypeList) {
-				eventTypeMap.put(eventType.getId(), eventType);
-				eventTypeIdList.add(eventType.getId());
+			if(!Objects.equals(isAuthenticate, 1) || authorizedEventTypeIdList.contains(eventTypeVo.getId())) {
+	            eventTypeList = eventTypeMapper.getAncestorsAndSelfByLftRht(eventTypeVo.getLft(), eventTypeVo.getRht());
+	            for(EventTypeVo eventType : eventTypeList) {
+	                eventTypeMap.put(eventType.getId(), eventType);
+	                eventTypeIdList.add(eventType.getId());
+	            }
 			}
 		}else if(StringUtils.isNotBlank(keyword)){
 			EventTypeVo keywordEventType = new EventTypeVo();
 			keywordEventType.setKeyword(keyword);
+			keywordEventType.setNeedPage(false);
 			List<EventTypeVo> targetEventTypeList = eventTypeMapper.searchEventType(keywordEventType);
+			targetEventTypeList.sort((e1, e2) -> e2.getId().compareTo(e1.getId()));
 			for(EventTypeVo eventTypeVo : targetEventTypeList) {
-				List<EventTypeVo> ancestorsAndSelf = eventTypeMapper.getAncestorsAndSelfByLftRht(eventTypeVo.getLft(), eventTypeVo.getRht());
-				for(EventTypeVo eventType : ancestorsAndSelf) {
-					if(!eventTypeIdList.contains(eventType.getId())) {
-						eventTypeMap.put(eventType.getId(), eventType);
-						eventTypeIdList.add(eventType.getId());
-						eventTypeList.add(eventType);
-					}
-				}
+                if(eventTypeMap.containsKey(eventTypeVo.getId())) {
+                    continue;
+                }
+			    if(!Objects.equals(isAuthenticate, 1) || authorizedEventTypeIdList.contains(eventTypeVo.getId())) {
+	                List<EventTypeVo> ancestorsAndSelf = eventTypeMapper.getAncestorsAndSelfByLftRht(eventTypeVo.getLft(), eventTypeVo.getRht());
+	                for(EventTypeVo eventType : ancestorsAndSelf) {
+	                    if(!eventTypeIdList.contains(eventType.getId())) {
+	                        eventTypeMap.put(eventType.getId(), eventType);
+	                        eventTypeIdList.add(eventType.getId());
+	                        eventTypeList.add(eventType);
+	                    }
+	                }
+			    }
 			}
+		}else if(Objects.equals(isAuthenticate, 1)){
+		    if(CollectionUtils.isNotEmpty(authorizedEventTypeIdList)) {
+	            List<EventTypeVo> targetEventTypeList = eventTypeMapper.getEventTypeListByIdList(authorizedEventTypeIdList);
+	            targetEventTypeList.sort((e1, e2) -> e2.getId().compareTo(e1.getId()));
+	            for(EventTypeVo eventTypeVo : targetEventTypeList) {
+	                if(eventTypeMap.containsKey(eventTypeVo.getId())) {
+	                    continue;
+	                }
+	                List<EventTypeVo> ancestorsAndSelf = eventTypeMapper.getAncestorsAndSelfByLftRht(eventTypeVo.getLft(), eventTypeVo.getRht());
+                    for(EventTypeVo eventType : ancestorsAndSelf) {
+                        if(!eventTypeIdList.contains(eventType.getId())) {
+                            eventTypeMap.put(eventType.getId(), eventType);
+                            eventTypeIdList.add(eventType.getId());
+                            eventTypeList.add(eventType);
+                        }
+                    }
+	            }
+		    }
 		}else {
 			return resultObj;
 		}
@@ -93,20 +132,25 @@ public class EventTypeTreeSearchApi extends PrivateApiComponentBase {
 			rootEventType.setParentId(EventTypeVo.ROOT_PARENTID);
 			eventTypeMap.put(EventTypeVo.ROOT_ID, rootEventType);
 			List<EventTypeVo> eventTypeSolutionCountAndChildCountList = eventTypeMapper.getEventTypeSolutionCountAndChildCountListByIdList(eventTypeIdList);
-			Map<Long, EventTypeVo> eventTypeSolutionCountAndChildCountMap = new HashMap<>();
+//			Map<Long, EventTypeVo> eventTypeSolutionCountAndChildCountMap = new HashMap<>();
 			for(EventTypeVo eventType : eventTypeSolutionCountAndChildCountList) {
-				eventTypeSolutionCountAndChildCountMap.put(eventType.getId(), eventType);
+//				eventTypeSolutionCountAndChildCountMap.put(eventType.getId(), eventType);
+			    EventTypeVo targetEventType = eventTypeMap.get(eventType.getId());
+			    if(targetEventType != null) {
+			        targetEventType.setChildCount(eventType.getChildCount());
+			        targetEventType.setSolutionCount(eventType.getSolutionCount());
+			    }
 			}
 			for(EventTypeVo eventType : eventTypeList) {
 				EventTypeVo parentEventType = eventTypeMap.get(eventType.getParentId());
 				if(parentEventType != null) {
 					eventType.setParent(parentEventType);
 				}
-				EventTypeVo eventTypeSolutionCountAndChildCount = eventTypeSolutionCountAndChildCountMap.get(eventType.getId());
-				if(eventTypeSolutionCountAndChildCount != null) {
-					eventType.setChildCount(eventTypeSolutionCountAndChildCount.getChildCount());
-					eventType.setSolutionCount(eventTypeSolutionCountAndChildCount.getSolutionCount());
-				}
+//				EventTypeVo eventTypeSolutionCountAndChildCount = eventTypeSolutionCountAndChildCountMap.get(eventType.getId());
+//				if(eventTypeSolutionCountAndChildCount != null) {
+//					eventType.setChildCount(eventTypeSolutionCountAndChildCount.getChildCount());
+//					eventType.setSolutionCount(eventTypeSolutionCountAndChildCount.getSolutionCount());
+//				}
 			}
 			resultObj.put("children", rootEventType.getChildren());
 		}

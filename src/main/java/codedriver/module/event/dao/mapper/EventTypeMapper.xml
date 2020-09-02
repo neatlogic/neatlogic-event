@@ -254,6 +254,44 @@
 		</if>
 	</select>
 
+	<select id="getCurrentUserAuthorizedEventTypeIdList" resultType="java.lang.Long">
+	SELECT 
+	  DISTINCT `event_type_id`
+	FROM `event_type_authority` 
+	WHERE (type = 'common' AND `uuid` = 'alluser')
+	<if test="userUuid != null and userUuid != ''">
+		OR (type = 'user' AND `uuid` = #{userUuid})
+	</if>
+	<if test="teamUuidList != null and teamUuidList.size() > 0">
+		OR (type = 'team' AND `uuid` IN
+		<foreach collection="teamUuidList" item="teamUuid" open="(" separator="," close=")">
+			#{teamUuid}
+		</foreach>
+		)
+	</if>
+	<if test="roleUuidList != null and roleUuidList.size() > 0">
+		OR (type = 'role' AND `uuid` IN
+		<foreach collection="roleUuidList" item="roleUuid" open="(" separator="," close=")">
+			#{roleUuid}
+		</foreach>
+		)
+	</if>
+	</select>
+	
+	<select id="getEventTypeListByIdList" parameterType="java.lang.Long" resultType="codedriver.module.event.dto.EventTypeVo">
+	SELECT
+	`id`,
+	`name`,
+	`lft`,
+	`rht`,
+	`parent_id` AS `parentId`
+	FROM `event_type`
+	WHERE `id` IN
+	<foreach collection="list" item="id" open="(" separator="," close=")">
+	#{id}
+	</foreach>
+	</select>
+	
 	<update id="updateEventTypeNameById" parameterType="codedriver.module.event.dto.EventTypeVo">
 		UPDATE `event_type` SET
 		`name` = #{name}
