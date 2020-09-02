@@ -41,7 +41,7 @@ public class EventTypeTreeForSolutionApi extends PrivateApiComponentBase {
     }
 
     @Input({
-    	@Param(name = "id", type = ApiParamType.LONG, xss = true, desc = "主键ID")
+    	@Param(name = "id", type = ApiParamType.LONG, desc = "主键ID")
     })
     @Output({
     	@Param(name = "eventTypeTree", type = ApiParamType.JSONARRAY, explode = EventTypeVo[].class,desc = "事件类型架构集合")
