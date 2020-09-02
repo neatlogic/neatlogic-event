@@ -49,8 +49,8 @@ public class EventSolutionSaveApi extends PrivateApiComponentBase{
 	@Input({
 			@Param(name = "id", type = ApiParamType.LONG, desc = "解决方案ID"),
 			@Param(name = "name", type = ApiParamType.REGEX, rule = "^[A-Za-z_\\d\\u4e00-\\u9fa5]+$", desc = "解决方案名称",isRequired=true, xss=true),
-			@Param(name = "isActive", type = ApiParamType.INTEGER,desc = "是否激活"),
-			@Param(name = "content", type = ApiParamType.STRING,desc = "内容"),
+			@Param(name = "isActive", type = ApiParamType.INTEGER,desc = "是否激活",isRequired=true),
+			@Param(name = "content", type = ApiParamType.STRING,desc = "内容",isRequired=true),
 			@Param(name = "eventTypeList", type = ApiParamType.JSONARRAY, desc = "关联的事件类型ID集合",isRequired = true)
 	})
 	@Output({@Param(name = "solutionId", type = ApiParamType.LONG, desc = "保存的解决方案ID")})
