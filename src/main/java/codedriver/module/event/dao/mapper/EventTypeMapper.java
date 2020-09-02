@@ -22,6 +22,12 @@ public interface EventTypeMapper {
 
 	public List<EventTypeVo> getAncestorsAndSelfByLftRht(@Param("lft") Integer lft, @Param("rht") Integer rht);
 
+	public EventTypeVo getTopEventTypeByLftRht(@Param("lft") Integer lft, @Param("rht") Integer rht);
+
+	public List<EventTypeVo> getChildrenByLftRhtLayer(@Param("lft") Integer lft, @Param("rht") Integer rht,@Param("layer") Integer layer);
+
+	public int calculateLayer(@Param("lft") Integer lft, @Param("rht") Integer rht);
+
 	public List<EventTypeVo> getEventTypeSolutionCountAndChildCountListByIdList(List<Long> eventTypeIdList);
 
 	public int checkEventTypeIsExists(Long id);
@@ -38,6 +44,8 @@ public interface EventTypeMapper {
 
 	public EventTypeVo getEventTypeByParentIdAndStartNum(@Param("parentId") Long parentId, @Param("startNum") int startNum);
 
+	public List<EventTypeVo> getEventTypeListByParentId(@Param("parentId") Long parentId);
+
 	public List<EventTypeVo> getChildrenByLeftRightCode(@Param("lft") Integer lft, @Param("rht") Integer rht);
 
 	public List<AuthorityVo> getAuthorityByEventTypeId(@Param("eventTypId") Long eventTypId);
@@ -49,6 +57,8 @@ public interface EventTypeMapper {
 	public int getSolutionCountByEventTypeId(@Param("eventTypId") Long eventTypId);
 
 	public int updateEventTypeParentIdById(EventTypeVo eventTypeVo);
+
+	public int updateEventTypeLayer(EventTypeVo eventType);
 
 	public int batchUpdateEventTypeLeftRightCodeByLeftRightCode(@Param("lft") Integer lft, @Param("rht") Integer rht, @Param("step") int step);
 

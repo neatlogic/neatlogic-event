@@ -44,6 +44,7 @@ public class EventTypeServiceImpl implements EventTypeService {
 		rootEventType.setParentId(EventTypeVo.ROOT_PARENTID);
 		rootEventType.setLft(1);
 		rootEventType.setRht(maxRhtCode == null ? 2 : maxRhtCode + 1);
+		rootEventType.setLayer(0);
 		return rootEventType;
 	}
 }
