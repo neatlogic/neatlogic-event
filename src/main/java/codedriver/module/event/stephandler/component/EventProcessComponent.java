@@ -250,4 +250,10 @@ public class EventProcessComponent extends ProcessStepHandlerBase {
         return nextStepSet;
     }
 
+    @Override
+    protected int myPause(ProcessTaskStepVo currentProcessTaskStepVo) throws ProcessTaskException {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
 }

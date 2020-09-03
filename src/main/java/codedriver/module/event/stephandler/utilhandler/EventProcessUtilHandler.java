@@ -221,10 +221,11 @@ public class EventProcessUtilHandler extends ProcessStepUtilHandlerBase {
         JSONArray authorityArray = new JSONArray();
         ProcessTaskOperationType[] stepActions = {
                 ProcessTaskOperationType.VIEW, 
-                ProcessTaskOperationType.ABORT, 
+                ProcessTaskOperationType.ABORTPROCESSTASK, 
                 ProcessTaskOperationType.TRANSFER, 
                 ProcessTaskOperationType.UPDATE, 
-                ProcessTaskOperationType.URGE
+                ProcessTaskOperationType.URGE, 
+                ProcessTaskOperationType.PAUSE
         };
         for(ProcessTaskOperationType stepAction : stepActions) {
             authorityArray.add(new JSONObject() {{
@@ -259,8 +260,8 @@ public class EventProcessUtilHandler extends ProcessStepUtilHandlerBase {
                 ProcessTaskOperationType.COMMENT, 
                 ProcessTaskOperationType.TRANSFER, 
                 ProcessTaskOperationType.START,
-                ProcessTaskOperationType.ABORT, 
-                ProcessTaskOperationType.RECOVER
+                ProcessTaskOperationType.ABORTPROCESSTASK, 
+                ProcessTaskOperationType.RECOVERPROCESSTASK
         };
         for(ProcessTaskOperationType stepButton : stepButtons) {
             customButtonArray.add(new JSONObject() {{
