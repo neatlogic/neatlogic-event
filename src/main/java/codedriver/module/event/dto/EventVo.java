@@ -2,6 +2,7 @@ package codedriver.module.event.dto;
 
 import codedriver.framework.common.constvalue.ApiParamType;
 import codedriver.framework.restful.annotation.EntityField;
+import codedriver.framework.util.SnowflakeUtil;
 
 public class EventVo {
 
@@ -15,7 +16,11 @@ public class EventVo {
     private Long eventSolutionId;
     @EntityField(name = "事件解决方案名称", type = ApiParamType.STRING)
     private String eventSolutionName;
-    public Long getId() {
+    private transient Boolean isAutoGenerateId = true;
+    public synchronized Long getId() {
+        if(id == null && isAutoGenerateId) {
+            id = SnowflakeUtil.uniqueLong();
+        }
         return id;
     }
 
@@ -53,6 +58,14 @@ public class EventVo {
 
     public void setEventSolutionName(String eventSolutionName) {
         this.eventSolutionName = eventSolutionName;
+    }
+
+    public Boolean getIsAutoGenerateId() {
+        return isAutoGenerateId;
+    }
+
+    public void setIsAutoGenerateId(Boolean isAutoGenerateId) {
+        this.isAutoGenerateId = isAutoGenerateId;
     }
     
 }
