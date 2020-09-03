@@ -35,6 +35,7 @@
 		<if test="keyword != null and keyword != ''">
 			and name LIKE CONCAT('%', #{keyword}, '%')
 		</if>
+		order by `lcd` desc
 		<if test="needPage == true">
 			LIMIT #{startNum}, #{pageSize}
 		</if>
