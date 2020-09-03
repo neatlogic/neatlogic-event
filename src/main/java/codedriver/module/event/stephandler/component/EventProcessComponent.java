@@ -27,10 +27,10 @@ import codedriver.framework.process.exception.core.ProcessTaskException;
 import codedriver.framework.process.stephandler.core.ProcessStepHandlerBase;
 import codedriver.framework.process.workerpolicy.core.IWorkerPolicyHandler;
 import codedriver.framework.process.workerpolicy.core.WorkerPolicyHandlerFactory;
-import codedriver.module.event.api.exception.core.EventNotFoundException;
 import codedriver.module.event.dao.mapper.EventMapper;
 import codedriver.module.event.dto.EventVo;
 import codedriver.module.event.dto.ProcessTaskStepEventVo;
+import codedriver.module.event.exception.core.EventNotFoundException;
 @Service
 public class EventProcessComponent extends ProcessStepHandlerBase {
 
@@ -248,6 +248,12 @@ public class EventProcessComponent extends ProcessStepHandlerBase {
             }
         }
         return nextStepSet;
+    }
+
+    @Override
+    protected int myPause(ProcessTaskStepVo currentProcessTaskStepVo) throws ProcessTaskException {
+        // TODO Auto-generated method stub
+        return 0;
     }
 
 }
