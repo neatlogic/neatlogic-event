@@ -42,13 +42,13 @@
 
     <insert id="insetProcessTaskStepEvent" parameterType="codedriver.module.event.dto.ProcessTaskStepEventVo">
     INSERT INTO `processtask_step_event` (
-	  `processtast_id`,
+	  `processtask_id`,
 	  `processtask_step_id`,
 	  `event_id`
 	) 
 	VALUES
 	  (
-	    #{processTastId},
+	    #{processTaskId},
 	    #{processTaskStepId},
 	    #{eventId}
 	  )
