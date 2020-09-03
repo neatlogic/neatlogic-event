@@ -1,4 +1,4 @@
-package codedriver.module.event.api.exception.core;
+package codedriver.module.event.exception.core;
 
 import codedriver.framework.exception.core.ApiRuntimeException;
 
