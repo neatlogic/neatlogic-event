@@ -27,6 +27,7 @@ import codedriver.framework.process.exception.core.ProcessTaskException;
 import codedriver.framework.process.stephandler.core.ProcessStepHandlerBase;
 import codedriver.framework.process.workerpolicy.core.IWorkerPolicyHandler;
 import codedriver.framework.process.workerpolicy.core.WorkerPolicyHandlerFactory;
+import codedriver.module.event.constvalue.EventAuditDetailType;
 import codedriver.module.event.dao.mapper.EventMapper;
 import codedriver.module.event.dto.EventVo;
 import codedriver.module.event.dto.ProcessTaskStepEventVo;
@@ -190,6 +191,10 @@ public class EventProcessComponent extends ProcessStepHandlerBase {
         }
         /** 处理历史记录 **/
         String action = currentProcessTaskStepVo.getParamObj().getString("action");
+        JSONObject handlerStepInfoObj = currentProcessTaskStepVo.getParamObj().getJSONObject("handlerStepInfo");
+        if (MapUtils.isNotEmpty(handlerStepInfoObj)) {
+            currentProcessTaskStepVo.getParamObj().put(EventAuditDetailType.EVENTINFO.getParamName(), JSON.toJSONString(handlerStepInfoObj));
+        }
         AuditHandler.audit(currentProcessTaskStepVo, ProcessTaskAuditType.getProcessTaskAuditType(action));
         return 1;
     }
