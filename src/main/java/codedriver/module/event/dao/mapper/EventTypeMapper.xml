@@ -128,12 +128,14 @@
 	</select>
 
 	<select id="getEventTypeSolutionCountByLftRht" parameterType="java.lang.Integer" resultType="codedriver.module.event.dto.EventTypeVo">
+		select count(1) as solutionCount from (
 		SELECT
-		a.`id`,
-		COUNT(DISTINCT b.`solution_id`) AS solutionCount
+		b.`solution_id`
 		FROM `event_type` a
-		LEFT JOIN `event_type_solution` b ON b.`event_type_id` = a.`id`
-		WHERE a.`lft` &lt;=#{lft} and a.`rht` &gt;=#{rht}
+		JOIN `event_type_solution` b ON b.`event_type_id` = a.`id`
+		WHERE lft &lt;=#{lft} and rht &gt;=#{rht}
+		group by b.`solution_id`
+		)a
 	</select>
 
 	<select id="checkLeftRightCodeIsWrong" resultType="int">
