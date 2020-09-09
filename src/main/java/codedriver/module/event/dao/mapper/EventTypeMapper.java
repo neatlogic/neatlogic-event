@@ -26,9 +26,11 @@ public interface EventTypeMapper {
 
 	public List<EventTypeVo> getChildrenByLftRhtLayer(@Param("lft") Integer lft, @Param("rht") Integer rht,@Param("layer") Integer layer);
 
-	public int calculateLayer(@Param("lft") Integer lft, @Param("rht") Integer rht);
+//	public int calculateLayer(@Param("lft") Integer lft, @Param("rht") Integer rht);
 
-	public List<EventTypeVo> getEventTypeSolutionCountAndChildCountListByIdList(List<Long> eventTypeIdList);
+	public List<EventTypeVo> getEventTypeChildCountListByIdList(List<Long> eventTypeIdList);
+
+	public EventTypeVo getEventTypeSolutionCountByLftRht(@Param("lft") Integer lft, @Param("rht") Integer rht);
 
 	public int checkEventTypeIsExists(Long id);
 
@@ -50,11 +52,15 @@ public interface EventTypeMapper {
 
 	public List<AuthorityVo> getAuthorityByEventTypeId(@Param("eventTypId") Long eventTypId);
 
-	public List<AuthorityVo> checkAuthorityIsExists(@Param("lft") Integer lft, @Param("rht") Integer rht,@Param("authorityVo") AuthorityVo authority);
+//	public List<AuthorityVo> checkAuthorityIsExists(@Param("lft") Integer lft, @Param("rht") Integer rht,@Param("authorityVo") AuthorityVo authority);
 
-	public List<EventSolutionVo> getSolutionList(EventTypeVo eventTypeVo);
+//	public List<EventSolutionVo> getSolutionList(EventTypeVo eventTypeVo);
 
-	public int getSolutionCountByEventTypeId(@Param("eventTypId") Long eventTypId);
+	public List<EventSolutionVo> getSolutionListByLftRht(EventTypeVo eventTypeVo);
+
+//	public int getSolutionCountByEventTypeId(@Param("eventTypId") Long eventTypId);
+
+	public int getSolutionCountByLtfRht(@Param("lft") Integer lft, @Param("rht") Integer rht);
 
 	public int updateEventTypeParentIdById(EventTypeVo eventTypeVo);
 

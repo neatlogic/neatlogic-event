@@ -114,19 +114,26 @@
 		WHERE `lft` &lt;= #{lft} AND `rht` &gt;= #{rht}
 	</select>
 
-	<select id="getEventTypeSolutionCountAndChildCountListByIdList" parameterType="java.util.List" resultType="codedriver.module.event.dto.EventTypeVo">
+	<select id="getEventTypeChildCountListByIdList" parameterType="java.util.List" resultType="codedriver.module.event.dto.EventTypeVo">
 		SELECT
 		a.`id`,
-		COUNT(DISTINCT b.`solution_id`) AS solutionCount,
 		COUNT(DISTINCT c.`id`) AS childCount
 		FROM `event_type` a
-		LEFT JOIN `event_type_solution` b ON b.`event_type_id` = a.`id`
 		LEFT JOIN `event_type` c ON c.`parent_id` = a.`id`
 		WHERE a.`id` IN
 		<foreach collection="list" item="eventTypeId" open="(" close=")" separator=",">
 			#{eventTypeId}
 		</foreach>
 		GROUP BY a.`id`
+	</select>
+
+	<select id="getEventTypeSolutionCountByLftRht" parameterType="java.lang.Integer" resultType="codedriver.module.event.dto.EventTypeVo">
+		SELECT
+		a.`id`,
+		COUNT(DISTINCT b.`solution_id`) AS solutionCount
+		FROM `event_type` a
+		LEFT JOIN `event_type_solution` b ON b.`event_type_id` = a.`id`
+		WHERE a.`lft` &lt;=#{lft} and a.`rht` &gt;=#{rht}
 	</select>
 
 	<select id="checkLeftRightCodeIsWrong" resultType="int">
@@ -242,6 +249,14 @@
 		where ets.`event_type_id` = #{eventTypId}
 	</select>
 
+	<select id="getSolutionCountByLtfRht" parameterType="java.lang.Integer" resultType="int" useCache="false">
+		SELECT
+		COUNT(DISTINCT b.`solution_id`)
+		FROM `event_type` a
+		LEFT JOIN `event_type_solution` b ON b.`event_type_id` = a.`id`
+		WHERE a.`lft` &lt;=#{lft} and a.`rht` &gt;=#{rht}
+	</select>
+
 	<select id="getSolutionList" parameterType="codedriver.module.event.dto.EventTypeVo" resultType="codedriver.module.event.dto.EventSolutionVo" useCache="false">
 		select
 		s.`id`,
@@ -249,6 +264,19 @@
 		from `event_solution` s
 		left join `event_type_solution` ets on s.`id` = ets.`solution_id`
 		where ets.`event_type_id` = #{id}
+		<if test="needPage == true">
+			LIMIT #{startNum}, #{pageSize}
+		</if>
+	</select>
+
+	<select id="getSolutionListByLftRht" parameterType="codedriver.module.event.dto.EventTypeVo" resultType="codedriver.module.event.dto.EventSolutionVo" useCache="false">
+		select
+		distinct(s.`id`) as id,
+		s.`name`
+		from `event_solution` s
+		left join `event_type_solution` ets on s.`id` = ets.`solution_id`
+		left join `event_type` et on et.`id` = ets.`event_type_id`
+		where et.`lft` &lt;=#{lft} and et.`rht` &gt;=#{rht}
 		<if test="needPage == true">
 			LIMIT #{startNum}, #{pageSize}
 		</if>

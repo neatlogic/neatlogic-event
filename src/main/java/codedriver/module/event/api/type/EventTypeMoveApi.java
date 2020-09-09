@@ -117,6 +117,10 @@ public class EventTypeMoveApi extends PrivateApiComponentBase {
 		//更新被移动块中节点的左右编码值
         eventTypeMapper.batchUpdateEventTypeLeftRightCodeByLeftRightCode(eventType.getLft() - eventType.getRht(), eventType.getRht() - eventType.getRht(), lft - eventType.getLft() + eventType.getRht());
 
+        if(eventTypeMapper.checkLeftRightCodeIsWrong() > 0) {
+            eventTypeService.rebuildLeftRightCode();
+        }
+
         //找出被移动节点本身及子节点，计算并更新层级
         EventTypeVo self = eventTypeMapper.getEventTypeById(eventType.getId());
         List<EventTypeVo> childrenAndSelf = eventTypeMapper.getChildrenByLeftRightCode(self.getLft(), self.getRht());
@@ -135,7 +139,9 @@ public class EventTypeMoveApi extends PrivateApiComponentBase {
             }
             eventTypeMapper.updateEventTypeLayer(vo);
         }
-
-        return null;
+        /** 查询关联的解决方案数量，保证移动后页面回显的数据正确 */
+        EventTypeVo count = eventTypeMapper.getEventTypeSolutionCountByLftRht(self.getLft(), self.getRht());
+        self.setSolutionCount(count.getSolutionCount());
+        return self;
     }
 }

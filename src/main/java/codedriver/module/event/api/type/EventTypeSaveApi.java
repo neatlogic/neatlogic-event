@@ -68,6 +68,7 @@ public class EventTypeSaveApi extends PrivateApiComponentBase{
 		Long id = jsonObj.getLong("id");
 		EventTypeVo eventType = new EventTypeVo();
 		eventType.setName(jsonObj.getString("name"));
+		Integer solutionCount = null;
 		if(id != null){
 			if(eventTypeMapper.checkEventTypeIsExists(id) == 0){
 				throw new EventTypeNotFoundException(id);
@@ -103,6 +104,9 @@ public class EventTypeSaveApi extends PrivateApiComponentBase{
 //			int layer = eventTypeMapper.calculateLayer(eventType.getLft(), eventType.getRht());
 			eventType.setLayer(parentEventType.getLayer() + 1);
 			eventTypeMapper.insertEventType(eventType);
+			/** 查询关联的解决方案数量，确保页面回显的数据正确 */
+			EventTypeVo count = eventTypeMapper.getEventTypeSolutionCountByLftRht(eventType.getLft(), eventType.getRht());
+			solutionCount = count.getSolutionCount();
 
 			/** 保存授权信息 */
 			JSONArray authorityArray = jsonObj.getJSONArray("authorityList");
@@ -118,6 +122,7 @@ public class EventTypeSaveApi extends PrivateApiComponentBase{
 			}
 		}
 		returnObj.put("eventTypeId",eventType.getId());
+		returnObj.put("solutionCount",solutionCount);
 		return returnObj;
 	}
 }
