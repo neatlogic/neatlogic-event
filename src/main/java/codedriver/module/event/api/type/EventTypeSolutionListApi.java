@@ -2,6 +2,7 @@ package codedriver.module.event.api.type;
 
 import codedriver.framework.common.constvalue.ApiParamType;
 import codedriver.framework.common.util.PageUtil;
+import codedriver.framework.process.exception.event.EventTypeNotFoundException;
 import codedriver.framework.reminder.core.OperationTypeEnum;
 import codedriver.framework.restful.annotation.*;
 import codedriver.framework.restful.core.privateapi.PrivateApiComponentBase;
@@ -58,8 +59,14 @@ public class EventTypeSolutionListApi extends PrivateApiComponentBase{
 	public Object myDoService(JSONObject jsonObj) throws Exception {
 		JSONObject resultObj = new JSONObject();
 		EventTypeVo eventTypeVo = JSON.parseObject(jsonObj.toJSONString(), new TypeReference<EventTypeVo>() {});
+		EventTypeVo type = eventTypeMapper.getEventTypeById(eventTypeVo.getId());
+		if (type == null) {
+			throw new EventTypeNotFoundException(eventTypeVo.getId());
+		}
+		eventTypeVo.setLft(type.getLft());
+		eventTypeVo.setRht(type.getRht());
 		if(eventTypeVo.getNeedPage()){
-			int rowNum = eventTypeMapper.getSolutionCountByEventTypeId(eventTypeVo.getId());
+			int rowNum = eventTypeMapper.getSolutionCountByLtfRht(eventTypeVo.getLft(),eventTypeVo.getRht());
 			int pageCount = PageUtil.getPageCount(rowNum, eventTypeVo.getPageSize());
 			int currentPage = eventTypeVo.getCurrentPage();
 			resultObj.put("rowNum", rowNum);
@@ -67,7 +74,7 @@ public class EventTypeSolutionListApi extends PrivateApiComponentBase{
 			resultObj.put("currentPage", currentPage);
 			resultObj.put("pageSize", eventTypeVo.getPageSize());
 		}
-		List<EventSolutionVo> solutionList = eventTypeMapper.getSolutionList(eventTypeVo);
+		List<EventSolutionVo> solutionList = eventTypeMapper.getSolutionListByLftRht(eventTypeVo);
 		resultObj.put("solutionList",solutionList);
 		return resultObj;
 	}

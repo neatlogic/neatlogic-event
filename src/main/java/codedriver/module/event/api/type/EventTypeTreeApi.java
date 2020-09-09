@@ -9,7 +9,6 @@ import codedriver.framework.restful.annotation.*;
 import codedriver.framework.restful.core.privateapi.PrivateApiComponentBase;
 import codedriver.module.event.dao.mapper.EventTypeMapper;
 import codedriver.module.event.dto.EventTypeVo;
-
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,17 +81,27 @@ public class EventTypeTreeApi extends PrivateApiComponentBase {
 
         /** 查询子类和关联的解决方案数量 */
         if(CollectionUtils.isNotEmpty(tbodyList)) {
+
+            Map<Long, EventTypeVo> eventTypeSolutionCountMap = new HashMap<>();
+            for(EventTypeVo vo : tbodyList){
+                EventTypeVo count = eventTypeMapper.getEventTypeSolutionCountByLftRht(vo.getLft(), vo.getRht());
+                count.setId(vo.getId());
+                eventTypeSolutionCountMap.put(vo.getId(),count);
+            }
             List<Long> eventTypeIdList = tbodyList.stream().map(EventTypeVo::getId).collect(Collectors.toList());
-            List<EventTypeVo> eventTypeSolutionCountAndChildCountList = eventTypeMapper.getEventTypeSolutionCountAndChildCountListByIdList(eventTypeIdList);
-            Map<Long, EventTypeVo> eventTypeSolutionCountAndChildCountMap = new HashMap<>();
-            for(EventTypeVo eventType : eventTypeSolutionCountAndChildCountList) {
-                eventTypeSolutionCountAndChildCountMap.put(eventType.getId(), eventType);
+            List<EventTypeVo> eventTypeChildCountList = eventTypeMapper.getEventTypeChildCountListByIdList(eventTypeIdList);
+            Map<Long, EventTypeVo> eventTypeChildCountMap = new HashMap<>();
+            for(EventTypeVo eventType : eventTypeChildCountList) {
+                eventTypeChildCountMap.put(eventType.getId(), eventType);
             }
             for(EventTypeVo eventType : tbodyList) {
-                EventTypeVo eventTypeSolutionCountAndChildCount = eventTypeSolutionCountAndChildCountMap.get(eventType.getId());
-                if(eventTypeSolutionCountAndChildCount != null) {
-                    eventType.setChildCount(eventTypeSolutionCountAndChildCount.getChildCount());
-                    eventType.setSolutionCount(eventTypeSolutionCountAndChildCount.getSolutionCount());
+                EventTypeVo eventTypeChildCount = eventTypeChildCountMap.get(eventType.getId());
+                EventTypeVo eventTypeSolutionCount = eventTypeSolutionCountMap.get(eventType.getId());
+                if(eventTypeChildCount != null) {
+                    eventType.setChildCount(eventTypeChildCount.getChildCount());
+                }
+                if(eventTypeSolutionCount != null){
+                    eventType.setSolutionCount(eventTypeSolutionCount.getSolutionCount());
                 }
             }
         }

@@ -111,10 +111,10 @@ public class EventTypeTreeForSolutionApi extends PrivateApiComponentBase {
 			rootEventType.setParentId(EventTypeVo.ROOT_PARENTID);
 //			eventTypeMap.put(EventTypeVo.ROOT_ID, rootEventType);
 			eventTypeSet.add(rootEventType);
-			List<EventTypeVo> eventTypeSolutionCountAndChildCountList = eventTypeMapper.getEventTypeSolutionCountAndChildCountListByIdList(eventTypeIdList);
-			Map<Long, EventTypeVo> eventTypeSolutionCountAndChildCountMap = new HashMap<>();
-			for(EventTypeVo eventType : eventTypeSolutionCountAndChildCountList) {
-				eventTypeSolutionCountAndChildCountMap.put(eventType.getId(), eventType);
+			List<EventTypeVo> eventTypeChildCountList = eventTypeMapper.getEventTypeChildCountListByIdList(eventTypeIdList);
+			Map<Long, EventTypeVo> eventTypeChildCountMap = new HashMap<>();
+			for(EventTypeVo eventType : eventTypeChildCountList) {
+				eventTypeChildCountMap.put(eventType.getId(), eventType);
 			}
 			for(EventTypeVo eventType : eventTypeSet) {
 				EventTypeVo parentEventType = null;
@@ -127,9 +127,9 @@ public class EventTypeTreeForSolutionApi extends PrivateApiComponentBase {
 				if(parentEventType != null) {
 					eventType.setParent(parentEventType);
 				}
-				EventTypeVo eventTypeSolutionCountAndChildCount = eventTypeSolutionCountAndChildCountMap.get(eventType.getId());
-				if(eventTypeSolutionCountAndChildCount != null) {
-					eventType.setChildCount(eventTypeSolutionCountAndChildCount.getChildCount());
+				EventTypeVo eventTypeChildCount = eventTypeChildCountMap.get(eventType.getId());
+				if(eventTypeChildCount != null) {
+					eventType.setChildCount(eventTypeChildCount.getChildCount());
 				}
 			}
 			resultObj.put("eventTypeTree",rootEventType.getChildren());
