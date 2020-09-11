@@ -17,7 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @AuthAction(name = "EVENT_TYPE_MODIFY")
 @Service
@@ -139,9 +142,17 @@ public class EventTypeMoveApi extends PrivateApiComponentBase {
             }
             eventTypeMapper.updateEventTypeLayer(vo);
         }
-        /** 查询关联的解决方案数量，保证移动后页面回显的数据正确 */
-        EventTypeVo count = eventTypeMapper.getEventTypeSolutionCountByLftRht(self.getLft(), self.getRht());
-        self.setSolutionCount(count.getSolutionCount());
-        return self;
+        /** 查询被移动节点及其子节点关联的解决方案数量，保证移动后页面回显的数据正确 */
+        List<EventTypeVo> typeVos = eventTypeMapper.getChildrenByLeftRightCode(self.getLft(), self.getRht());
+        typeVos.add(self);
+        List<Map<String,Object>> idSolutionCountMapList = new ArrayList<>();
+        for(EventTypeVo vo : typeVos){
+            EventTypeVo count = eventTypeMapper.getEventTypeSolutionCountByLftRht(vo.getLft(), vo.getRht());
+            Map<String,Object> map = new HashMap<>();
+            map.put("id",vo.getId());
+            map.put("solutionCount",count.getSolutionCount());
+            idSolutionCountMapList.add(map);
+        }
+        return idSolutionCountMapList;
     }
 }
