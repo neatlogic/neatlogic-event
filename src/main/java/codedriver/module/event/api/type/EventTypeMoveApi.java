@@ -153,6 +153,8 @@ public class EventTypeMoveApi extends PrivateApiComponentBase {
             map.put("solutionCount",count.getSolutionCount());
             idSolutionCountMapList.add(map);
         }
-        return idSolutionCountMapList;
+        JSONObject result = new JSONObject();
+        result.put("idSolutionCountMapList",idSolutionCountMapList);
+        return result;
     }
 }
