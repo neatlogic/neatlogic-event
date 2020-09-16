@@ -23,6 +23,8 @@ public interface EventSolutionMapper {
 
 	public int updateSolutionById(EventSolutionVo eventSolutionVo);
 
+	public void updateSolutionStatus(EventSolutionVo eventSolutionVo);
+
 	public int insertSolution(EventSolutionVo eventSolutionVo);
 
 	public int insertEventTypeSolution(@Param("eventTypeId") Long eventTypeId,@Param("solutionId") Long solutionId);

@@ -113,6 +113,14 @@
 		WHERE `id` = #{id}
 	</update>
 
+	<update id="updateSolutionStatus" parameterType="codedriver.module.event.dto.EventSolutionVo">
+		UPDATE `event_solution` SET
+		 `is_active` = #{isActive},
+		 `lcu` = #{lcu},
+		 `lcd` = NOW()
+		 WHERE `id` = #{id}
+	</update>
+
 	<insert id="insertSolution" parameterType="codedriver.module.event.dto.EventSolutionVo">
 		INSERT INTO `event_solution` (
 		`id`,
