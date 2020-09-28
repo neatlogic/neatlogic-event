@@ -225,7 +225,8 @@ public class EventProcessUtilHandler extends ProcessStepUtilHandlerBase {
                 ProcessTaskOperationType.TRANSFER, 
                 ProcessTaskOperationType.UPDATE, 
                 ProcessTaskOperationType.URGE, 
-                ProcessTaskOperationType.PAUSE
+                ProcessTaskOperationType.PAUSE, 
+                ProcessTaskOperationType.RETREATCURRENTSTEP
         };
         for(ProcessTaskOperationType stepAction : stepActions) {
             authorityArray.add(new JSONObject() {{
