@@ -43,6 +43,7 @@ public class EventTypeSolutionListApi extends PrivateApiComponentBase{
 
 	@Input({
 			@Param(name = "id", type = ApiParamType.LONG, desc = "事件类型ID",isRequired = true),
+			@Param(name = "isActive", type = ApiParamType.ENUM, desc = "解决方案是否启用",rule = "0,1"),
 			@Param(name = "needPage", type = ApiParamType.BOOLEAN, desc = "是否需要分页，默认true"),
 			@Param(name = "pageSize", type = ApiParamType.INTEGER, desc = "每页条目"),
 			@Param(name = "currentPage", type = ApiParamType.INTEGER, desc = "当前页")
@@ -59,6 +60,7 @@ public class EventTypeSolutionListApi extends PrivateApiComponentBase{
 	public Object myDoService(JSONObject jsonObj) throws Exception {
 		JSONObject resultObj = new JSONObject();
 		EventTypeVo eventTypeVo = JSON.parseObject(jsonObj.toJSONString(), new TypeReference<EventTypeVo>() {});
+		Integer isActive = jsonObj.getInteger("isActive");
 		EventTypeVo type = eventTypeMapper.getEventTypeById(eventTypeVo.getId());
 		if (type == null) {
 			throw new EventTypeNotFoundException(eventTypeVo.getId());
@@ -66,7 +68,7 @@ public class EventTypeSolutionListApi extends PrivateApiComponentBase{
 		eventTypeVo.setLft(type.getLft());
 		eventTypeVo.setRht(type.getRht());
 		if(eventTypeVo.getNeedPage()){
-			int rowNum = eventTypeMapper.getSolutionCountByLtfRht(eventTypeVo.getLft(),eventTypeVo.getRht());
+			int rowNum = eventTypeMapper.getSolutionCountByLtfRht(eventTypeVo.getLft(),eventTypeVo.getRht(),isActive);
 			int pageCount = PageUtil.getPageCount(rowNum, eventTypeVo.getPageSize());
 			int currentPage = eventTypeVo.getCurrentPage();
 			resultObj.put("rowNum", rowNum);
@@ -74,7 +76,7 @@ public class EventTypeSolutionListApi extends PrivateApiComponentBase{
 			resultObj.put("currentPage", currentPage);
 			resultObj.put("pageSize", eventTypeVo.getPageSize());
 		}
-		List<EventSolutionVo> solutionList = eventTypeMapper.getSolutionListByLftRht(eventTypeVo);
+		List<EventSolutionVo> solutionList = eventTypeMapper.getSolutionListByLftRht(eventTypeVo,isActive);
 		resultObj.put("solutionList",solutionList);
 		return resultObj;
 	}

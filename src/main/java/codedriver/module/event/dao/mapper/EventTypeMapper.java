@@ -56,11 +56,11 @@ public interface EventTypeMapper {
 
 //	public List<EventSolutionVo> getSolutionList(EventTypeVo eventTypeVo);
 
-	public List<EventSolutionVo> getSolutionListByLftRht(EventTypeVo eventTypeVo);
+	public List<EventSolutionVo> getSolutionListByLftRht(@Param("vo") EventTypeVo vo,@Param("isActive") Integer isActive);
 
 //	public int getSolutionCountByEventTypeId(@Param("eventTypId") Long eventTypId);
 
-	public int getSolutionCountByLtfRht(@Param("lft") Integer lft, @Param("rht") Integer rht);
+	public int getSolutionCountByLtfRht(@Param("lft") Integer lft, @Param("rht") Integer rht,@Param("isActive") Integer isActive);
 
 	public int updateEventTypeParentIdById(EventTypeVo eventTypeVo);
 

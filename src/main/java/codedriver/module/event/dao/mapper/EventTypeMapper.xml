@@ -251,12 +251,16 @@
 		where ets.`event_type_id` = #{eventTypId}
 	</select>
 
-	<select id="getSolutionCountByLtfRht" parameterType="java.lang.Integer" resultType="int" useCache="false">
+	<select id="getSolutionCountByLtfRht" resultType="int" useCache="false">
 		SELECT
 		COUNT(DISTINCT b.`solution_id`)
 		FROM `event_type` a
 		LEFT JOIN `event_type_solution` b ON b.`event_type_id` = a.`id`
+		left join `event_solution` c on c.`id` = b.`solution_id`
 		WHERE a.`lft` &lt;=#{lft} and a.`rht` &gt;=#{rht}
+		<if test="isActive != null">
+			and c.`is_active` = #{isActive}
+		</if>
 	</select>
 
 	<select id="getSolutionList" parameterType="codedriver.module.event.dto.EventTypeVo" resultType="codedriver.module.event.dto.EventSolutionVo" useCache="false">
@@ -271,16 +275,19 @@
 		</if>
 	</select>
 
-	<select id="getSolutionListByLftRht" parameterType="codedriver.module.event.dto.EventTypeVo" resultType="codedriver.module.event.dto.EventSolutionVo" useCache="false">
+	<select id="getSolutionListByLftRht" resultType="codedriver.module.event.dto.EventSolutionVo" useCache="false">
 		select
 		distinct(s.`id`) as id,
 		s.`name`
 		from `event_solution` s
 		left join `event_type_solution` ets on s.`id` = ets.`solution_id`
 		left join `event_type` et on et.`id` = ets.`event_type_id`
-		where et.`lft` &lt;=#{lft} and et.`rht` &gt;=#{rht}
-		<if test="needPage == true">
-			LIMIT #{startNum}, #{pageSize}
+		where et.`lft` &lt;=#{vo.lft} and et.`rht` &gt;=#{vo.rht}
+		<if test="isActive != null">
+			and s.`is_active` = #{isActive}
+		</if>
+		<if test="vo.needPage == true">
+			LIMIT #{vo.startNum}, #{vo.pageSize}
 		</if>
 	</select>
 
