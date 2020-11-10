@@ -18,9 +18,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import codedriver.framework.common.constvalue.GroupSearch;
-import codedriver.framework.process.constvalue.ProcessStepHandler;
-import codedriver.framework.process.constvalue.ProcessTaskStatus;
+import codedriver.framework.process.constvalue.ProcessStepHandlerType;
 import codedriver.framework.process.constvalue.ProcessTaskOperationType;
+import codedriver.framework.process.constvalue.ProcessTaskStatus;
 import codedriver.framework.process.constvalue.ProcessTaskStepUserStatus;
 import codedriver.framework.process.constvalue.ProcessUserType;
 import codedriver.framework.process.dao.mapper.ProcessTaskStepSubtaskMapper;
@@ -55,7 +55,7 @@ public class EventProcessUtilHandler extends ProcessStepUtilHandlerBase {
     
     @Override
     public String getHandler() {
-        return ProcessStepHandler.EVENT.getHandler();
+        return ProcessStepHandlerType.EVENT.getHandler();
     }
 
     @Override
