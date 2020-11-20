@@ -30,6 +30,7 @@ import codedriver.framework.process.dto.ProcessTaskStepSubtaskVo;
 import codedriver.framework.process.dto.ProcessTaskStepUserVo;
 import codedriver.framework.process.dto.ProcessTaskStepVo;
 import codedriver.framework.process.dto.ProcessTaskStepWorkerVo;
+import codedriver.framework.process.notify.handler.StepNotifyPolicyHandler;
 import codedriver.framework.process.operationauth.core.IOperationAuthHandlerType;
 import codedriver.framework.process.stephandler.core.ProcessStepUtilHandlerBase;
 import codedriver.module.event.dao.mapper.EventMapper;
@@ -221,10 +222,10 @@ public class EventProcessUtilHandler extends ProcessStepUtilHandlerBase {
         JSONArray authorityArray = new JSONArray();
         ProcessTaskOperationType[] stepActions = {
                 ProcessTaskOperationType.VIEW, 
-                ProcessTaskOperationType.ABORTPROCESSTASK, 
+//                ProcessTaskOperationType.ABORTPROCESSTASK, 
                 ProcessTaskOperationType.TRANSFER, 
-                ProcessTaskOperationType.UPDATE, 
-                ProcessTaskOperationType.URGE, 
+//                ProcessTaskOperationType.UPDATE, 
+//                ProcessTaskOperationType.URGE, 
                 ProcessTaskOperationType.PAUSE, 
                 ProcessTaskOperationType.RETREATCURRENTSTEP
         };
@@ -311,9 +312,19 @@ public class EventProcessUtilHandler extends ProcessStepUtilHandlerBase {
         if(MapUtils.isNotEmpty(notifyPolicyConfig)) {
             notifyPolicyObj.putAll(notifyPolicyConfig);
         }
-        notifyPolicyObj.put("handler", "codedriver.module.process.notify.handler.ProcessNotifyPolicyHandler");
+        notifyPolicyObj.put("handler", StepNotifyPolicyHandler.class.getName());
         resultObj.put("notifyPolicyConfig", notifyPolicyObj);
         
+        /** 动作 **/
+        JSONArray actionList = configObj.getJSONArray("actionList");
+        if(actionList == null) {
+            actionList = new JSONArray();
+        }
+        resultObj.put("actionList", actionList);
+        JSONObject actionConfig = new JSONObject();
+        actionConfig.put("handler", StepNotifyPolicyHandler.class.getName());
+        actionConfig.put("integrationHandler", "");
+        resultObj.put("actionConfig", actionConfig);
         return resultObj;
     }
 
