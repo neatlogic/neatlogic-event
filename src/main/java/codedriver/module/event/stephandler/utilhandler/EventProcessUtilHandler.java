@@ -30,7 +30,7 @@ import codedriver.framework.process.dto.ProcessTaskStepSubtaskVo;
 import codedriver.framework.process.dto.ProcessTaskStepUserVo;
 import codedriver.framework.process.dto.ProcessTaskStepVo;
 import codedriver.framework.process.dto.ProcessTaskStepWorkerVo;
-import codedriver.framework.process.notify.handler.StepNotifyPolicyHandler;
+import codedriver.framework.process.notify.handler.TaskStepNotifyPolicyHandler;
 import codedriver.framework.process.operationauth.core.IOperationAuthHandlerType;
 import codedriver.framework.process.stephandler.core.ProcessStepUtilHandlerBase;
 import codedriver.module.event.dao.mapper.EventMapper;
@@ -312,7 +312,7 @@ public class EventProcessUtilHandler extends ProcessStepUtilHandlerBase {
         if(MapUtils.isNotEmpty(notifyPolicyConfig)) {
             notifyPolicyObj.putAll(notifyPolicyConfig);
         }
-        notifyPolicyObj.put("handler", StepNotifyPolicyHandler.class.getName());
+        notifyPolicyObj.put("handler", TaskStepNotifyPolicyHandler.class.getName());
         resultObj.put("notifyPolicyConfig", notifyPolicyObj);
         
         /** 动作 **/
@@ -322,7 +322,7 @@ public class EventProcessUtilHandler extends ProcessStepUtilHandlerBase {
         }
         resultObj.put("actionList", actionList);
         JSONObject actionConfig = new JSONObject();
-        actionConfig.put("handler", StepNotifyPolicyHandler.class.getName());
+        actionConfig.put("handler", TaskStepNotifyPolicyHandler.class.getName());
         actionConfig.put("integrationHandler", "");
         resultObj.put("actionConfig", actionConfig);
         return resultObj;
