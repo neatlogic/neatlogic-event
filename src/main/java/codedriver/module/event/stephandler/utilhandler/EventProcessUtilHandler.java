@@ -223,7 +223,7 @@ public class EventProcessUtilHandler extends ProcessStepUtilHandlerBase {
         ProcessTaskOperationType[] stepActions = {
                 ProcessTaskOperationType.VIEW, 
 //                ProcessTaskOperationType.ABORTPROCESSTASK, 
-                ProcessTaskOperationType.TRANSFER, 
+                ProcessTaskOperationType.TRANSFERCURRENTSTEP, 
 //                ProcessTaskOperationType.UPDATE, 
 //                ProcessTaskOperationType.URGE, 
                 ProcessTaskOperationType.PAUSE, 
