@@ -222,10 +222,7 @@ public class EventProcessUtilHandler extends ProcessStepUtilHandlerBase {
         JSONArray authorityArray = new JSONArray();
         ProcessTaskOperationType[] stepActions = {
                 ProcessTaskOperationType.VIEW, 
-//                ProcessTaskOperationType.ABORTPROCESSTASK, 
-                ProcessTaskOperationType.TRANSFER, 
-//                ProcessTaskOperationType.UPDATE, 
-//                ProcessTaskOperationType.URGE, 
+                ProcessTaskOperationType.TRANSFERCURRENTSTEP, 
                 ProcessTaskOperationType.PAUSE, 
                 ProcessTaskOperationType.RETREATCURRENTSTEP
         };
