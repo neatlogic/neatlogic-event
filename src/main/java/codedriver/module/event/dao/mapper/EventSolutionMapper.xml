@@ -117,7 +117,7 @@
 		UPDATE `event_solution` SET
 		 `is_active` = #{isActive},
 		 `lcu` = #{lcu},
-		 `lcd` = NOW()
+		 `lcd` = NOW(3)
 		 WHERE `id` = #{id}
 	</update>
 
