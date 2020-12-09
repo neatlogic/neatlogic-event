@@ -16,7 +16,6 @@ import codedriver.framework.process.dto.ProcessTaskStepUserVo;
 import codedriver.framework.process.dto.ProcessTaskStepVo;
 import codedriver.framework.process.dto.ProcessTaskVo;
 import codedriver.framework.process.operationauth.core.IOperationAuthHandler;
-import codedriver.framework.process.operationauth.core.IOperationAuthHandlerType;
 import codedriver.framework.process.operationauth.core.TernaryPredicate;
 @Service
 public class EventOperationAuthHandler implements IOperationAuthHandler {
@@ -47,8 +46,8 @@ public class EventOperationAuthHandler implements IOperationAuthHandler {
     }
 
     @Override
-    public IOperationAuthHandlerType getHandler() {
-        return EventOperationAuthHandlerType.EVENT;
+    public String getHandler() {
+        return EventOperationAuthHandlerType.EVENT.getValue();
     }
 
 }
