@@ -8,6 +8,7 @@ import codedriver.framework.process.exception.event.EventSolutionRepeatException
 import codedriver.framework.reminder.core.OperationTypeEnum;
 import codedriver.framework.restful.annotation.*;
 import codedriver.framework.restful.core.privateapi.PrivateApiComponentBase;
+import codedriver.module.event.auth.label.EVENT_SOLUTION_MODIFY;
 import codedriver.module.event.dao.mapper.EventSolutionMapper;
 import codedriver.module.event.dto.EventSolutionVo;
 
@@ -21,7 +22,7 @@ import java.util.Date;
 import java.util.List;
 
 
-@AuthAction(name = "EVENT_SOLUTION_MODIFY")
+@AuthAction(action = EVENT_SOLUTION_MODIFY.class)
 @Service
 @Transactional
 @OperationType(type = OperationTypeEnum.CREATE)
