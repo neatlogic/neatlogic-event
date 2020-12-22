@@ -10,13 +10,14 @@ import codedriver.framework.restful.annotation.OperationType;
 import codedriver.framework.restful.annotation.Output;
 import codedriver.framework.restful.annotation.Param;
 import codedriver.framework.restful.core.privateapi.PrivateApiComponentBase;
+import codedriver.module.event.auth.label.EVENT_SOLUTION_MODIFY;
 import codedriver.module.event.dao.mapper.EventSolutionMapper;
 import codedriver.module.event.dto.EventSolutionVo;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@AuthAction(name = "EVENT_SOLUTION_MODIFY")
+@AuthAction(action = EVENT_SOLUTION_MODIFY.class)
 @Service
 @OperationType(type = OperationTypeEnum.UPDATE)
 public class EventSolutionStatusUpdateApi extends PrivateApiComponentBase {
