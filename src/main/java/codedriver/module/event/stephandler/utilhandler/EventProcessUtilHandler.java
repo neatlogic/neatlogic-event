@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import codedriver.framework.dto.UserVo;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -154,9 +155,9 @@ public class EventProcessUtilHandler extends ProcessStepUtilHandlerBase {
         List<ProcessTaskStepUserVo> minorUserList =  processTaskMapper.getProcessTaskStepUserByStepId(processTaskStepId, ProcessUserType.MINOR.getValue());
         for(ProcessTaskStepUserVo userVo : minorUserList) {
             if(ProcessTaskStepUserStatus.DOING.getValue().equals(userVo.getStatus())) {
-                doingMinorUserUuidSet.add(userVo.getUserUuid());
+                doingMinorUserUuidSet.add(userVo.getUserVo().getUuid());
             }else if(ProcessTaskStepUserStatus.DONE.getValue().equals(userVo.getStatus())) {
-                doneMinorUserUuidSet.add(userVo.getUserUuid());
+                doneMinorUserUuidSet.add(userVo.getUserVo().getUuid());
             }
         }
         
@@ -178,14 +179,14 @@ public class EventProcessUtilHandler extends ProcessStepUtilHandlerBase {
             if(succeedSubtaskUserUuidSet.contains(userUuid)) {
                 if(doingMinorUserUuidSet.contains(userUuid)) {
                     /** 完成子任务 **/
-                    processTaskStepUserVo.setUserUuid(userUuid);
+                    processTaskStepUserVo.setUserVo(new UserVo(userUuid));
                     processTaskStepUserVo.setStatus(ProcessTaskStepUserStatus.DONE.getValue());
                     processTaskMapper.updateProcessTaskStepUserStatus(processTaskStepUserVo);
                 }
             }else {
                 if(doingMinorUserUuidSet.contains(userUuid)) {
                     /** 取消子任务 **/
-                    processTaskStepUserVo.setUserUuid(userUuid);
+                    processTaskStepUserVo.setUserVo(new UserVo(userUuid));
                     processTaskMapper.deleteProcessTaskStepUser(processTaskStepUserVo);
                 }
             }
@@ -198,12 +199,12 @@ public class EventProcessUtilHandler extends ProcessStepUtilHandlerBase {
             
             if(doneMinorUserUuidSet.contains(userUuid)) {
                 /** 重做子任务 **/
-                processTaskStepUserVo.setUserUuid(userUuid);
+                processTaskStepUserVo.setUserVo(new UserVo(userUuid));
                 processTaskStepUserVo.setStatus(ProcessTaskStepUserStatus.DOING.getValue());
                 processTaskMapper.updateProcessTaskStepUserStatus(processTaskStepUserVo);
             }else if(!doingMinorUserUuidSet.contains(userUuid)) {
                 /** 创建子任务 **/
-                processTaskStepUserVo.setUserUuid(userUuid);
+                processTaskStepUserVo.setUserVo(new UserVo(userUuid));
                 processTaskStepUserVo.setStatus(ProcessTaskStepUserStatus.DOING.getValue());
                 processTaskMapper.insertProcessTaskStepUser(processTaskStepUserVo);
             }
