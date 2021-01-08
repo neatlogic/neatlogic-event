@@ -118,7 +118,7 @@ public class EventProcessComponent extends ProcessStepHandlerBase {
                 if(oldEventVo == null) {
                     throw new EventNotFoundException(eventId);
                 }
-                if(!Objects.equal(eventVo.getEventTypeId(), eventVo.getEventTypeId()) || !Objects.equal(eventVo.getEventSolutionId(), eventVo.getEventSolutionId())) {
+                if(!Objects.equal(oldEventVo.getEventTypeId(), eventVo.getEventTypeId()) || !Objects.equal(oldEventVo.getEventSolutionId(), eventVo.getEventSolutionId())) {
                     eventVo.setId(oldEventVo.getId());
                     eventMapper.updateEvent(eventVo);
                 }
