@@ -3,7 +3,7 @@ package codedriver.module.event.api.type;
 import codedriver.framework.common.constvalue.ApiParamType;
 import codedriver.framework.dto.AuthorityVo;
 import codedriver.framework.process.exception.event.EventTypeNotFoundException;
-import codedriver.framework.restful.core.constvalue.OperationTypeEnum;
+import codedriver.framework.restful.constvalue.OperationTypeEnum;
 import codedriver.framework.restful.annotation.*;
 import codedriver.framework.restful.core.privateapi.PrivateApiComponentBase;
 import codedriver.module.event.dao.mapper.EventTypeMapper;

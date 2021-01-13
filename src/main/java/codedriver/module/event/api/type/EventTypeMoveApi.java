@@ -4,7 +4,7 @@ import codedriver.framework.auth.core.AuthAction;
 import codedriver.framework.common.constvalue.ApiParamType;
 import codedriver.framework.process.exception.event.EventTypeMoveException;
 import codedriver.framework.process.exception.event.EventTypeNotFoundException;
-import codedriver.framework.restful.core.constvalue.OperationTypeEnum;
+import codedriver.framework.restful.constvalue.OperationTypeEnum;
 import codedriver.framework.restful.annotation.*;
 import codedriver.framework.restful.core.privateapi.PrivateApiComponentBase;
 import codedriver.module.event.auth.label.EVENT_TYPE_MODIFY;
