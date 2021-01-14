@@ -101,7 +101,18 @@ public class EventTypeTreeSearchApi extends PrivateApiComponentBase {
 	                        eventTypeList.add(eventType);
 	                    }
 	                }
-			    }
+	                /** 把下游的类型也捞取出来，供工单编辑页使用 */
+					List<EventTypeVo> children = eventTypeMapper.getChildrenByLeftRightCode(eventTypeVo.getLft(), eventTypeVo.getRht());
+					if(CollectionUtils.isNotEmpty(children)){
+						for(EventTypeVo eventType : children) {
+							if(!eventTypeIdList.contains(eventType.getId())) {
+								eventTypeMap.put(eventType.getId(), eventType);
+								eventTypeIdList.add(eventType.getId());
+								eventTypeList.add(eventType);
+							}
+						}
+					}
+				}
 			}
 		}else if(Objects.equals(isAuthenticate, 1)){
 		    if(CollectionUtils.isNotEmpty(authorizedEventTypeIdList)) {
