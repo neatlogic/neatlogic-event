@@ -52,7 +52,7 @@ public class EventProcessComponent extends ProcessStepHandlerBase {
 
     @Override
     public String getType() {
-        return ProcessStepHandlerType.EVENT.getHandler();
+        return ProcessStepHandlerType.EVENT.getType();
     }
 
     @Override
