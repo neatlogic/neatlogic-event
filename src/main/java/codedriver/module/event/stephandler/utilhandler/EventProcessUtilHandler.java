@@ -33,7 +33,7 @@ import codedriver.framework.process.dto.ProcessTaskStepVo;
 import codedriver.framework.process.dto.ProcessTaskStepWorkerVo;
 import codedriver.framework.process.notify.handler.TaskStepNotifyPolicyHandler;
 import codedriver.framework.process.operationauth.core.IOperationAuthHandlerType;
-import codedriver.framework.process.stephandler.core.ProcessStepUtilHandlerBase;
+import codedriver.framework.process.stephandler.core.ProcessStepInternalHandlerBase;
 import codedriver.module.event.dao.mapper.EventMapper;
 import codedriver.module.event.dao.mapper.EventSolutionMapper;
 import codedriver.module.event.dao.mapper.EventTypeMapper;
@@ -42,8 +42,9 @@ import codedriver.module.event.dto.EventTypeVo;
 import codedriver.module.event.dto.EventVo;
 import codedriver.module.event.exception.core.EventNotFoundException;
 import codedriver.module.event.operationauth.handler.EventOperationAuthHandlerType;
+
 @Service
-public class EventProcessUtilHandler extends ProcessStepUtilHandlerBase {
+public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
 
     @Autowired
     private EventMapper eventMapper;
@@ -51,7 +52,7 @@ public class EventProcessUtilHandler extends ProcessStepUtilHandlerBase {
     private EventSolutionMapper eventSolutionMapper;
     @Autowired
     private EventTypeMapper eventTypeMapper;
-    
+
     @Autowired
     private ProcessTaskStepSubtaskMapper processTaskStepSubtaskMapper;
     
