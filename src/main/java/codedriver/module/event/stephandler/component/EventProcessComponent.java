@@ -141,7 +141,7 @@ public class EventProcessComponent extends ProcessStepHandlerBase {
         if (MapUtils.isNotEmpty(handlerStepInfoObj)) {
             currentProcessTaskStepVo.getParamObj().put(EventAuditDetailType.EVENTINFO.getParamName(), JSON.toJSONString(handlerStepInfoObj));
         }
-        AuditHandler.audit(currentProcessTaskStepVo, ProcessTaskAuditType.getProcessTaskAuditType(action));
+        IProcessStepHandlerUtil.audit(currentProcessTaskStepVo, ProcessTaskAuditType.getProcessTaskAuditType(action));
         return 1;
     }
 
