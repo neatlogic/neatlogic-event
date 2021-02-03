@@ -3,6 +3,7 @@ package codedriver.module.event.audithandler.handler;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import codedriver.framework.process.audithandler.core.IProcessTaskStepAuditDetailHandler;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ import codedriver.module.event.dto.EventSolutionVo;
 import codedriver.module.event.dto.EventTypeVo;
 import codedriver.module.event.dto.EventVo;
 @Service
-public class EventInfoAuditHandler extends ProcessTaskStepAuditDetailHandlerBase {
+public class EventInfoAuditHandler implements IProcessTaskStepAuditDetailHandler {
 
     @Autowired
     private EventSolutionMapper eventSolutionMapper;
@@ -34,7 +35,7 @@ public class EventInfoAuditHandler extends ProcessTaskStepAuditDetailHandlerBase
 	}
 
 	@Override
-	protected int myHandle(ProcessTaskStepAuditDetailVo processTaskStepAuditDetailVo) {
+	public int handle(ProcessTaskStepAuditDetailVo processTaskStepAuditDetailVo) {
 		if(StringUtils.isNotBlank(processTaskStepAuditDetailVo.getNewContent())) {
 		    JSONObject eventTypeNamePathObj = new JSONObject();
             eventTypeNamePathObj.put("type", "eventTypeNamePath");
@@ -57,6 +58,7 @@ public class EventInfoAuditHandler extends ProcessTaskStepAuditDetailHandlerBase
 		            }
 			    }
 			    eventTypeNamePathObj.put("newContent", eventTypeNamePath);
+			    eventTypeNamePathObj.put("changeType", "new");
 	            eventArray.add(eventTypeNamePathObj);
 			}
 			boolean isShowEventSolutionName = false;
@@ -70,6 +72,7 @@ public class EventInfoAuditHandler extends ProcessTaskStepAuditDetailHandlerBase
 			    }
 			    isShowEventSolutionName = true;
 			    eventSolutionNameObj.put("newContent", eventSolutionName);
+				eventSolutionNameObj.put("changeType", "new");
 			}
 
 			if(StringUtils.isNotBlank(processTaskStepAuditDetailVo.getOldContent())) {
@@ -81,10 +84,12 @@ public class EventInfoAuditHandler extends ProcessTaskStepAuditDetailHandlerBase
 	                        List<EventTypeVo> eventTypeList = eventTypeMapper.getAncestorsAndSelfByLftRht(eventTypeVo.getLft(), eventTypeVo.getRht());
 	                        List<String> eventTypeNameList = eventTypeList.stream().map(EventTypeVo::getName).collect(Collectors.toList());
 	                        eventTypeNamePathObj.put("oldContent", String.join("/", eventTypeNameList));
+							eventTypeNamePathObj.put("changeType", "udpate");
 	                    }
 	                }
 				}else if(StringUtils.isNotBlank(oldEventVo.getEventTypeNamePath()) && oldEventVo.getEventTypeNamePath().equals(eventVo.getEventTypeNamePath())) {
 				    eventTypeNamePathObj.put("oldContent", oldEventVo.getEventTypeNamePath());
+				    eventTypeNamePathObj.put("changeType", "udpate");
 				}
 
                 if(oldEventVo.getEventSolutionId() != null && !oldEventVo.getEventSolutionId().equals(eventVo.getEventSolutionId())) {
@@ -92,10 +97,12 @@ public class EventInfoAuditHandler extends ProcessTaskStepAuditDetailHandlerBase
                     if(eventSolutionVo != null) {
                         isShowEventSolutionName = true;
                         eventSolutionNameObj.put("oldContent", eventSolutionVo.getName());
+						eventSolutionNameObj.put("changeType", "udpate");
                     }
 				}else if(StringUtils.isNotBlank(oldEventVo.getEventSolutionName()) && !oldEventVo.getEventSolutionName().equals(eventVo.getEventSolutionName())) {
 				    isShowEventSolutionName = true;
 				    eventSolutionNameObj.put("oldContent", oldEventVo.getEventSolutionName());
+					eventSolutionNameObj.put("changeType", "udpate");
 				}
 			}
 			if(isShowEventSolutionName) {
