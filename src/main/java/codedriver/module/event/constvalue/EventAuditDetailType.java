@@ -3,15 +3,16 @@ package codedriver.module.event.constvalue;
 import codedriver.framework.process.audithandler.core.IProcessTaskAuditDetailType;
 
 public enum EventAuditDetailType implements IProcessTaskAuditDetailType {
-    EVENTINFO("eventinfo", "事件", "event", "oldEvent", 16)
+    EVENTINFO("eventinfo", "事件", "event", "oldEvent", 16, false)
     ;
     
-    private EventAuditDetailType(String _value, String _text, String _paramName, String _oldDataParamName, int _sort) {
+    private EventAuditDetailType(String _value, String _text, String _paramName, String _oldDataParamName, int _sort, boolean _needCompression) {
         this.value = _value;
         this.text = _text;
         this.paramName = _paramName;
         this.oldDataParamName = _oldDataParamName;
         this.sort = _sort;
+        this.needCompression = _needCompression;
     }
     
     private String value;
@@ -19,6 +20,7 @@ public enum EventAuditDetailType implements IProcessTaskAuditDetailType {
     private String paramName;
     private String oldDataParamName;
     private int sort;
+    private boolean needCompression;
     @Override
     public String getValue() {
         return value;
@@ -42,6 +44,11 @@ public enum EventAuditDetailType implements IProcessTaskAuditDetailType {
     @Override
     public int getSort() {
         return sort;
+    }
+
+    @Override
+    public boolean getNeedCompression() {
+        return needCompression;
     }
 
 }
