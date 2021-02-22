@@ -17,7 +17,7 @@ public interface EventSolutionMapper {
 
 	public EventSolutionVo checkSolutionExistsById(@Param("id") Long id);
 
-	public EventSolutionVo checkSolutionExistsByName(@Param("name") String name);
+	public int checkSolutionNameIsRepeat(EventSolutionVo vo);
 
 	public List<EventTypeVo> getEventTypeBySolutionId(@Param("solutionId") Long solutionId);
 

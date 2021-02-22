@@ -3,15 +3,18 @@ package codedriver.module.event.api.solution;
 import codedriver.framework.asynchronization.threadlocal.UserContext;
 import codedriver.framework.auth.core.AuthAction;
 import codedriver.framework.common.constvalue.ApiParamType;
+import codedriver.framework.dto.FieldValidResultVo;
 import codedriver.framework.process.exception.event.EventSolutionNotFoundException;
 import codedriver.framework.process.exception.event.EventSolutionRepeatException;
 import codedriver.framework.restful.constvalue.OperationTypeEnum;
 import codedriver.framework.restful.annotation.*;
+import codedriver.framework.restful.core.IValid;
 import codedriver.framework.restful.core.privateapi.PrivateApiComponentBase;
 import codedriver.module.event.auth.label.EVENT_SOLUTION_MODIFY;
 import codedriver.module.event.dao.mapper.EventSolutionMapper;
 import codedriver.module.event.dto.EventSolutionVo;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +71,7 @@ public class EventSolutionSaveApi extends PrivateApiComponentBase{
 
 		eventSolutionVo.setName(name);
 		if(id == null){
-			if(eventSolutionMapper.checkSolutionExistsByName(name) != null){
+			if(eventSolutionMapper.checkSolutionNameIsRepeat(eventSolutionVo) > 0){
 				throw new EventSolutionRepeatException(name);
 			}
 			eventSolutionVo.setContent(content);
@@ -82,15 +85,14 @@ public class EventSolutionSaveApi extends PrivateApiComponentBase{
 				eventSolutionMapper.insertEventTypeSolution(eventTypeId, eventSolutionVo.getId());
 			}
 		}else{
+			eventSolutionVo.setId(id);
 			if(eventSolutionMapper.checkSolutionExistsById(id) == null){
 				throw new EventSolutionNotFoundException(id);
 			}
-			EventSolutionVo vo = eventSolutionMapper.checkSolutionExistsByName(name);
-			if(vo != null && !vo.getId().equals(id)){
+			if(eventSolutionMapper.checkSolutionNameIsRepeat(eventSolutionVo) > 0){
 				throw new EventSolutionRepeatException(name);
 			}
 			Integer isActive = jsonObj.getInteger("isActive");
-			eventSolutionVo.setId(id);
 			eventSolutionVo.setIsActive(isActive);
 			eventSolutionVo.setContent(content);
 			eventSolutionVo.setLcu(UserContext.get().getUserUuid());
@@ -105,5 +107,15 @@ public class EventSolutionSaveApi extends PrivateApiComponentBase{
 		}
 		returnObj.put("solutionId", eventSolutionVo.getId());
 		return returnObj;
+	}
+
+	public IValid name() {
+		return value -> {
+			EventSolutionVo eventSolutionVo = JSON.toJavaObject(value, EventSolutionVo.class);
+			if (eventSolutionMapper.checkSolutionNameIsRepeat(eventSolutionVo) > 0) {
+				return new FieldValidResultVo(new EventSolutionRepeatException(eventSolutionVo.getName()));
+			}
+			return new FieldValidResultVo();
+		};
 	}
 }
