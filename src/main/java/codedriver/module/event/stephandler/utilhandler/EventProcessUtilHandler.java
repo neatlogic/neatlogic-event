@@ -31,7 +31,6 @@ import codedriver.framework.process.dto.ProcessTaskStepSubtaskVo;
 import codedriver.framework.process.dto.ProcessTaskStepUserVo;
 import codedriver.framework.process.dto.ProcessTaskStepVo;
 import codedriver.framework.process.dto.ProcessTaskStepWorkerVo;
-import codedriver.framework.process.notify.handler.TaskStepNotifyPolicyHandler;
 import codedriver.framework.process.operationauth.core.IOperationAuthHandlerType;
 import codedriver.framework.process.stephandler.core.ProcessStepInternalHandlerBase;
 import codedriver.module.event.dao.mapper.EventMapper;
@@ -311,7 +310,7 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
         if(MapUtils.isNotEmpty(notifyPolicyConfig)) {
             notifyPolicyObj.putAll(notifyPolicyConfig);
         }
-        notifyPolicyObj.put("handler", TaskStepNotifyPolicyHandler.class.getName());
+        notifyPolicyObj.put("handler", "codedriver.module.process.notify.handler.TaskStepNotifyPolicyHandler");
         resultObj.put("notifyPolicyConfig", notifyPolicyObj);
         
         /** 动作 **/
@@ -319,7 +318,7 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
         if(actionConfig == null) {
             actionConfig = new JSONObject();
         }
-        actionConfig.put("handler", TaskStepNotifyPolicyHandler.class.getName());
+        actionConfig.put("handler", "codedriver.module.process.notify.handler.TaskStepNotifyPolicyHandler");
         actionConfig.put("integrationHandler", "");
         resultObj.put("actionConfig", actionConfig);
         return resultObj;
