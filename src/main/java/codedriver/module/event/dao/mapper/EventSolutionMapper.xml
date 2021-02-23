@@ -80,12 +80,11 @@
 		where `id` = #{id}
 	</select>
 
-	<select id="checkSolutionExistsByName" parameterType="java.lang.String" resultType="codedriver.module.event.dto.EventSolutionVo">
+	<select id="checkSolutionNameIsRepeat" parameterType="codedriver.module.event.dto.EventSolutionVo" resultType="int">
 		SELECT
-		`id`,
-		`name`
+		count(`id`)
 		FROM `event_solution`
-		where `name` = #{name}
+		where `name` = #{name} and `id` != #{id}
 	</select>
 
 	<select id="getEventTypeBySolutionId" parameterType="java.lang.Long" resultType="codedriver.module.event.dto.EventTypeVo">
