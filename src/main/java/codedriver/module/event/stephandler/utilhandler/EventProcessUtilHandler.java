@@ -9,6 +9,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import codedriver.framework.dto.UserVo;
+import codedriver.module.event.constvalue.EventProcessStepHandlerType;
+import codedriver.module.event.notify.handler.EventNotifyPolicyHandler;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -57,7 +59,7 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
     
     @Override
     public String getHandler() {
-        return ProcessStepHandlerType.EVENT.getHandler();
+        return EventProcessStepHandlerType.EVENT.getHandler();
     }
 
     @Override
@@ -310,7 +312,7 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
         if(MapUtils.isNotEmpty(notifyPolicyConfig)) {
             notifyPolicyObj.putAll(notifyPolicyConfig);
         }
-        notifyPolicyObj.put("handler", "codedriver.module.process.notify.handler.TaskStepNotifyPolicyHandler");
+        notifyPolicyObj.put("handler", EventNotifyPolicyHandler.class.getName());
         resultObj.put("notifyPolicyConfig", notifyPolicyObj);
         
         /** 动作 **/
@@ -318,7 +320,7 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
         if(actionConfig == null) {
             actionConfig = new JSONObject();
         }
-        actionConfig.put("handler", "codedriver.module.process.notify.handler.TaskStepNotifyPolicyHandler");
+        actionConfig.put("handler", EventNotifyPolicyHandler.class.getName());
         actionConfig.put("integrationHandler", "");
         resultObj.put("actionConfig", actionConfig);
         return resultObj;

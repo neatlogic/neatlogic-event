@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import codedriver.module.event.constvalue.EventProcessStepHandlerType;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class EventProcessComponent extends ProcessStepHandlerBase {
     
     @Override
     public String getHandler() {
-        return ProcessStepHandlerType.EVENT.getHandler();
+        return EventProcessStepHandlerType.EVENT.getHandler();
     }
     
     @SuppressWarnings("serial")
@@ -52,7 +53,7 @@ public class EventProcessComponent extends ProcessStepHandlerBase {
 
     @Override
     public String getType() {
-        return ProcessStepHandlerType.EVENT.getType();
+        return EventProcessStepHandlerType.EVENT.getType();
     }
 
     @Override
@@ -62,7 +63,7 @@ public class EventProcessComponent extends ProcessStepHandlerBase {
 
     @Override
     public String getName() {
-        return ProcessStepHandlerType.EVENT.getName();
+        return EventProcessStepHandlerType.EVENT.getName();
     }
 
     @Override
