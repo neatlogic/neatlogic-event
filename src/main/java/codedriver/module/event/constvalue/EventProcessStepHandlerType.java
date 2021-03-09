@@ -5,7 +5,7 @@ import codedriver.framework.process.constvalue.IProcessStepHandlerType;
 /**
  * @Title: EventProcessStepHandlerType
  * @Package codedriver.module.event.constvalue
- * @Description: TODO
+ * @Description: 流程步骤处理器类型
  * @Author: linbq
  * @Date: 2021/3/8 17:11
  * Copyright(c) 2021 TechSureCo.,Ltd.AllRightsReserved.
