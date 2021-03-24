@@ -203,6 +203,11 @@ public class EventProcessComponent extends ProcessStepHandlerBase {
     }
 
     @Override
+    protected int myRedo(ProcessTaskStepVo currentProcessTaskStepVo) {
+        return 0;
+    }
+
+    @Override
     protected int myPause(ProcessTaskStepVo currentProcessTaskStepVo) throws ProcessTaskException {
         // TODO Auto-generated method stub
         return 0;
