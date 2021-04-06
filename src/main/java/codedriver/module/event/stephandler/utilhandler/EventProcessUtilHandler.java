@@ -103,7 +103,7 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
                 processStepVo.setNotifyPolicyId(policyId);
             }
         }
-        /** 组装动作列表 **/
+
         JSONArray actionList = (JSONArray) JSONPath.read(stepConfigObj.toJSONString(), "actionConfig.actionList");
         if(CollectionUtils.isNotEmpty(actionList)){
             for (int i = 0; i < actionList.size(); i++) {
