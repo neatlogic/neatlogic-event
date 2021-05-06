@@ -1,7 +1,9 @@
 package codedriver.module.event.api.type;
 
+import codedriver.framework.auth.core.AuthAction;
 import codedriver.framework.common.constvalue.ApiParamType;
 import codedriver.framework.dto.AuthorityVo;
+import codedriver.framework.process.auth.PROCESS_BASE;
 import codedriver.framework.process.exception.event.EventTypeNotFoundException;
 import codedriver.framework.restful.constvalue.OperationTypeEnum;
 import codedriver.framework.restful.annotation.*;
@@ -20,6 +22,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@AuthAction(action = PROCESS_BASE.class)
 @OperationType(type = OperationTypeEnum.SEARCH)
 public class EventTypeAuthGetApi extends PrivateApiComponentBase{
 

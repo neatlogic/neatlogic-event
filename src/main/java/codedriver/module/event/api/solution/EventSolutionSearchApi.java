@@ -1,7 +1,9 @@
 package codedriver.module.event.api.solution;
 
+import codedriver.framework.auth.core.AuthAction;
 import codedriver.framework.common.constvalue.ApiParamType;
 import codedriver.framework.common.util.PageUtil;
+import codedriver.framework.process.auth.PROCESS_BASE;
 import codedriver.framework.restful.constvalue.OperationTypeEnum;
 import codedriver.framework.restful.annotation.*;
 import codedriver.framework.restful.core.privateapi.PrivateApiComponentBase;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@AuthAction(action = PROCESS_BASE.class)
 @OperationType(type = OperationTypeEnum.SEARCH)
 public class EventSolutionSearchApi extends PrivateApiComponentBase{
 
