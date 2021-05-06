@@ -18,4 +18,9 @@ public class EVENT_TYPE_MODIFY extends AuthBase {
 	public String getAuthGroup() {
 		return "process";
 	}
+
+	@Override
+	public Integer sort() {
+		return 4;
+	}
 }
