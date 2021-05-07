@@ -20,7 +20,7 @@ public class EVENT_TYPE_MODIFY extends AuthBase {
 	}
 
 	@Override
-	public Integer sort() {
+	public Integer getSort() {
 		return 4;
 	}
 }
