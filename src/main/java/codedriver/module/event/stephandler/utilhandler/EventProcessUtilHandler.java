@@ -337,9 +337,4 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
         return resultObj;
     }
 
-    @Override
-    protected IOperationAuthHandlerType MyOperationAuthHandlerType() {
-        return EventOperationAuthHandlerType.EVENT;
-    }
-
 }
