@@ -13,6 +13,7 @@ import codedriver.module.event.constvalue.EventProcessStepHandlerType;
 import codedriver.module.event.notify.handler.EventNotifyPolicyHandler;
 import com.alibaba.fastjson.JSONPath;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -155,12 +156,10 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
         
         /** 查出processtask_step_worker表中当前步骤子任务处理人列表 **/
         Set<String> workerMinorUserUuidSet = new HashSet<>();
-        Set<String> workerMinorUserUuidSet2 = new HashSet<>();
         List<ProcessTaskStepWorkerVo> workerList = processTaskMapper.getProcessTaskStepWorkerByProcessTaskIdAndProcessTaskStepId(processTaskId, processTaskStepId);
         for(ProcessTaskStepWorkerVo workerVo : workerList) {
             if(ProcessUserType.MINOR.getValue().equals(workerVo.getUserType())) {
                 workerMinorUserUuidSet.add(workerVo.getUuid());
-                workerMinorUserUuidSet2.add(workerVo.getUuid());
             }
         }
         
@@ -187,8 +186,8 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
         processTaskStepUserVo.setProcessTaskStepId(processTaskStepId);
         processTaskStepUserVo.setUserType(ProcessUserType.MINOR.getValue());
         /** 删除processtask_step_worker表中当前步骤多余的子任务处理人 **/
-        workerMinorUserUuidSet.removeAll(runningSubtaskUserUuidSet);        
-        for(String userUuid : workerMinorUserUuidSet) {
+        List<String> needDeleteUserList = ListUtils.removeAll(workerMinorUserUuidSet, runningSubtaskUserUuidSet);
+        for(String userUuid : needDeleteUserList) {
             processTaskStepWorkerVo.setUuid(userUuid);
             processTaskMapper.deleteProcessTaskStepWorker(processTaskStepWorkerVo);
             if(succeedSubtaskUserUuidSet.contains(userUuid)) {
@@ -206,9 +205,9 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
                 }
             }
         }
-        /** 向processtask_step_worker表中插入当前步骤的子任务处理人 **/ 
-        runningSubtaskUserUuidSet.removeAll(workerMinorUserUuidSet2);
-        for(String userUuid : runningSubtaskUserUuidSet) {
+        /** 向processtask_step_worker表中插入当前步骤的子任务处理人 **/
+        List<String> needInsertUserList = ListUtils.removeAll(runningSubtaskUserUuidSet, workerMinorUserUuidSet);
+        for(String userUuid : needInsertUserList) {
             processTaskStepWorkerVo.setUuid(userUuid);
             processTaskMapper.insertProcessTaskStepWorker(processTaskStepWorkerVo);
             
