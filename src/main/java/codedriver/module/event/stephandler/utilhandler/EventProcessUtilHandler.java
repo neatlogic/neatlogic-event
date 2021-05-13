@@ -57,7 +57,7 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
 
     @Autowired
     private ProcessTaskStepSubtaskMapper processTaskStepSubtaskMapper;
-    
+
     @Override
     public String getHandler() {
         return EventProcessStepHandlerType.EVENT.getHandler();
@@ -71,20 +71,20 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
     @Override
     public Object getHandlerStepInitInfo(ProcessTaskStepVo currentProcessTaskStepVo) {
         Long eventId = eventMapper.getEventIdByProcessTaskStepId(currentProcessTaskStepVo.getId());
-        if(eventId != null) {
+        if (eventId != null) {
             EventVo eventVo = eventMapper.getEventById(eventId);
-            if(eventVo == null) {
+            if (eventVo == null) {
                 throw new EventNotFoundException(eventId);
             }
             EventTypeVo eventTypeVo = eventTypeMapper.getEventTypeById(eventVo.getEventTypeId());
-            if(eventTypeVo != null) {
+            if (eventTypeVo != null) {
                 List<EventTypeVo> eventTypeList = eventTypeMapper.getAncestorsAndSelfByLftRht(eventTypeVo.getLft(), eventTypeVo.getRht());
                 List<String> eventTypeNameList = eventTypeList.stream().map(EventTypeVo::getName).collect(Collectors.toList());
                 eventVo.setEventTypeNamePath(String.join("/", eventTypeNameList));
             }
-            if(eventVo.getEventSolutionId() != null) {
+            if (eventVo.getEventSolutionId() != null) {
                 EventSolutionVo eventSolutionVo = eventSolutionMapper.getSolutionById(eventVo.getEventSolutionId());
-                if(eventSolutionVo != null) {
+                if (eventSolutionVo != null) {
                     eventVo.setEventSolutionName(eventSolutionVo.getName());
                 }
             }
@@ -97,19 +97,19 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
     public void makeupProcessStep(ProcessStepVo processStepVo, JSONObject stepConfigObj) {
         /** 组装通知策略id **/
         JSONObject notifyPolicyConfig = stepConfigObj.getJSONObject("notifyPolicyConfig");
-        if(MapUtils.isNotEmpty(notifyPolicyConfig)) {
+        if (MapUtils.isNotEmpty(notifyPolicyConfig)) {
             Long policyId = notifyPolicyConfig.getLong("policyId");
-            if(policyId != null) {
+            if (policyId != null) {
                 processStepVo.setNotifyPolicyId(policyId);
             }
         }
 
         JSONArray actionList = (JSONArray) JSONPath.read(stepConfigObj.toJSONString(), "actionConfig.actionList");
-        if(CollectionUtils.isNotEmpty(actionList)){
+        if (CollectionUtils.isNotEmpty(actionList)) {
             for (int i = 0; i < actionList.size(); i++) {
                 JSONObject ationObj = actionList.getJSONObject(i);
                 String integrationUuid = ationObj.getString("integrationUuid");
-                if(StringUtils.isNotBlank(integrationUuid)) {
+                if (StringUtils.isNotBlank(integrationUuid)) {
                     processStepVo.getIntegrationUuidList().add(integrationUuid);
                 }
             }
@@ -141,63 +141,63 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
 
     @Override
     public void updateProcessTaskStepUserAndWorker(Long processTaskId, Long processTaskStepId) {
-        /** 查出processtask_step_subtask表中当前步骤子任务处理人列表 **/        
+        /** 查出processtask_step_subtask表中当前步骤子任务处理人列表 **/
         Set<String> runningSubtaskUserUuidSet = new HashSet<>();
         Set<String> succeedSubtaskUserUuidSet = new HashSet<>();
         List<ProcessTaskStepSubtaskVo> processTaskStepSubtaskList = processTaskStepSubtaskMapper.getProcessTaskStepSubtaskListByProcessTaskStepId(processTaskStepId);
-        for(ProcessTaskStepSubtaskVo subtaskVo : processTaskStepSubtaskList) {
-            if(ProcessTaskStatus.RUNNING.getValue().equals(subtaskVo.getStatus())) {
+        for (ProcessTaskStepSubtaskVo subtaskVo : processTaskStepSubtaskList) {
+            if (ProcessTaskStatus.RUNNING.getValue().equals(subtaskVo.getStatus())) {
                 runningSubtaskUserUuidSet.add(subtaskVo.getUserUuid());
-            }else if(ProcessTaskStatus.SUCCEED.getValue().equals(subtaskVo.getStatus())) {
+            } else if (ProcessTaskStatus.SUCCEED.getValue().equals(subtaskVo.getStatus())) {
                 succeedSubtaskUserUuidSet.add(subtaskVo.getUserUuid());
             }
         }
-        
+
         /** 查出processtask_step_worker表中当前步骤子任务处理人列表 **/
         Set<String> workerMinorUserUuidSet = new HashSet<>();
         List<ProcessTaskStepWorkerVo> workerList = processTaskMapper.getProcessTaskStepWorkerByProcessTaskIdAndProcessTaskStepId(processTaskId, processTaskStepId);
-        for(ProcessTaskStepWorkerVo workerVo : workerList) {
-            if(ProcessUserType.MINOR.getValue().equals(workerVo.getUserType())) {
+        for (ProcessTaskStepWorkerVo workerVo : workerList) {
+            if (ProcessUserType.MINOR.getValue().equals(workerVo.getUserType())) {
                 workerMinorUserUuidSet.add(workerVo.getUuid());
             }
         }
-        
+
         /** 查出processtask_step_user表中当前步骤子任务处理人列表 **/
         Set<String> doingMinorUserUuidSet = new HashSet<>();
         Set<String> doneMinorUserUuidSet = new HashSet<>();
-        List<ProcessTaskStepUserVo> minorUserList =  processTaskMapper.getProcessTaskStepUserByStepId(processTaskStepId, ProcessUserType.MINOR.getValue());
-        for(ProcessTaskStepUserVo userVo : minorUserList) {
-            if(ProcessTaskStepUserStatus.DOING.getValue().equals(userVo.getStatus())) {
+        List<ProcessTaskStepUserVo> minorUserList = processTaskMapper.getProcessTaskStepUserByStepId(processTaskStepId, ProcessUserType.MINOR.getValue());
+        for (ProcessTaskStepUserVo userVo : minorUserList) {
+            if (ProcessTaskStepUserStatus.DOING.getValue().equals(userVo.getStatus())) {
                 doingMinorUserUuidSet.add(userVo.getUserVo().getUuid());
-            }else if(ProcessTaskStepUserStatus.DONE.getValue().equals(userVo.getStatus())) {
+            } else if (ProcessTaskStepUserStatus.DONE.getValue().equals(userVo.getStatus())) {
                 doneMinorUserUuidSet.add(userVo.getUserVo().getUuid());
             }
         }
-        
+
         ProcessTaskStepWorkerVo processTaskStepWorkerVo = new ProcessTaskStepWorkerVo();
         processTaskStepWorkerVo.setProcessTaskId(processTaskId);
         processTaskStepWorkerVo.setProcessTaskStepId(processTaskStepId);
         processTaskStepWorkerVo.setType(GroupSearch.USER.getValue());
         processTaskStepWorkerVo.setUserType(ProcessUserType.MINOR.getValue());
-        
+
         ProcessTaskStepUserVo processTaskStepUserVo = new ProcessTaskStepUserVo();
         processTaskStepUserVo.setProcessTaskId(processTaskId);
         processTaskStepUserVo.setProcessTaskStepId(processTaskStepId);
         processTaskStepUserVo.setUserType(ProcessUserType.MINOR.getValue());
         /** 删除processtask_step_worker表中当前步骤多余的子任务处理人 **/
         List<String> needDeleteUserList = ListUtils.removeAll(workerMinorUserUuidSet, runningSubtaskUserUuidSet);
-        for(String userUuid : needDeleteUserList) {
+        for (String userUuid : needDeleteUserList) {
             processTaskStepWorkerVo.setUuid(userUuid);
             processTaskMapper.deleteProcessTaskStepWorker(processTaskStepWorkerVo);
-            if(succeedSubtaskUserUuidSet.contains(userUuid)) {
-                if(doingMinorUserUuidSet.contains(userUuid)) {
+            if (succeedSubtaskUserUuidSet.contains(userUuid)) {
+                if (doingMinorUserUuidSet.contains(userUuid)) {
                     /** 完成子任务 **/
                     processTaskStepUserVo.setUserVo(new UserVo(userUuid));
                     processTaskStepUserVo.setStatus(ProcessTaskStepUserStatus.DONE.getValue());
                     processTaskMapper.updateProcessTaskStepUserStatus(processTaskStepUserVo);
                 }
-            }else {
-                if(doingMinorUserUuidSet.contains(userUuid)) {
+            } else {
+                if (doingMinorUserUuidSet.contains(userUuid)) {
                     /** 取消子任务 **/
                     processTaskStepUserVo.setUserVo(new UserVo(userUuid));
                     processTaskMapper.deleteProcessTaskStepUser(processTaskStepUserVo);
@@ -206,41 +206,41 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
         }
         /** 向processtask_step_worker表中插入当前步骤的子任务处理人 **/
         List<String> needInsertUserList = ListUtils.removeAll(runningSubtaskUserUuidSet, workerMinorUserUuidSet);
-        for(String userUuid : needInsertUserList) {
+        for (String userUuid : needInsertUserList) {
             processTaskStepWorkerVo.setUuid(userUuid);
             processTaskMapper.insertProcessTaskStepWorker(processTaskStepWorkerVo);
-            
-            if(doneMinorUserUuidSet.contains(userUuid)) {
+
+            if (doneMinorUserUuidSet.contains(userUuid)) {
                 /** 重做子任务 **/
                 processTaskStepUserVo.setUserVo(new UserVo(userUuid));
                 processTaskStepUserVo.setStatus(ProcessTaskStepUserStatus.DOING.getValue());
                 processTaskMapper.updateProcessTaskStepUserStatus(processTaskStepUserVo);
-            }else if(!doingMinorUserUuidSet.contains(userUuid)) {
+            } else if (!doingMinorUserUuidSet.contains(userUuid)) {
                 /** 创建子任务 **/
                 processTaskStepUserVo.setUserVo(new UserVo(userUuid));
                 processTaskStepUserVo.setStatus(ProcessTaskStepUserStatus.DOING.getValue());
                 processTaskMapper.insertProcessTaskStepUser(processTaskStepUserVo);
             }
-        }      
+        }
     }
-    
+
     @SuppressWarnings("serial")
     @Override
     public JSONObject makeupConfig(JSONObject configObj) {
-        if(configObj == null) {
+        if (configObj == null) {
             configObj = new JSONObject();
         }
         JSONObject resultObj = new JSONObject();
-        
+
         /** 授权 **/
         JSONArray authorityArray = new JSONArray();
         ProcessTaskOperationType[] stepActions = {
-                ProcessTaskOperationType.STEP_VIEW, 
-                ProcessTaskOperationType.STEP_TRANSFER, 
-                ProcessTaskOperationType.STEP_PAUSE, 
+                ProcessTaskOperationType.STEP_VIEW,
+                ProcessTaskOperationType.STEP_TRANSFER,
+                ProcessTaskOperationType.STEP_PAUSE,
                 ProcessTaskOperationType.STEP_RETREAT
         };
-        for(ProcessTaskOperationType stepAction : stepActions) {
+        for (ProcessTaskOperationType stepAction : stepActions) {
             authorityArray.add(new JSONObject() {{
                 this.put("action", stepAction.getValue());
                 this.put("text", stepAction.getText());
@@ -249,34 +249,34 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
             }});
         }
         JSONArray authorityList = configObj.getJSONArray("authorityList");
-        if(CollectionUtils.isNotEmpty(authorityList)) {
+        if (CollectionUtils.isNotEmpty(authorityList)) {
             Map<String, JSONArray> authorityMap = new HashMap<>();
-            for(int i = 0; i < authorityList.size(); i++) {
+            for (int i = 0; i < authorityList.size(); i++) {
                 JSONObject authority = authorityList.getJSONObject(i);
                 authorityMap.put(authority.getString("action"), authority.getJSONArray("acceptList"));
             }
-            for(int i = 0; i < authorityArray.size(); i++) {
+            for (int i = 0; i < authorityArray.size(); i++) {
                 JSONObject authority = authorityArray.getJSONObject(i);
                 JSONArray acceptList = authorityMap.get(authority.getString("action"));
-                if(acceptList != null) {
+                if (acceptList != null) {
                     authority.put("acceptList", acceptList);
                 }
             }
         }
         resultObj.put("authorityList", authorityArray);
-        
+
         /** 按钮映射列表 **/
         JSONArray customButtonArray = new JSONArray();
         ProcessTaskOperationType[] stepButtons = {
-                ProcessTaskOperationType.STEP_COMPLETE, 
-                ProcessTaskOperationType.STEP_BACK, 
-                ProcessTaskOperationType.STEP_COMMENT, 
-                ProcessTaskOperationType.TASK_TRANSFER, 
+                ProcessTaskOperationType.STEP_COMPLETE,
+                ProcessTaskOperationType.STEP_BACK,
+                ProcessTaskOperationType.STEP_COMMENT,
+                ProcessTaskOperationType.TASK_TRANSFER,
                 ProcessTaskOperationType.STEP_START,
-                ProcessTaskOperationType.TASK_ABORT, 
+                ProcessTaskOperationType.TASK_ABORT,
                 ProcessTaskOperationType.TASK_RECOVER
         };
-        for(ProcessTaskOperationType stepButton : stepButtons) {
+        for (ProcessTaskOperationType stepButton : stepButtons) {
             customButtonArray.add(new JSONObject() {{
                 this.put("name", stepButton.getValue());
                 this.put("customText", stepButton.getText());
@@ -285,50 +285,50 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
         }
         /** 子任务按钮映射列表 **/
         ProcessTaskOperationType[] subtaskButtons = {
-                ProcessTaskOperationType.SUBTASK_ABORT, 
-                ProcessTaskOperationType.SUBTASK_COMMENT, 
-                ProcessTaskOperationType.SUBTASK_COMPLETE, 
-                ProcessTaskOperationType.SUBTASK_CREATE, 
-                ProcessTaskOperationType.SUBTASK_REDO, 
+                ProcessTaskOperationType.SUBTASK_ABORT,
+                ProcessTaskOperationType.SUBTASK_COMMENT,
+                ProcessTaskOperationType.SUBTASK_COMPLETE,
+                ProcessTaskOperationType.SUBTASK_CREATE,
+                ProcessTaskOperationType.SUBTASK_REDO,
                 ProcessTaskOperationType.SUBTASK_EDIT
         };
-        for(ProcessTaskOperationType subtaskButton : subtaskButtons) {
+        for (ProcessTaskOperationType subtaskButton : subtaskButtons) {
             customButtonArray.add(new JSONObject() {{
                 this.put("name", subtaskButton.getValue());
                 this.put("customText", subtaskButton.getText() + "(子任务)");
                 this.put("value", "");
             }});
         }
-        
+
         JSONArray customButtonList = configObj.getJSONArray("customButtonList");
-        if(CollectionUtils.isNotEmpty(customButtonList)) {
+        if (CollectionUtils.isNotEmpty(customButtonList)) {
             Map<String, String> customButtonMap = new HashMap<>();
-            for(int i = 0; i < customButtonList.size(); i++) {
+            for (int i = 0; i < customButtonList.size(); i++) {
                 JSONObject customButton = customButtonList.getJSONObject(i);
                 customButtonMap.put(customButton.getString("name"), customButton.getString("value"));
             }
-            for(int i = 0; i < customButtonArray.size(); i++) {
+            for (int i = 0; i < customButtonArray.size(); i++) {
                 JSONObject customButton = customButtonArray.getJSONObject(i);
                 String value = customButtonMap.get(customButton.getString("name"));
-                if(StringUtils.isNotBlank(value)) {
+                if (StringUtils.isNotBlank(value)) {
                     customButton.put("value", value);
                 }
             }
         }
         resultObj.put("customButtonList", customButtonArray);
-        
+
         /** 通知 **/
         JSONObject notifyPolicyObj = new JSONObject();
         JSONObject notifyPolicyConfig = configObj.getJSONObject("notifyPolicyConfig");
-        if(MapUtils.isNotEmpty(notifyPolicyConfig)) {
+        if (MapUtils.isNotEmpty(notifyPolicyConfig)) {
             notifyPolicyObj.putAll(notifyPolicyConfig);
         }
         notifyPolicyObj.put("handler", EventNotifyPolicyHandler.class.getName());
         resultObj.put("notifyPolicyConfig", notifyPolicyObj);
-        
+
         /** 动作 **/
         JSONObject actionConfig = configObj.getJSONObject("actionConfig");
-        if(actionConfig == null) {
+        if (actionConfig == null) {
             actionConfig = new JSONObject();
         }
         actionConfig.put("handler", EventNotifyPolicyHandler.class.getName());
