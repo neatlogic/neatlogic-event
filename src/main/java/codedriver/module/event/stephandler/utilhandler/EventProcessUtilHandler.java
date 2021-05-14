@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import codedriver.framework.dto.UserVo;
+import codedriver.framework.process.util.ProcessConfigUtil;
 import codedriver.module.event.constvalue.EventProcessStepHandlerType;
 import codedriver.module.event.notify.handler.EventNotifyPolicyHandler;
 import com.alibaba.fastjson.JSONPath;
@@ -339,7 +340,78 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
 
     @Override
     public JSONObject makeupProcessStepConfig(JSONObject configObj) {
-        return null;
+        if (configObj == null) {
+            configObj = new JSONObject();
+        }
+        JSONObject resultObj = new JSONObject();
+
+        /** 授权 **/
+        ProcessTaskOperationType[] stepActions = {
+                ProcessTaskOperationType.STEP_VIEW,
+                ProcessTaskOperationType.STEP_TRANSFER,
+                ProcessTaskOperationType.STEP_RETREAT
+        };
+        JSONArray authorityList = configObj.getJSONArray("authorityList");
+        if (CollectionUtils.isNotEmpty(authorityList)) {
+            JSONArray authorityArray = ProcessConfigUtil.makeupAuthorityList(authorityList, stepActions);
+            resultObj.put("authorityList", authorityArray);
+        }
+
+        /** 通知 **/
+        JSONObject notifyPolicyConfig = configObj.getJSONObject("notifyPolicyConfig");
+        if (MapUtils.isNotEmpty(notifyPolicyConfig)) {
+            JSONObject notifyPolicyObj = ProcessConfigUtil.makeupNotifyPolicyConfig(notifyPolicyConfig, EventNotifyPolicyHandler.class);
+            resultObj.put("notifyPolicyConfig", notifyPolicyObj);
+        }
+
+        /** 动作 **/
+        JSONObject actionConfig = configObj.getJSONObject("actionConfig");
+        if (MapUtils.isNotEmpty(actionConfig)) {
+            JSONObject actionObj = ProcessConfigUtil.makeupActionConfig(actionConfig, EventNotifyPolicyHandler.class);
+            resultObj.put("actionConfig", actionObj);
+        }
+
+        JSONArray customButtonList = configObj.getJSONArray("customButtonList");
+        if (CollectionUtils.isNotEmpty(customButtonList)) {
+            /** 按钮映射列表 **/
+            ProcessTaskOperationType[] stepButtons = {
+                    ProcessTaskOperationType.STEP_COMPLETE,
+                    ProcessTaskOperationType.STEP_BACK,
+                    ProcessTaskOperationType.STEP_COMMENT,
+                    ProcessTaskOperationType.TASK_TRANSFER,
+                    ProcessTaskOperationType.STEP_START,
+                    ProcessTaskOperationType.TASK_ABORT,
+                    ProcessTaskOperationType.TASK_RECOVER
+            };
+
+            /** 子任务按钮映射列表 **/
+            ProcessTaskOperationType[] subtaskButtons = {
+                    ProcessTaskOperationType.SUBTASK_ABORT,
+                    ProcessTaskOperationType.SUBTASK_COMMENT,
+                    ProcessTaskOperationType.SUBTASK_COMPLETE,
+                    ProcessTaskOperationType.SUBTASK_CREATE,
+                    ProcessTaskOperationType.SUBTASK_REDO,
+                    ProcessTaskOperationType.SUBTASK_EDIT
+            };
+            JSONArray customButtonArray = ProcessConfigUtil.makeupCustomButtonList(customButtonList, stepButtons);
+            JSONArray subtaskcustomButtonArray = ProcessConfigUtil.makeupSubtaskCustomButtonList(customButtonList, subtaskButtons);
+            customButtonArray.addAll(subtaskcustomButtonArray);
+            resultObj.put("customButtonList", customButtonArray);
+        }
+        /** 状态映射列表 **/
+        JSONArray customStatusList = configObj.getJSONArray("customStatusList");
+        if (CollectionUtils.isNotEmpty(customStatusList)) {
+            JSONArray customStatusArray = ProcessConfigUtil.makeupCustomStatusList(customStatusList);
+            resultObj.put("customStatusList", customStatusArray);
+        }
+
+        /** 分配处理人 **/
+        JSONObject workerPolicyConfig = configObj.getJSONObject("workerPolicyConfig");
+        if (MapUtils.isNotEmpty(workerPolicyConfig)) {
+            JSONObject workerPolicyObj = ProcessConfigUtil.makeupWorkerPolicyConfig(workerPolicyConfig);
+            resultObj.put("workerPolicyConfig", workerPolicyObj);
+        }
+        return resultObj;
     }
 
 }
