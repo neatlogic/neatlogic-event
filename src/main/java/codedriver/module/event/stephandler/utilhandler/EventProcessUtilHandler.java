@@ -363,18 +363,14 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
         /** 通知 **/
         JSONObject notifyPolicyConfig = configObj.getJSONObject("notifyPolicyConfig");
         if (MapUtils.isNotEmpty(notifyPolicyConfig)) {
-//            JSONObject notifyPolicyObj = ProcessConfigUtil.makeupNotifyPolicyConfig(notifyPolicyConfig, EventNotifyPolicyHandler.class);
-//            resultObj.put("notifyPolicyConfig", notifyPolicyObj);
             NotifyPolicyConfigVo notifyPolicyConfigVo = JSONObject.toJavaObject(notifyPolicyConfig, NotifyPolicyConfigVo.class);
-            notifyPolicyConfigVo.setHandler(EventNotifyPolicyHandler.class.getName());
+//            notifyPolicyConfigVo.setHandler(EventNotifyPolicyHandler.class.getName());
             resultObj.put("notifyPolicyConfig", notifyPolicyConfigVo);
         }
 
         /** 动作 **/
         JSONObject actionConfig = configObj.getJSONObject("actionConfig");
         if (MapUtils.isNotEmpty(actionConfig)) {
-//            JSONObject actionObj = ProcessConfigUtil.makeupActionConfig(actionConfig, EventNotifyPolicyHandler.class);
-//            resultObj.put("actionConfig", actionObj);
             ActionConfigVo actionConfigVo = JSONObject.toJavaObject(actionConfig, ActionConfigVo.class);
             actionConfigVo.setHandler(EventNotifyPolicyHandler.class.getName());
             resultObj.put("actionConfig", actionConfigVo);
