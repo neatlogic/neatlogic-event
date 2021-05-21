@@ -288,7 +288,6 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
             actionConfigVo = new ActionConfigVo();
         }
         actionConfigVo.setHandler(EventNotifyPolicyHandler.class.getName());
-        actionConfigVo.setIntegrationHandler("");
         resultObj.put("actionConfig", actionConfigVo);
         return resultObj;
     }
