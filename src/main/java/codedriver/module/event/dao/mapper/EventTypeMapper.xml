@@ -222,6 +222,11 @@
 		WHERE a.`lft` &gt; #{lft} and a.`rht` &lt; #{rht}
 	</select>
 
+	<select id="getChildrenIdListByLeftRightCode" resultType="java.lang.Long">
+		SELECT `id` FROM `event_type`
+		WHERE `lft` &gt; #{lft} and `rht` &lt; #{rht}
+	</select>
+
 	<select id="getAuthorityByEventTypeId" resultType="codedriver.framework.dto.AuthorityVo" useCache="false">
 		select
 		`event_type_id`,
@@ -406,5 +411,28 @@
 		WHERE `event_type_id` = #{eventTypeId}
 	</delete>
 
+	<delete id="deleteEventTypeByIdList" parameterType="java.util.List">
+		DELETE FROM `event_type`
+		WHERE `id` IN
+		<foreach collection="list" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+	<delete id="deleteEventTypeAuthorityByEventTypeIdList" parameterType="java.util.List">
+		DELETE FROM `event_type_authority`
+		WHERE `event_type_id` IN
+		<foreach collection="list" item="eventTypeId" open="(" separator="," close=")">
+			#{eventTypeId}
+		</foreach>
+	</delete>
+
+	<delete id="deleteEventTypeSolutionByEventTypeIdList" parameterType="java.util.List">
+		DELETE FROM `event_type_solution`
+		WHERE `id` IN
+		<foreach collection="list" item="eventTypeId" open="(" separator="," close=")">
+			#{eventTypeId}
+		</foreach>
+	</delete>
 
 </mapper>

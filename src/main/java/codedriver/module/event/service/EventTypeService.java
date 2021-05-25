@@ -4,7 +4,7 @@ import codedriver.module.event.dto.EventTypeVo;
 
 public interface EventTypeService {
 	
-	public void rebuildLeftRightCode();
+//	public void rebuildLeftRightCode();
 
 	public EventTypeVo buildRootEventType();
 

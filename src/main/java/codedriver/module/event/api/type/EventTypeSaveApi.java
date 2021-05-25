@@ -2,6 +2,7 @@ package codedriver.module.event.api.type;
 
 import java.util.List;
 
+import codedriver.framework.lrcode.LRCodeManager;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,7 +66,6 @@ public class EventTypeSaveApi extends PrivateApiComponentBase{
 	@Description(desc = "保存事件类型信息")
 	@Override
 	public Object myDoService(JSONObject jsonObj) throws Exception {
-		JSONObject returnObj = new JSONObject();
 		Long id = jsonObj.getLong("id");
 		EventTypeVo eventType = new EventTypeVo();
 		eventType.setName(jsonObj.getString("name"));
@@ -77,33 +77,24 @@ public class EventTypeSaveApi extends PrivateApiComponentBase{
 			eventType.setId(id);
 			eventTypeMapper.updateEventTypeNameById(eventType);
 		}else{
-			eventTypeMapper.getEventTypeCountOnLock();
-			if(eventTypeMapper.checkLeftRightCodeIsWrong() > 0) {
-				eventTypeService.rebuildLeftRightCode();
-			}
+			Integer parentLayer = 0;
 			Long parentId = jsonObj.getLong("parentId");
 			if (parentId == null){
-				parentId = EventTypeVo.ROOT_ID;
-			}
-			EventTypeVo parentEventType;
-			if(EventTypeVo.ROOT_ID.equals(parentId)){
-				parentEventType = eventTypeService.buildRootEventType();
-			}else{
-				parentEventType = eventTypeMapper.getEventTypeById(parentId);
+			}else if(!EventTypeVo.ROOT_ID.equals(parentId)){
+				EventTypeVo parentEventType = eventTypeMapper.getEventTypeById(parentId);
 				if(parentEventType == null) {
 					throw new EventTypeNotFoundException(parentId);
 				}
+				parentLayer = parentEventType.getLayer();
 			}
-			eventType.setParentId(parentId);
-			eventType.setLft(parentEventType.getRht());
-			eventType.setRht(eventType.getLft() + 1);
 			//更新插入位置右边的左右编码值
-			eventTypeMapper.batchUpdateEventTypeLeftCode(eventType.getLft(), 2);
-			eventTypeMapper.batchUpdateEventTypeRightCode(eventType.getLft(), 2);
-
+			int lft = LRCodeManager.beforeAddTreeNode("event_type", "id", "parent_id", parentId);
+			eventType.setParentId(parentId);
+			eventType.setLft(lft);
+			eventType.setRht(lft + 1);
 			//计算层级
 //			int layer = eventTypeMapper.calculateLayer(eventType.getLft(), eventType.getRht());
-			eventType.setLayer(parentEventType.getLayer() + 1);
+			eventType.setLayer(parentLayer + 1);
 			eventTypeMapper.insertEventType(eventType);
 			/** 查询关联的解决方案数量，确保页面回显的数据正确 */
 			EventTypeVo count = eventTypeMapper.getEventTypeSolutionCountByLftRht(eventType.getLft(), eventType.getRht());
@@ -122,8 +113,73 @@ public class EventTypeSaveApi extends PrivateApiComponentBase{
 				}
 			}
 		}
+
+		JSONObject returnObj = new JSONObject();
 		returnObj.put("eventTypeId",eventType.getId());
 		returnObj.put("solutionCount",solutionCount);
 		return returnObj;
 	}
+
+//	private Object backup(JSONObject jsonObj) throws Exception {
+//		JSONObject returnObj = new JSONObject();
+//		Long id = jsonObj.getLong("id");
+//		EventTypeVo eventType = new EventTypeVo();
+//		eventType.setName(jsonObj.getString("name"));
+//		Integer solutionCount = null;
+//		if(id != null){
+//			if(eventTypeMapper.checkEventTypeIsExists(id) == 0){
+//				throw new EventTypeNotFoundException(id);
+//			}
+//			eventType.setId(id);
+//			eventTypeMapper.updateEventTypeNameById(eventType);
+//		}else{
+//			eventTypeMapper.getEventTypeCountOnLock();
+//			if(eventTypeMapper.checkLeftRightCodeIsWrong() > 0) {
+//				eventTypeService.rebuildLeftRightCode();
+//			}
+//			Long parentId = jsonObj.getLong("parentId");
+//			if (parentId == null){
+//				parentId = EventTypeVo.ROOT_ID;
+//			}
+//			EventTypeVo parentEventType;
+//			if(EventTypeVo.ROOT_ID.equals(parentId)){
+//				parentEventType = eventTypeService.buildRootEventType();
+//			}else{
+//				parentEventType = eventTypeMapper.getEventTypeById(parentId);
+//				if(parentEventType == null) {
+//					throw new EventTypeNotFoundException(parentId);
+//				}
+//			}
+//			eventType.setParentId(parentId);
+//			eventType.setLft(parentEventType.getRht());
+//			eventType.setRht(eventType.getLft() + 1);
+//			//更新插入位置右边的左右编码值
+//			eventTypeMapper.batchUpdateEventTypeLeftCode(eventType.getLft(), 2);
+//			eventTypeMapper.batchUpdateEventTypeRightCode(eventType.getLft(), 2);
+//
+//			//计算层级
+////			int layer = eventTypeMapper.calculateLayer(eventType.getLft(), eventType.getRht());
+//			eventType.setLayer(parentEventType.getLayer() + 1);
+//			eventTypeMapper.insertEventType(eventType);
+//			/** 查询关联的解决方案数量，确保页面回显的数据正确 */
+//			EventTypeVo count = eventTypeMapper.getEventTypeSolutionCountByLftRht(eventType.getLft(), eventType.getRht());
+//			solutionCount = count.getSolutionCount();
+//
+//			/** 保存授权信息 */
+//			JSONArray authorityArray = jsonObj.getJSONArray("authorityList");
+//			if(CollectionUtils.isNotEmpty(authorityArray)){
+//				List<String> authorityList = authorityArray.toJavaList(String.class);
+//				eventType.setAuthorityList(authorityList);
+//				List<AuthorityVo> authorityVoList = eventType.getAuthorityVoList();
+//				if(CollectionUtils.isNotEmpty(authorityVoList)){
+//					for(AuthorityVo authorityVo : authorityVoList) {
+//						eventTypeMapper.insertEventTypeAuthority(authorityVo,eventType.getId());
+//					}
+//				}
+//			}
+//		}
+//		returnObj.put("eventTypeId",eventType.getId());
+//		returnObj.put("solutionCount",solutionCount);
+//		return returnObj;
+//	}
 }
