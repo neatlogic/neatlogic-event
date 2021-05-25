@@ -66,9 +66,15 @@ public class EventTypeMoveApi extends PrivateApiComponentBase {
         if(Objects.equal(id, parentId)) {
             throw new MoveTargetNodeIllegalException();
         }
-        EventTypeVo parentEventType = eventTypeMapper.getEventTypeById(parentId);
-        if(parentEventType == null) {
-            throw new EventTypeNotFoundException(parentId);
+        Integer parentLayer = 0;
+        if (parentId == null){
+            parentId = EventTypeVo.ROOT_ID;
+        }else if(!EventTypeVo.ROOT_ID.equals(parentId)){
+            EventTypeVo parentEventType = eventTypeMapper.getEventTypeById(parentId);
+            if(parentEventType == null) {
+                throw new EventTypeNotFoundException(parentId);
+            }
+            parentLayer = parentEventType.getLayer();
         }
         Long targetId;
         MoveType moveType;
@@ -104,7 +110,7 @@ public class EventTypeMoveApi extends PrivateApiComponentBase {
                 vo.setLayer(layer);
             }
         }
-        self.setLayer(parentEventType.getLayer() + 1);
+        self.setLayer(parentLayer + 1);
         childrenAndSelf.add(self);
         for(EventTypeVo vo :childrenAndSelf){
             int layer = vo.getLayer() + self.getLayer();

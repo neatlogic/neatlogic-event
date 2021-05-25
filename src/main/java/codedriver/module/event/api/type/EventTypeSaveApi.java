@@ -76,6 +76,7 @@ public class EventTypeSaveApi extends PrivateApiComponentBase{
 			Integer parentLayer = 0;
 			Long parentId = jsonObj.getLong("parentId");
 			if (parentId == null){
+				parentId = EventTypeVo.ROOT_ID;
 			}else if(!EventTypeVo.ROOT_ID.equals(parentId)){
 				EventTypeVo parentEventType = eventTypeMapper.getEventTypeById(parentId);
 				if(parentEventType == null) {
