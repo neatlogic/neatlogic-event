@@ -429,7 +429,7 @@
 
 	<delete id="deleteEventTypeSolutionByEventTypeIdList" parameterType="java.util.List">
 		DELETE FROM `event_type_solution`
-		WHERE `id` IN
+		WHERE `event_type_id` IN
 		<foreach collection="list" item="eventTypeId" open="(" separator="," close=")">
 			#{eventTypeId}
 		</foreach>

@@ -54,7 +54,7 @@ public class EventTypeDeleteApi extends PrivateApiComponentBase {
 	public Object myDoService(JSONObject jsonObj) throws Exception {
 		Long id = jsonObj.getLong("id");
 		EventTypeVo eventType = eventTypeMapper.getEventTypeById(id);
-		if(eventType == null) {
+		if (eventType == null) {
 			throw new EventTypeNotFoundException(id);
 		}
 		List<Long> idList = eventTypeMapper.getChildrenIdListByLeftRightCode(eventType.getLft(), eventType.getRht());
