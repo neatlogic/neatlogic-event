@@ -19,7 +19,6 @@ import codedriver.framework.restful.core.privateapi.PrivateApiComponentBase;
 import codedriver.module.event.auth.label.EVENT_TYPE_MODIFY;
 import codedriver.module.event.dao.mapper.EventTypeMapper;
 import codedriver.module.event.dto.EventTypeVo;
-import codedriver.module.event.service.EventTypeService;
 
 import java.util.List;
 
@@ -28,9 +27,6 @@ import java.util.List;
 @Transactional
 @OperationType(type = OperationTypeEnum.DELETE)
 public class EventTypeDeleteApi extends PrivateApiComponentBase {
-
-	@Autowired
-	private EventTypeService eventTypeService;
 
 	@Autowired
 	private EventTypeMapper eventTypeMapper;
