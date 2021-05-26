@@ -36,9 +36,9 @@ public interface EventTypeMapper {
 
 	public int updateEventTypeNameById(EventTypeVo eventTypeVo);
 
-	public int getEventTypeCountOnLock();
+//	public int getEventTypeCountOnLock();
 
-	public int checkLeftRightCodeIsWrong();
+//	public int checkLeftRightCodeIsWrong();
 
 	public int checkEventTypeIsExistsByLeftRightCode(@Param("id") Long id, @Param("lft") Integer lft, @Param("rht") Integer rht);
 
@@ -49,6 +49,8 @@ public interface EventTypeMapper {
 	public List<EventTypeVo> getEventTypeListByParentId(@Param("parentId") Long parentId);
 
 	public List<EventTypeVo> getChildrenByLeftRightCode(@Param("lft") Integer lft, @Param("rht") Integer rht);
+
+	public List<Long> getChildrenIdListByLeftRightCode(@Param("lft") Integer lft, @Param("rht") Integer rht);
 
 	public List<AuthorityVo> getAuthorityByEventTypeId(@Param("eventTypId") Long eventTypId);
 
@@ -85,4 +87,9 @@ public interface EventTypeMapper {
 
     public List<EventTypeVo> getEventTypeListByIdList(List<Long> authorizedEventTypeIdList);
 
+	int deleteEventTypeByIdList(List<Long> idList);
+
+	int deleteEventTypeAuthorityByEventTypeIdList(List<Long> idList);
+
+	int deleteEventTypeSolutionByEventTypeIdList(List<Long> idList);
 }
