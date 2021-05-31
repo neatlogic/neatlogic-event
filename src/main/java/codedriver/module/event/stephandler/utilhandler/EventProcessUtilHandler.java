@@ -264,7 +264,7 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
 
         JSONArray customButtonList = configObj.getJSONArray("customButtonList");
         JSONArray customButtonArray = ProcessConfigUtil.regulateCustomButtonList(customButtonList, stepButtons);
-        JSONArray subtaskCustomButtonArray = ProcessConfigUtil.regulateCustomButtonList(customButtonList, stepButtons, "子任务");
+        JSONArray subtaskCustomButtonArray = ProcessConfigUtil.regulateCustomButtonList(customButtonList, subtaskButtons, "子任务");
         customButtonArray.addAll(subtaskCustomButtonArray);
         resultObj.put("customButtonList", customButtonArray);
 
