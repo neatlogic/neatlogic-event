@@ -268,6 +268,11 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
         customButtonArray.addAll(subtaskCustomButtonArray);
         resultObj.put("customButtonList", customButtonArray);
 
+        /** 可替换文本列表 **/
+        JSONArray replaceableTextList = configObj.getJSONArray("replaceableTextList");
+        JSONArray replaceableTextArray = ProcessConfigUtil.regulateReplaceableTextList(replaceableTextList);
+        resultObj.put("replaceableTextList", replaceableTextArray);
+
         /** 通知 **/
         NotifyPolicyConfigVo notifyPolicyConfigVo = null;
         JSONObject notifyPolicyConfig = configObj.getJSONObject("notifyPolicyConfig");
@@ -361,6 +366,11 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
             JSONArray customStatusArray = ProcessConfigUtil.regulateCustomStatusList(customStatusList);
             resultObj.put("customStatusList", customStatusArray);
         }
+
+        /** 可替换文本列表 **/
+        JSONArray replaceableTextList = configObj.getJSONArray("replaceableTextList");
+        JSONArray replaceableTextArray = ProcessConfigUtil.regulateReplaceableTextList(replaceableTextList);
+        resultObj.put("replaceableTextList", replaceableTextArray);
 
         /** 分配处理人 **/
         JSONObject workerPolicyConfig = configObj.getJSONObject("workerPolicyConfig");
