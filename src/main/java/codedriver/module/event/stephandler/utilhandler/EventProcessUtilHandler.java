@@ -10,7 +10,6 @@ import codedriver.framework.process.dto.processconfig.NotifyPolicyConfigVo;
 import codedriver.framework.process.util.ProcessConfigUtil;
 import codedriver.module.event.constvalue.EventProcessStepHandlerType;
 import codedriver.module.event.notify.handler.EventNotifyPolicyHandler;
-import com.alibaba.fastjson.JSONPath;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
 import org.apache.commons.collections4.MapUtils;
@@ -247,7 +246,7 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
         if (Objects.equals(enableAuthority, 1)) {
             authorityList = configObj.getJSONArray("authorityList");
         } else {
-            enableAuthority = 1;
+            enableAuthority = 0;
         }
         resultObj.put("enableAuthority", enableAuthority);
         JSONArray authorityArray = ProcessConfigUtil.regulateAuthorityList(authorityList, stepActions);
@@ -295,15 +294,6 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
         }
         notifyPolicyConfigVo.setHandler(EventNotifyPolicyHandler.class.getName());
         resultObj.put("notifyPolicyConfig", notifyPolicyConfigVo);
-
-        /** 动作 **/
-        JSONObject actionConfig = configObj.getJSONObject("actionConfig");
-        ActionConfigVo actionConfigVo = JSONObject.toJavaObject(actionConfig, ActionConfigVo.class);
-        if (actionConfigVo == null) {
-            actionConfigVo = new ActionConfigVo();
-        }
-        actionConfigVo.setHandler(EventNotifyPolicyHandler.class.getName());
-        resultObj.put("actionConfig", actionConfigVo);
         return resultObj;
     }
 
