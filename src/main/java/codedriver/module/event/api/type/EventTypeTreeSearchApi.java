@@ -3,6 +3,7 @@ package codedriver.module.event.api.type;
 import codedriver.framework.asynchronization.threadlocal.UserContext;
 import codedriver.framework.auth.core.AuthAction;
 import codedriver.framework.common.constvalue.ApiParamType;
+import codedriver.framework.dao.mapper.RoleMapper;
 import codedriver.framework.dao.mapper.TeamMapper;
 import codedriver.framework.process.auth.PROCESS_BASE;
 import codedriver.framework.process.exception.event.EventTypeNotFoundException;
@@ -18,11 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 @AuthAction(action = PROCESS_BASE.class)
@@ -33,6 +30,8 @@ public class EventTypeTreeSearchApi extends PrivateApiComponentBase {
     private EventTypeMapper eventTypeMapper;
     @Autowired
     private TeamMapper teamMapper;
+    @Autowired
+    private RoleMapper roleMapper;
 
     @Override
     public String getToken() {
@@ -66,7 +65,13 @@ public class EventTypeTreeSearchApi extends PrivateApiComponentBase {
 		Integer isAuthenticate = jsonObj.getInteger("isAuthenticate");
 		if(Objects.equals(isAuthenticate, 1)) {
 		    List<String> teamUuidList = teamMapper.getTeamUuidListByUserUuid(UserContext.get().getUserUuid(true));
-		    authorizedEventTypeIdList = eventTypeMapper.getCurrentUserAuthorizedEventTypeIdList(UserContext.get().getUserUuid(true), teamUuidList, UserContext.get().getRoleUuidList());
+		    List<String> userRoleUuidList = UserContext.get().getRoleUuidList();
+		    List<String> teamRoleUuidList = roleMapper.getRoleUuidListByTeamUuidList(teamUuidList);
+		    Set<String> roleUuidSet = new HashSet<>();
+			roleUuidSet.addAll(userRoleUuidList);
+			roleUuidSet.addAll(teamRoleUuidList);
+			List<String> roleUuidList = new ArrayList<>(roleUuidSet);
+		    authorizedEventTypeIdList = eventTypeMapper.getCurrentUserAuthorizedEventTypeIdList(UserContext.get().getUserUuid(true), teamUuidList, roleUuidList);
 		}
 		List<EventTypeVo> eventTypeList = new ArrayList<>();
 		Long id = jsonObj.getLong("id");
