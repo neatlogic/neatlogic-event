@@ -3,13 +3,13 @@ package codedriver.module.event.api.type;
 import codedriver.framework.asynchronization.threadlocal.UserContext;
 import codedriver.framework.auth.core.AuthAction;
 import codedriver.framework.common.constvalue.ApiParamType;
-import codedriver.framework.dao.mapper.RoleMapper;
-import codedriver.framework.dao.mapper.TeamMapper;
+import codedriver.framework.dto.AuthenticationInfoVo;
 import codedriver.framework.process.auth.PROCESS_BASE;
 import codedriver.framework.process.exception.event.EventTypeNotFoundException;
 import codedriver.framework.restful.constvalue.OperationTypeEnum;
 import codedriver.framework.restful.annotation.*;
 import codedriver.framework.restful.core.privateapi.PrivateApiComponentBase;
+import codedriver.framework.service.AuthenticationInfoService;
 import codedriver.module.event.dao.mapper.EventTypeMapper;
 import codedriver.module.event.dto.EventTypeVo;
 
@@ -19,6 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.*;
 
 @Service
@@ -28,10 +29,8 @@ public class EventTypeTreeSearchApi extends PrivateApiComponentBase {
 
     @Autowired
     private EventTypeMapper eventTypeMapper;
-    @Autowired
-    private TeamMapper teamMapper;
-    @Autowired
-    private RoleMapper roleMapper;
+	@Resource
+	private AuthenticationInfoService authenticationInfoService;
 
     @Override
     public String getToken() {
@@ -64,14 +63,8 @@ public class EventTypeTreeSearchApi extends PrivateApiComponentBase {
 		List<Long> authorizedEventTypeIdList = new ArrayList<>();
 		Integer isAuthenticate = jsonObj.getInteger("isAuthenticate");
 		if(Objects.equals(isAuthenticate, 1)) {
-		    List<String> teamUuidList = teamMapper.getTeamUuidListByUserUuid(UserContext.get().getUserUuid(true));
-		    List<String> userRoleUuidList = UserContext.get().getRoleUuidList();
-		    List<String> teamRoleUuidList = roleMapper.getRoleUuidListByTeamUuidList(teamUuidList);
-		    Set<String> roleUuidSet = new HashSet<>();
-			roleUuidSet.addAll(userRoleUuidList);
-			roleUuidSet.addAll(teamRoleUuidList);
-			List<String> roleUuidList = new ArrayList<>(roleUuidSet);
-		    authorizedEventTypeIdList = eventTypeMapper.getCurrentUserAuthorizedEventTypeIdList(UserContext.get().getUserUuid(true), teamUuidList, roleUuidList);
+			AuthenticationInfoVo authenticationInfoVo = authenticationInfoService.getAuthenticationInfo(UserContext.get().getUserUuid(true));
+		    authorizedEventTypeIdList = eventTypeMapper.getCurrentUserAuthorizedEventTypeIdList(UserContext.get().getUserUuid(true), authenticationInfoVo.getTeamUuidList(), authenticationInfoVo.getRoleUuidList());
 		}
 		List<EventTypeVo> eventTypeList = new ArrayList<>();
 		Long id = jsonObj.getLong("id");
