@@ -139,6 +139,11 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
                 processStepVo.setWorkerPolicyList(workerPolicyList);
             }
         }
+
+        JSONArray tagList = stepConfigObj.getJSONArray("tagList");
+        if (CollectionUtils.isNotEmpty(tagList)) {
+            processStepVo.setTagList(tagList.toJavaList(String.class));
+        }
     }
 
     @Override
