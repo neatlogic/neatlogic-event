@@ -1,38 +1,19 @@
 package codedriver.module.event.stephandler.utilhandler;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
-import codedriver.framework.dto.UserVo;
-import codedriver.framework.process.dto.processconfig.ActionConfigActionVo;
-import codedriver.framework.process.dto.processconfig.ActionConfigVo;
-import codedriver.framework.process.dto.processconfig.NotifyPolicyConfigVo;
-import codedriver.framework.process.util.ProcessConfigUtil;
-import codedriver.module.event.constvalue.EventProcessStepHandlerType;
-import codedriver.module.event.notify.handler.EventNotifyPolicyHandler;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.ListUtils;
-import org.apache.commons.collections4.MapUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-
 import codedriver.framework.common.constvalue.GroupSearch;
+import codedriver.framework.dto.UserVo;
 import codedriver.framework.process.constvalue.ProcessTaskOperationType;
 import codedriver.framework.process.constvalue.ProcessTaskStatus;
 import codedriver.framework.process.constvalue.ProcessTaskStepUserStatus;
 import codedriver.framework.process.constvalue.ProcessUserType;
 import codedriver.framework.process.dao.mapper.ProcessTaskStepSubtaskMapper;
-import codedriver.framework.process.dto.ProcessStepVo;
-import codedriver.framework.process.dto.ProcessStepWorkerPolicyVo;
-import codedriver.framework.process.dto.ProcessTaskStepSubtaskVo;
-import codedriver.framework.process.dto.ProcessTaskStepUserVo;
-import codedriver.framework.process.dto.ProcessTaskStepVo;
-import codedriver.framework.process.dto.ProcessTaskStepWorkerVo;
+import codedriver.framework.process.dto.*;
+import codedriver.framework.process.dto.processconfig.ActionConfigActionVo;
+import codedriver.framework.process.dto.processconfig.ActionConfigVo;
+import codedriver.framework.process.dto.processconfig.NotifyPolicyConfigVo;
 import codedriver.framework.process.stephandler.core.ProcessStepInternalHandlerBase;
+import codedriver.framework.process.util.ProcessConfigUtil;
+import codedriver.module.event.constvalue.EventProcessStepHandlerType;
 import codedriver.module.event.dao.mapper.EventMapper;
 import codedriver.module.event.dao.mapper.EventSolutionMapper;
 import codedriver.module.event.dao.mapper.EventTypeMapper;
@@ -40,6 +21,18 @@ import codedriver.module.event.dto.EventSolutionVo;
 import codedriver.module.event.dto.EventTypeVo;
 import codedriver.module.event.dto.EventVo;
 import codedriver.module.event.exception.core.EventNotFoundException;
+import codedriver.module.event.notify.handler.EventNotifyPolicyHandler;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.ListUtils;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
@@ -262,10 +255,10 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
                 ProcessTaskOperationType.STEP_COMPLETE,
                 ProcessTaskOperationType.STEP_BACK,
                 ProcessTaskOperationType.STEP_COMMENT,
-                ProcessTaskOperationType.TASK_TRANSFER,
+                ProcessTaskOperationType.PROCESSTASK_TRANSFER,
                 ProcessTaskOperationType.STEP_START,
-                ProcessTaskOperationType.TASK_ABORT,
-                ProcessTaskOperationType.TASK_RECOVER
+                ProcessTaskOperationType.PROCESSTASK_ABORT,
+                ProcessTaskOperationType.PROCESSTASK_RECOVER
         };
         /** 子任务按钮映射列表 **/
         ProcessTaskOperationType[] subtaskButtons = {
@@ -351,10 +344,10 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
                 ProcessTaskOperationType.STEP_COMPLETE,
                 ProcessTaskOperationType.STEP_BACK,
                 ProcessTaskOperationType.STEP_COMMENT,
-                ProcessTaskOperationType.TASK_TRANSFER,
+                ProcessTaskOperationType.PROCESSTASK_TRANSFER,
                 ProcessTaskOperationType.STEP_START,
-                ProcessTaskOperationType.TASK_ABORT,
-                ProcessTaskOperationType.TASK_RECOVER
+                ProcessTaskOperationType.PROCESSTASK_ABORT,
+                ProcessTaskOperationType.PROCESSTASK_RECOVER
         };
 
         /** 子任务按钮映射列表 **/
