@@ -6,6 +6,7 @@ import codedriver.framework.common.dto.BasePageVo;
 import codedriver.framework.dto.AuthorityVo;
 import codedriver.framework.restful.annotation.EntityField;
 import codedriver.framework.util.SnowflakeUtil;
+import com.alibaba.fastjson.annotation.JSONField;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
@@ -38,9 +39,11 @@ public class EventTypeVo extends BasePageVo {
 
 	private Integer solutionCount;
 
-	private transient List<AuthorityVo> authorityVoList;
+	@JSONField(serialize = false)
+	private List<AuthorityVo> authorityVoList;
 
-	private transient EventTypeVo parent;
+	@JSONField(serialize = false)
+	private EventTypeVo parent;
 
 	public EventTypeVo() {}
 
