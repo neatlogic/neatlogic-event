@@ -3,6 +3,7 @@ package codedriver.module.event.dto;
 import codedriver.framework.common.constvalue.ApiParamType;
 import codedriver.framework.restful.annotation.EntityField;
 import codedriver.framework.util.SnowflakeUtil;
+import com.alibaba.fastjson.annotation.JSONField;
 
 public class EventVo {
 
@@ -16,7 +17,8 @@ public class EventVo {
     private Long eventSolutionId;
     @EntityField(name = "事件解决方案名称", type = ApiParamType.STRING)
     private String eventSolutionName;
-    private transient Boolean isAutoGenerateId = true;
+    @JSONField(serialize = false)
+    private Boolean isAutoGenerateId = true;
     public synchronized Long getId() {
         if(id == null && isAutoGenerateId) {
             id = SnowflakeUtil.uniqueLong();
