@@ -208,7 +208,7 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
         List<String> needInsertUserList = ListUtils.removeAll(runningSubtaskUserUuidSet, workerMinorUserUuidSet);
         for (String userUuid : needInsertUserList) {
             processTaskStepWorkerVo.setUuid(userUuid);
-            processTaskMapper.insertProcessTaskStepWorker(processTaskStepWorkerVo);
+            processTaskMapper.insertIgnoreProcessTaskStepWorker(processTaskStepWorkerVo);
 
             if (doneMinorUserUuidSet.contains(userUuid)) {
                 /** 重做子任务 **/
