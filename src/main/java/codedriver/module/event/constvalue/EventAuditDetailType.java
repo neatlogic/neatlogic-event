@@ -3,7 +3,8 @@ package codedriver.module.event.constvalue;
 import codedriver.framework.process.audithandler.core.IProcessTaskAuditDetailType;
 
 public enum EventAuditDetailType implements IProcessTaskAuditDetailType {
-    EVENTINFO("eventinfo", "事件", "event", "oldEvent", 16, false)
+    EVENTINFO("eventinfo", "事件", "event", "oldEvent", 16, false),
+    TASK("task", "任务", "task", "oldTask", 18, false)
     ;
     
     private EventAuditDetailType(String _value, String _text, String _paramName, String _oldDataParamName, int _sort, boolean _needCompression) {
