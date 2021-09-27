@@ -15,10 +15,14 @@ import codedriver.framework.notify.core.NotifyHandlerType;
 import codedriver.framework.notify.core.NotifyPolicyHandlerBase;
 import codedriver.framework.notify.dto.NotifyTriggerTemplateVo;
 import codedriver.framework.notify.dto.NotifyTriggerVo;
-import codedriver.framework.process.constvalue.*;
+import codedriver.framework.process.constvalue.ConditionProcessTaskOptions;
+import codedriver.framework.process.constvalue.ProcessTaskGroupSearch;
+import codedriver.framework.process.constvalue.ProcessTaskParams;
+import codedriver.framework.process.constvalue.ProcessUserType;
 import codedriver.framework.process.notify.constvalue.ProcessNotifyPolicyHandlerGroup;
-import codedriver.framework.process.notify.constvalue.SubtaskNotifyTriggerType;
 import codedriver.framework.process.notify.constvalue.ProcessTaskStepNotifyTriggerType;
+import codedriver.framework.process.notify.constvalue.SubtaskNotifyTriggerType;
+import codedriver.framework.process.notify.constvalue.TaskNotifyTriggerType;
 import codedriver.framework.process.notify.core.IDefaultTemplate;
 import codedriver.framework.process.notify.core.NotifyDefaultTemplateFactory;
 import codedriver.module.event.constvalue.EventProcessStepHandlerType;
@@ -70,6 +74,10 @@ public class EventNotifyPolicyHandler extends NotifyPolicyHandlerBase {
         }
         for (SubtaskNotifyTriggerType notifyTriggerType : SubtaskNotifyTriggerType.values()) {
             returnList.add(new NotifyTriggerVo(notifyTriggerType.getTrigger(), notifyTriggerType.getText(), notifyTriggerType.getDescription()));
+        }
+        //任务
+        for (TaskNotifyTriggerType notifyTriggerType : TaskNotifyTriggerType.values()) {
+            returnList.add(new NotifyTriggerVo(notifyTriggerType.getTrigger(), notifyTriggerType.getText(),notifyTriggerType.getDescription()));
         }
         return returnList;
     }
