@@ -137,6 +137,13 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
         if (CollectionUtils.isNotEmpty(tagList)) {
             processStepVo.setTagList(tagList.toJavaList(String.class));
         }
+
+        //保存子任务
+        JSONObject taskConfig = stepConfigObj.getJSONObject("taskConfig");
+        if(MapUtils.isNotEmpty(taskConfig)){
+            ProcessStepTaskConfigVo taskConfigVo = JSONObject.toJavaObject(taskConfig,ProcessStepTaskConfigVo.class);
+            processStepVo.setTaskConfigVo(taskConfigVo);
+        }
     }
 
     @Override
@@ -292,6 +299,10 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
         }
         notifyPolicyConfigVo.setHandler(EventNotifyPolicyHandler.class.getName());
         resultObj.put("notifyPolicyConfig", notifyPolicyConfigVo);
+
+        /* 任务 */
+        JSONObject taskConfig = configObj.getJSONObject("taskConfig");
+        resultObj.put("taskConfig",taskConfig);
         return resultObj;
     }
 
@@ -376,6 +387,10 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
         JSONObject workerPolicyConfig = configObj.getJSONObject("workerPolicyConfig");
         JSONObject workerPolicyObj = ProcessConfigUtil.regulateWorkerPolicyConfig(workerPolicyConfig);
         resultObj.put("workerPolicyConfig", workerPolicyObj);
+
+        /* 任务 */
+        JSONObject taskConfig = configObj.getJSONObject("taskConfig");
+        resultObj.put("taskConfig",taskConfig);
 
         JSONObject simpleSettings = ProcessConfigUtil.regulateSimpleSettings(configObj);
         resultObj.putAll(simpleSettings);
