@@ -108,6 +108,13 @@ public class EventNotifyPolicyHandler extends NotifyPolicyHandlerBase {
                     list.add(new NotifyTriggerTemplateVo(notifyTriggerType.getText(), notifyTriggerType.getDescription(), vo.getTitle(), vo.getContent(), handler));
                 }
             }
+            //任务
+            for (TaskNotifyTriggerType notifyTriggerType : TaskNotifyTriggerType.values()) {
+                List<IDefaultTemplate> templates = map.get(notifyTriggerType.getTrigger().toLowerCase());
+                for(IDefaultTemplate vo : templates){
+                    list.add(new NotifyTriggerTemplateVo(notifyTriggerType.getText(),notifyTriggerType.getDescription(),vo.getTitle(),vo.getContent(),handler));
+                }
+            }
         }
         return list;
     }
