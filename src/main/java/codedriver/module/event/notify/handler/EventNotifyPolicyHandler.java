@@ -21,7 +21,6 @@ import codedriver.framework.process.constvalue.ProcessTaskParams;
 import codedriver.framework.process.constvalue.ProcessUserType;
 import codedriver.framework.process.notify.constvalue.ProcessNotifyPolicyHandlerGroup;
 import codedriver.framework.process.notify.constvalue.ProcessTaskStepNotifyTriggerType;
-import codedriver.framework.process.notify.constvalue.SubtaskNotifyTriggerType;
 import codedriver.framework.process.notify.constvalue.TaskNotifyTriggerType;
 import codedriver.framework.process.notify.core.IDefaultTemplate;
 import codedriver.framework.process.notify.core.NotifyDefaultTemplateFactory;
@@ -72,9 +71,9 @@ public class EventNotifyPolicyHandler extends NotifyPolicyHandlerBase {
         for (ProcessTaskStepNotifyTriggerType notifyTriggerType : ProcessTaskStepNotifyTriggerType.values()) {
             returnList.add(new NotifyTriggerVo(notifyTriggerType.getTrigger(), notifyTriggerType.getText(), notifyTriggerType.getDescription()));
         }
-        for (SubtaskNotifyTriggerType notifyTriggerType : SubtaskNotifyTriggerType.values()) {
-            returnList.add(new NotifyTriggerVo(notifyTriggerType.getTrigger(), notifyTriggerType.getText(), notifyTriggerType.getDescription()));
-        }
+//        for (SubtaskNotifyTriggerType notifyTriggerType : SubtaskNotifyTriggerType.values()) {
+//            returnList.add(new NotifyTriggerVo(notifyTriggerType.getTrigger(), notifyTriggerType.getText(), notifyTriggerType.getDescription()));
+//        }
         //任务
         for (TaskNotifyTriggerType notifyTriggerType : TaskNotifyTriggerType.values()) {
             returnList.add(new NotifyTriggerVo(notifyTriggerType.getTrigger(), notifyTriggerType.getText(),notifyTriggerType.getDescription()));
@@ -102,12 +101,12 @@ public class EventNotifyPolicyHandler extends NotifyPolicyHandlerBase {
                     list.add(new NotifyTriggerTemplateVo(notifyTriggerType.getText(), notifyTriggerType.getDescription(), vo.getTitle(), vo.getContent(), handler));
                 }
             }
-            for (SubtaskNotifyTriggerType notifyTriggerType : SubtaskNotifyTriggerType.values()) {
-                List<IDefaultTemplate> templates = map.get(notifyTriggerType.getTrigger().toLowerCase());
-                for (IDefaultTemplate vo : templates) {
-                    list.add(new NotifyTriggerTemplateVo(notifyTriggerType.getText(), notifyTriggerType.getDescription(), vo.getTitle(), vo.getContent(), handler));
-                }
-            }
+//            for (SubtaskNotifyTriggerType notifyTriggerType : SubtaskNotifyTriggerType.values()) {
+//                List<IDefaultTemplate> templates = map.get(notifyTriggerType.getTrigger().toLowerCase());
+//                for (IDefaultTemplate vo : templates) {
+//                    list.add(new NotifyTriggerTemplateVo(notifyTriggerType.getText(), notifyTriggerType.getDescription(), vo.getTitle(), vo.getContent(), handler));
+//                }
+//            }
             //任务
             for (TaskNotifyTriggerType notifyTriggerType : TaskNotifyTriggerType.values()) {
                 List<IDefaultTemplate> templates = map.get(notifyTriggerType.getTrigger().toLowerCase());
