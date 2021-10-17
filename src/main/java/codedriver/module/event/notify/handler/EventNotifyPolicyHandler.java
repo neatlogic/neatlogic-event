@@ -17,11 +17,8 @@ import codedriver.framework.notify.dto.NotifyTriggerTemplateVo;
 import codedriver.framework.notify.dto.NotifyTriggerVo;
 import codedriver.framework.process.constvalue.ConditionProcessTaskOptions;
 import codedriver.framework.process.constvalue.ProcessTaskGroupSearch;
-import codedriver.framework.process.constvalue.ProcessTaskParams;
 import codedriver.framework.process.constvalue.ProcessUserType;
-import codedriver.framework.process.notify.constvalue.ProcessNotifyPolicyHandlerGroup;
-import codedriver.framework.process.notify.constvalue.ProcessTaskStepNotifyTriggerType;
-import codedriver.framework.process.notify.constvalue.TaskNotifyTriggerType;
+import codedriver.framework.process.notify.constvalue.*;
 import codedriver.framework.process.notify.core.IDefaultTemplate;
 import codedriver.framework.process.notify.core.NotifyDefaultTemplateFactory;
 import codedriver.module.event.constvalue.EventProcessStepHandlerType;
@@ -121,17 +118,62 @@ public class EventNotifyPolicyHandler extends NotifyPolicyHandlerBase {
     @Override
     protected List<ConditionParamVo> mySystemParamList() {
         List<ConditionParamVo> notifyPolicyParamList = new ArrayList<>();
-        for (ProcessTaskParams processTaskParams : ProcessTaskParams.values()) {
-            ConditionParamVo param = new ConditionParamVo();
-            param.setName(processTaskParams.getValue());
-            param.setLabel(processTaskParams.getText());
-            param.setParamType(processTaskParams.getParamType().getName());
-            param.setParamTypeName(processTaskParams.getParamType().getText());
-            param.setFreemarkerTemplate(processTaskParams.getFreemarkerTemplate());
-            param.setIsEditable(0);
-            notifyPolicyParamList.add(param);
+//        for (ProcessTaskParams processTaskParams : ProcessTaskParams.values()) {
+//            ConditionParamVo param = new ConditionParamVo();
+//            param.setName(processTaskParams.getValue());
+//            param.setLabel(processTaskParams.getText());
+//            param.setParamType(processTaskParams.getParamType().getName());
+//            param.setParamTypeName(processTaskParams.getParamType().getText());
+//            param.setFreemarkerTemplate(processTaskParams.getFreemarkerTemplate());
+//            param.setIsEditable(0);
+//            notifyPolicyParamList.add(param);
+//        }
+        for(ProcessTaskNotifyParam param : ProcessTaskNotifyParam.values()) {
+            ConditionParamVo paramVo = new ConditionParamVo();
+            paramVo.setName(param.getValue());
+            paramVo.setLabel(param.getText());
+            paramVo.setParamType(param.getParamType().getName());
+            paramVo.setParamTypeName(param.getParamType().getText());
+            paramVo.setFreemarkerTemplate(param.getFreemarkerTemplate());
+            paramVo.setIsEditable(0);
+            notifyPolicyParamList.add(paramVo);
+        }
+        for(ProcessTaskStepNotifyParam param : ProcessTaskStepNotifyParam.values()) {
+            ConditionParamVo paramVo = new ConditionParamVo();
+            paramVo.setName(param.getValue());
+            paramVo.setLabel(param.getText());
+            paramVo.setParamType(param.getParamType().getName());
+            paramVo.setParamTypeName(param.getParamType().getText());
+            paramVo.setFreemarkerTemplate(param.getFreemarkerTemplate());
+            paramVo.setIsEditable(0);
+            notifyPolicyParamList.add(paramVo);
+        }
+        for(TaskNotifyParam param : TaskNotifyParam.values()) {
+            ConditionParamVo paramVo = new ConditionParamVo();
+            paramVo.setName(param.getValue());
+            paramVo.setLabel(param.getText());
+            paramVo.setParamType(param.getParamType().getName());
+            paramVo.setParamTypeName(param.getParamType().getText());
+            paramVo.setFreemarkerTemplate(param.getFreemarkerTemplate());
+            paramVo.setIsEditable(0);
+            notifyPolicyParamList.add(paramVo);
         }
         return notifyPolicyParamList;
+    }
+
+    @Override
+    protected List<String> getMyParamNameList(){
+        List<String> resultList = new ArrayList<>();
+        for (ProcessTaskNotifyParam param : ProcessTaskNotifyParam.values()) {
+            resultList.add(param.getValue());
+        }
+        for (ProcessTaskStepNotifyParam param : ProcessTaskStepNotifyParam.values()) {
+            resultList.add(param.getValue());
+        }
+        for (TaskNotifyParam param : TaskNotifyParam.values()) {
+            resultList.add(param.getValue());
+        }
+        return resultList;
     }
 
     @Override
