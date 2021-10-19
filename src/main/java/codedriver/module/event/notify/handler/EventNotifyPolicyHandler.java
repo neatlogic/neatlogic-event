@@ -72,7 +72,7 @@ public class EventNotifyPolicyHandler extends NotifyPolicyHandlerBase {
 //            returnList.add(new NotifyTriggerVo(notifyTriggerType.getTrigger(), notifyTriggerType.getText(), notifyTriggerType.getDescription()));
 //        }
         //任务
-        for (TaskNotifyTriggerType notifyTriggerType : TaskNotifyTriggerType.values()) {
+        for (ProcessTaskStepTaskNotifyTriggerType notifyTriggerType : ProcessTaskStepTaskNotifyTriggerType.values()) {
             returnList.add(new NotifyTriggerVo(notifyTriggerType.getTrigger(), notifyTriggerType.getText(),notifyTriggerType.getDescription()));
         }
         return returnList;
@@ -105,7 +105,7 @@ public class EventNotifyPolicyHandler extends NotifyPolicyHandlerBase {
 //                }
 //            }
             //任务
-            for (TaskNotifyTriggerType notifyTriggerType : TaskNotifyTriggerType.values()) {
+            for (ProcessTaskStepTaskNotifyTriggerType notifyTriggerType : ProcessTaskStepTaskNotifyTriggerType.values()) {
                 List<IDefaultTemplate> templates = map.get(notifyTriggerType.getTrigger().toLowerCase());
                 for(IDefaultTemplate vo : templates){
                     list.add(new NotifyTriggerTemplateVo(notifyTriggerType.getText(),notifyTriggerType.getDescription(),vo.getTitle(),vo.getContent(),handler));
@@ -148,7 +148,7 @@ public class EventNotifyPolicyHandler extends NotifyPolicyHandlerBase {
             paramVo.setIsEditable(0);
             notifyPolicyParamList.add(paramVo);
         }
-        for(TaskNotifyParam param : TaskNotifyParam.values()) {
+        for(ProcessTaskStepTaskNotifyParam param : ProcessTaskStepTaskNotifyParam.values()) {
             ConditionParamVo paramVo = new ConditionParamVo();
             paramVo.setName(param.getValue());
             paramVo.setLabel(param.getText());
