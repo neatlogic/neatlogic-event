@@ -17,11 +17,8 @@ import codedriver.framework.notify.dto.NotifyTriggerTemplateVo;
 import codedriver.framework.notify.dto.NotifyTriggerVo;
 import codedriver.framework.process.constvalue.ConditionProcessTaskOptions;
 import codedriver.framework.process.constvalue.ProcessTaskGroupSearch;
-import codedriver.framework.process.constvalue.ProcessTaskParams;
 import codedriver.framework.process.constvalue.ProcessUserType;
-import codedriver.framework.process.notify.constvalue.ProcessNotifyPolicyHandlerGroup;
-import codedriver.framework.process.notify.constvalue.ProcessTaskStepNotifyTriggerType;
-import codedriver.framework.process.notify.constvalue.TaskNotifyTriggerType;
+import codedriver.framework.process.notify.constvalue.*;
 import codedriver.framework.process.notify.core.IDefaultTemplate;
 import codedriver.framework.process.notify.core.NotifyDefaultTemplateFactory;
 import codedriver.module.event.constvalue.EventProcessStepHandlerType;
@@ -75,7 +72,7 @@ public class EventNotifyPolicyHandler extends NotifyPolicyHandlerBase {
 //            returnList.add(new NotifyTriggerVo(notifyTriggerType.getTrigger(), notifyTriggerType.getText(), notifyTriggerType.getDescription()));
 //        }
         //任务
-        for (TaskNotifyTriggerType notifyTriggerType : TaskNotifyTriggerType.values()) {
+        for (ProcessTaskStepTaskNotifyTriggerType notifyTriggerType : ProcessTaskStepTaskNotifyTriggerType.values()) {
             returnList.add(new NotifyTriggerVo(notifyTriggerType.getTrigger(), notifyTriggerType.getText(),notifyTriggerType.getDescription()));
         }
         return returnList;
@@ -108,7 +105,7 @@ public class EventNotifyPolicyHandler extends NotifyPolicyHandlerBase {
 //                }
 //            }
             //任务
-            for (TaskNotifyTriggerType notifyTriggerType : TaskNotifyTriggerType.values()) {
+            for (ProcessTaskStepTaskNotifyTriggerType notifyTriggerType : ProcessTaskStepTaskNotifyTriggerType.values()) {
                 List<IDefaultTemplate> templates = map.get(notifyTriggerType.getTrigger().toLowerCase());
                 for(IDefaultTemplate vo : templates){
                     list.add(new NotifyTriggerTemplateVo(notifyTriggerType.getText(),notifyTriggerType.getDescription(),vo.getTitle(),vo.getContent(),handler));
@@ -121,15 +118,45 @@ public class EventNotifyPolicyHandler extends NotifyPolicyHandlerBase {
     @Override
     protected List<ConditionParamVo> mySystemParamList() {
         List<ConditionParamVo> notifyPolicyParamList = new ArrayList<>();
-        for (ProcessTaskParams processTaskParams : ProcessTaskParams.values()) {
-            ConditionParamVo param = new ConditionParamVo();
-            param.setName(processTaskParams.getValue());
-            param.setLabel(processTaskParams.getText());
-            param.setParamType(processTaskParams.getParamType().getName());
-            param.setParamTypeName(processTaskParams.getParamType().getText());
-            param.setFreemarkerTemplate(processTaskParams.getFreemarkerTemplate());
-            param.setIsEditable(0);
-            notifyPolicyParamList.add(param);
+//        for (ProcessTaskParams processTaskParams : ProcessTaskParams.values()) {
+//            ConditionParamVo param = new ConditionParamVo();
+//            param.setName(processTaskParams.getValue());
+//            param.setLabel(processTaskParams.getText());
+//            param.setParamType(processTaskParams.getParamType().getName());
+//            param.setParamTypeName(processTaskParams.getParamType().getText());
+//            param.setFreemarkerTemplate(processTaskParams.getFreemarkerTemplate());
+//            param.setIsEditable(0);
+//            notifyPolicyParamList.add(param);
+//        }
+        for(ProcessTaskNotifyParam param : ProcessTaskNotifyParam.values()) {
+            ConditionParamVo paramVo = new ConditionParamVo();
+            paramVo.setName(param.getValue());
+            paramVo.setLabel(param.getText());
+            paramVo.setParamType(param.getParamType().getName());
+            paramVo.setParamTypeName(param.getParamType().getText());
+            paramVo.setFreemarkerTemplate(param.getFreemarkerTemplate());
+            paramVo.setIsEditable(0);
+            notifyPolicyParamList.add(paramVo);
+        }
+        for(ProcessTaskStepNotifyParam param : ProcessTaskStepNotifyParam.values()) {
+            ConditionParamVo paramVo = new ConditionParamVo();
+            paramVo.setName(param.getValue());
+            paramVo.setLabel(param.getText());
+            paramVo.setParamType(param.getParamType().getName());
+            paramVo.setParamTypeName(param.getParamType().getText());
+            paramVo.setFreemarkerTemplate(param.getFreemarkerTemplate());
+            paramVo.setIsEditable(0);
+            notifyPolicyParamList.add(paramVo);
+        }
+        for(ProcessTaskStepTaskNotifyParam param : ProcessTaskStepTaskNotifyParam.values()) {
+            ConditionParamVo paramVo = new ConditionParamVo();
+            paramVo.setName(param.getValue());
+            paramVo.setLabel(param.getText());
+            paramVo.setParamType(param.getParamType().getName());
+            paramVo.setParamTypeName(param.getParamType().getText());
+            paramVo.setFreemarkerTemplate(param.getFreemarkerTemplate());
+            paramVo.setIsEditable(0);
+            notifyPolicyParamList.add(paramVo);
         }
         return notifyPolicyParamList;
     }
