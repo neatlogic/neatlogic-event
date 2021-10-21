@@ -136,9 +136,9 @@
 		#{isActive},
 		#{content},
 		#{fcu},
-		#{lcu},
-		#{fcd},
-		#{lcd}
+		#{fcu},
+		NOW(3),
+		NOW(3)
 		)
 	</insert>
 
