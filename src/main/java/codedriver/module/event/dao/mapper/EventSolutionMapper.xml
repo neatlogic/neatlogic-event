@@ -24,9 +24,9 @@
 		`is_active` as isActive,
 		`content`,
 		`fcu`,
-		(select user_name from user where uuid = `fcu`) as fcuName,
+		<!--(select user_name from user where uuid = `fcu`) as fcuName,-->
 		`lcu`,
-		(select user_name from user where uuid = `lcu`) as lcuName,
+		<!--(select user_name from user where uuid = `lcu`) as lcuName,-->
 		`fcd`,
 		`lcd`
 		FROM `event_solution`
