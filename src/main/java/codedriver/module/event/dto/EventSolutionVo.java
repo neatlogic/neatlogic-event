@@ -1,6 +1,7 @@
 package codedriver.module.event.dto;
 
 import codedriver.framework.common.constvalue.ApiParamType;
+import codedriver.framework.common.dto.BaseEditorVo;
 import codedriver.framework.common.dto.BasePageVo;
 import codedriver.framework.restful.annotation.EntityField;
 import codedriver.framework.util.SnowflakeUtil;
@@ -8,7 +9,7 @@ import codedriver.framework.util.SnowflakeUtil;
 import java.util.Date;
 import java.util.List;
 
-public class EventSolutionVo extends BasePageVo {
+public class EventSolutionVo extends BaseEditorVo {
 
 	@EntityField(name = "解决方案ID", type = ApiParamType.LONG)
 	private Long id;
@@ -18,19 +19,6 @@ public class EventSolutionVo extends BasePageVo {
 	private Integer isActive;
 	@EntityField(name = "内容", type = ApiParamType.STRING)
 	private String content;
-	@EntityField(name = "创建人ID", type = ApiParamType.STRING)
-	private String fcu;
-	@EntityField(name = "更新人ID", type = ApiParamType.STRING)
-	private String lcu;
-	@EntityField(name = "创建时间")
-	private Date fcd;
-	@EntityField(name = "更新时间")
-	private Date lcd;
-
-	@EntityField(name = "创建人用户名", type = ApiParamType.STRING)
-	private String fcuName;
-	@EntityField(name = "更新人用户名", type = ApiParamType.STRING)
-	private String lcuName;
 	@EntityField(name = "关联的事件类型", type = ApiParamType.JSONARRAY)
 	private List<EventTypeVo> eventTypeList;
 
@@ -69,54 +57,6 @@ public class EventSolutionVo extends BasePageVo {
 
 	public void setContent(String content) {
 		this.content = content;
-	}
-
-	public String getFcu() {
-		return fcu;
-	}
-
-	public void setFcu(String fcu) {
-		this.fcu = fcu;
-	}
-
-	public String getLcu() {
-		return lcu;
-	}
-
-	public void setLcu(String lcu) {
-		this.lcu = lcu;
-	}
-
-	public Date getFcd() {
-		return fcd;
-	}
-
-	public void setFcd(Date fcd) {
-		this.fcd = fcd;
-	}
-
-	public Date getLcd() {
-		return lcd;
-	}
-
-	public void setLcd(Date lcd) {
-		this.lcd = lcd;
-	}
-
-	public String getFcuName() {
-		return fcuName;
-	}
-
-	public void setFcuName(String fcuName) {
-		this.fcuName = fcuName;
-	}
-
-	public String getLcuName() {
-		return lcuName;
-	}
-
-	public void setLcuName(String lcuName) {
-		this.lcuName = lcuName;
 	}
 
 	public List<EventTypeVo> getEventTypeList() {
