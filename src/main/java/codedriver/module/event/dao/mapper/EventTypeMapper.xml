@@ -333,6 +333,24 @@
 	#{id}
 	</foreach>
 	</select>
+
+	<select id="checkEventTypeNameIsRepeatByLRAndLayer" parameterType="codedriver.module.event.dto.EventTypeVo" resultType="java.lang.Integer">
+		SELECT
+			count(1)
+		FROM
+			`event_type`
+		WHERE
+			`lft` &gt;#{lft} and `rht` &lt; #{rht} and `name` = #{name} and `layer` = #{layer} and `id` != #{id}
+	</select>
+
+	<select id="checkEventTypeNameIsRepeatByParentId" parameterType="codedriver.module.event.dto.EventTypeVo" resultType="java.lang.Integer">
+		SELECT
+			count(1)
+		FROM
+			`event_type`
+		WHERE
+			`name` = #{name} and `id` != #{id} and `parent_id` = #{parentId}
+	</select>
 	
 	<update id="updateEventTypeNameById" parameterType="codedriver.module.event.dto.EventTypeVo">
 		UPDATE `event_type` SET

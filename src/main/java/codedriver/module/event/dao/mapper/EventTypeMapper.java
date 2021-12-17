@@ -10,82 +10,85 @@ import java.util.List;
 
 public interface EventTypeMapper {
 
-	public List<EventTypeVo> getEventTypeByParentId(Long parentId);
+	List<EventTypeVo> getEventTypeByParentId(Long parentId);
 
-	public int updateEventTypeLeftRightCode(@Param("id") Long id, @Param("lft") Integer lft, @Param("rht") Integer rht);
+	int updateEventTypeLeftRightCode(@Param("id") Long id, @Param("lft") Integer lft, @Param("rht") Integer rht);
 
-	public Integer getMaxRhtCode();
+	Integer getMaxRhtCode();
 
-	public int searchEventTypeCount(EventTypeVo eventTypeVo);
+	int searchEventTypeCount(EventTypeVo eventTypeVo);
 
-	public List<EventTypeVo> searchEventType(EventTypeVo eventTypeVo);
+	List<EventTypeVo> searchEventType(EventTypeVo eventTypeVo);
 
-	public List<EventTypeVo> getAncestorsAndSelfByLftRht(@Param("lft") Integer lft, @Param("rht") Integer rht);
+	List<EventTypeVo> getAncestorsAndSelfByLftRht(@Param("lft") Integer lft, @Param("rht") Integer rht);
 
-	public EventTypeVo getTopEventTypeByLftRht(@Param("lft") Integer lft, @Param("rht") Integer rht);
+	EventTypeVo getTopEventTypeByLftRht(@Param("lft") Integer lft, @Param("rht") Integer rht);
 
-	public List<EventTypeVo> getChildrenByLftRhtLayer(@Param("lft") Integer lft, @Param("rht") Integer rht,@Param("layer") Integer layer);
+	List<EventTypeVo> getChildrenByLftRhtLayer(@Param("lft") Integer lft, @Param("rht") Integer rht,@Param("layer") Integer layer);
 
-//	public int calculateLayer(@Param("lft") Integer lft, @Param("rht") Integer rht);
+//	int calculateLayer(@Param("lft") Integer lft, @Param("rht") Integer rht);
 
-	public List<EventTypeVo> getEventTypeChildCountListByIdList(List<Long> eventTypeIdList);
+	List<EventTypeVo> getEventTypeChildCountListByIdList(List<Long> eventTypeIdList);
 
-	public EventTypeVo getEventTypeSolutionCountByLftRht(@Param("lft") Integer lft, @Param("rht") Integer rht);
+	EventTypeVo getEventTypeSolutionCountByLftRht(@Param("lft") Integer lft, @Param("rht") Integer rht);
 
-	public int checkEventTypeIsExists(Long id);
+	int checkEventTypeIsExists(Long id);
 
-	public int updateEventTypeNameById(EventTypeVo eventTypeVo);
+	int updateEventTypeNameById(EventTypeVo eventTypeVo);
 
-//	public int getEventTypeCountOnLock();
+//	int getEventTypeCountOnLock();
 
-//	public int checkLeftRightCodeIsWrong();
+//	int checkLeftRightCodeIsWrong();
 
-	public int checkEventTypeIsExistsByLeftRightCode(@Param("id") Long id, @Param("lft") Integer lft, @Param("rht") Integer rht);
+	int checkEventTypeIsExistsByLeftRightCode(@Param("id") Long id, @Param("lft") Integer lft, @Param("rht") Integer rht);
 
-	public EventTypeVo getEventTypeById(Long id);
+	EventTypeVo getEventTypeById(Long id);
 
-	public EventTypeVo getEventTypeByParentIdAndStartNum(@Param("parentId") Long parentId, @Param("startNum") int startNum);
+	EventTypeVo getEventTypeByParentIdAndStartNum(@Param("parentId") Long parentId, @Param("startNum") int startNum);
 
-	public List<EventTypeVo> getEventTypeListByParentId(@Param("parentId") Long parentId);
+	List<EventTypeVo> getEventTypeListByParentId(@Param("parentId") Long parentId);
 
-	public List<EventTypeVo> getChildrenByLeftRightCode(@Param("lft") Integer lft, @Param("rht") Integer rht);
+	List<EventTypeVo> getChildrenByLeftRightCode(@Param("lft") Integer lft, @Param("rht") Integer rht);
 
-	public List<Long> getChildrenIdListByLeftRightCode(@Param("lft") Integer lft, @Param("rht") Integer rht);
+	List<Long> getChildrenIdListByLeftRightCode(@Param("lft") Integer lft, @Param("rht") Integer rht);
 
-	public List<AuthorityVo> getAuthorityByEventTypeId(@Param("eventTypId") Long eventTypId);
+	List<AuthorityVo> getAuthorityByEventTypeId(@Param("eventTypId") Long eventTypId);
 
-//	public List<AuthorityVo> checkAuthorityIsExists(@Param("lft") Integer lft, @Param("rht") Integer rht,@Param("authorityVo") AuthorityVo authority);
+//	List<AuthorityVo> checkAuthorityIsExists(@Param("lft") Integer lft, @Param("rht") Integer rht,@Param("authorityVo") AuthorityVo authority);
 
-//	public List<EventSolutionVo> getSolutionList(EventTypeVo eventTypeVo);
+//	List<EventSolutionVo> getSolutionList(EventTypeVo eventTypeVo);
 
-	public List<EventSolutionVo> getSolutionListByLftRht(@Param("vo") EventTypeVo vo,@Param("isActive") Integer isActive);
+	List<EventSolutionVo> getSolutionListByLftRht(@Param("vo") EventTypeVo vo,@Param("isActive") Integer isActive);
 
-//	public int getSolutionCountByEventTypeId(@Param("eventTypId") Long eventTypId);
+//	int getSolutionCountByEventTypeId(@Param("eventTypId") Long eventTypId);
 
-	public int getSolutionCountByLtfRht(@Param("lft") Integer lft, @Param("rht") Integer rht,@Param("isActive") Integer isActive);
+	int getSolutionCountByLtfRht(@Param("lft") Integer lft, @Param("rht") Integer rht,@Param("isActive") Integer isActive);
 
-	public int updateEventTypeParentIdById(EventTypeVo eventTypeVo);
+	int checkEventTypeNameIsRepeatByLRAndLayer(EventTypeVo eventTypeVo);
 
-	public int updateEventTypeLayer(EventTypeVo eventType);
+	int checkEventTypeNameIsRepeatByParentId(EventTypeVo eventTypeVo);
 
-	public int batchUpdateEventTypeLeftRightCodeByLeftRightCode(@Param("lft") Integer lft, @Param("rht") Integer rht, @Param("step") int step);
+	int updateEventTypeParentIdById(EventTypeVo eventTypeVo);
 
-	public int batchUpdateEventTypeLeftCode(@Param("minCode")Integer minCode, @Param("step") int step);
+	int updateEventTypeLayer(EventTypeVo eventType);
 
-	public int batchUpdateEventTypeRightCode(@Param("minCode")Integer minCode, @Param("step") int step);
+	int batchUpdateEventTypeLeftRightCodeByLeftRightCode(@Param("lft") Integer lft, @Param("rht") Integer rht, @Param("step") int step);
 
-	public  int insertEventType(EventTypeVo eventTypeVo);
+	int batchUpdateEventTypeLeftCode(@Param("minCode")Integer minCode, @Param("step") int step);
 
-	public int insertEventTypeAuthority(@Param("authorityVo") AuthorityVo authority, @Param("eventTypeId") Long eventTypeId);
+	int batchUpdateEventTypeRightCode(@Param("minCode")Integer minCode, @Param("step") int step);
 
-	public int deleteEventTypeByLeftRightCode(@Param("lft") Integer lft, @Param("rht") Integer rht);
+	int insertEventType(EventTypeVo eventTypeVo);
 
-	public int deleteAuthorityByEventTypeId(@Param("eventTypeId") Long eventTypeId);
+	int insertEventTypeAuthority(@Param("authorityVo") AuthorityVo authority, @Param("eventTypeId") Long eventTypeId);
 
-    public List<Long> getCurrentUserAuthorizedEventTypeIdList(@Param("userUuid") String userUuid, @Param("teamUuidList") List<String> teamUuidList,
-        @Param("roleUuidList") List<String> roleUuidList);
+	int deleteEventTypeByLeftRightCode(@Param("lft") Integer lft, @Param("rht") Integer rht);
 
-    public List<EventTypeVo> getEventTypeListByIdList(List<Long> authorizedEventTypeIdList);
+	int deleteAuthorityByEventTypeId(@Param("eventTypeId") Long eventTypeId);
+
+	List<Long> getCurrentUserAuthorizedEventTypeIdList(@Param("userUuid") String userUuid, @Param("teamUuidList") List<String> teamUuidList, @Param("roleUuidList") List<String> roleUuidList);
+
+	List<EventTypeVo> getEventTypeListByIdList(List<Long> authorizedEventTypeIdList);
 
 	int deleteEventTypeByIdList(List<Long> idList);
 
