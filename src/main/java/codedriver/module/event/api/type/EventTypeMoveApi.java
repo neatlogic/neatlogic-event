@@ -5,20 +5,20 @@ import codedriver.framework.common.constvalue.ApiParamType;
 import codedriver.framework.lrcode.LRCodeManager;
 import codedriver.framework.lrcode.constvalue.MoveType;
 import codedriver.framework.lrcode.exception.MoveTargetNodeIllegalException;
-import codedriver.framework.process.exception.event.EventTypeNotFoundException;
-import codedriver.framework.restful.constvalue.OperationTypeEnum;
 import codedriver.framework.restful.annotation.*;
+import codedriver.framework.restful.constvalue.OperationTypeEnum;
 import codedriver.framework.restful.core.privateapi.PrivateApiComponentBase;
 import codedriver.module.event.auth.label.EVENT_TYPE_MODIFY;
 import codedriver.module.event.dao.mapper.EventTypeMapper;
 import codedriver.module.event.dto.EventTypeVo;
+import codedriver.module.event.exception.core.EventTypeNotFoundException;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Objects;
 import org.apache.commons.collections4.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +30,7 @@ import java.util.Map;
 @OperationType(type = OperationTypeEnum.UPDATE)
 public class EventTypeMoveApi extends PrivateApiComponentBase {
 
-    @Autowired
+    @Resource
     private EventTypeMapper eventTypeMapper;
 
     @Override
@@ -48,30 +48,30 @@ public class EventTypeMoveApi extends PrivateApiComponentBase {
         return null;
     }
 
-    @Input({ @Param( name = "id", type = ApiParamType.LONG, desc = "事件类型id", isRequired = true),
-             @Param( name = "parentId", type = ApiParamType.LONG, desc = "父id", isRequired = true,minLength = 1),
-             @Param( name = "sort", type = ApiParamType.INTEGER, desc = "sort(目标父级的位置，从0开始)", isRequired = true)})
+    @Input({@Param(name = "id", type = ApiParamType.LONG, desc = "事件类型id", isRequired = true),
+            @Param(name = "parentId", type = ApiParamType.LONG, desc = "父id", isRequired = true, minLength = 1),
+            @Param(name = "sort", type = ApiParamType.INTEGER, desc = "sort(目标父级的位置，从0开始)", isRequired = true)})
     @Output({
 
     })
-    @Description( desc = "移动事件类型")
+    @Description(desc = "移动事件类型")
     @Override
     public Object myDoService(JSONObject jsonObj) throws Exception {
         Long id = jsonObj.getLong("id");
         EventTypeVo eventType = eventTypeMapper.getEventTypeById(id);
-        if(eventType == null) {
+        if (eventType == null) {
             throw new EventTypeNotFoundException(id);
         }
         Long parentId = jsonObj.getLong("parentId");
-        if(Objects.equal(id, parentId)) {
+        if (Objects.equal(id, parentId)) {
             throw new MoveTargetNodeIllegalException();
         }
         Integer parentLayer = 0;
-        if (parentId == null){
+        if (parentId == null) {
             parentId = EventTypeVo.ROOT_ID;
-        }else if(!EventTypeVo.ROOT_ID.equals(parentId)){
+        } else if (!EventTypeVo.ROOT_ID.equals(parentId)) {
             EventTypeVo parentEventType = eventTypeMapper.getEventTypeById(parentId);
-            if(parentEventType == null) {
+            if (parentEventType == null) {
                 throw new EventTypeNotFoundException(parentId);
             }
             parentLayer = parentEventType.getLayer();
@@ -104,17 +104,17 @@ public class EventTypeMoveApi extends PrivateApiComponentBase {
         //找出被移动节点本身及子节点，计算并更新层级
         EventTypeVo self = eventTypeMapper.getEventTypeById(eventType.getId());
         List<EventTypeVo> childrenAndSelf = eventTypeMapper.getChildrenByLeftRightCode(self.getLft(), self.getRht());
-        if(CollectionUtils.isNotEmpty(childrenAndSelf)){
-            for(EventTypeVo vo :childrenAndSelf){
+        if (CollectionUtils.isNotEmpty(childrenAndSelf)) {
+            for (EventTypeVo vo : childrenAndSelf) {
                 int layer = vo.getLayer() - self.getLayer();
                 vo.setLayer(layer);
             }
         }
         self.setLayer(parentLayer + 1);
         childrenAndSelf.add(self);
-        for(EventTypeVo vo :childrenAndSelf){
+        for (EventTypeVo vo : childrenAndSelf) {
             int layer = vo.getLayer() + self.getLayer();
-            if(!vo.getId().equals(self.getId())){
+            if (!vo.getId().equals(self.getId())) {
                 vo.setLayer(layer);
             }
             eventTypeMapper.updateEventTypeLayer(vo);
@@ -122,16 +122,16 @@ public class EventTypeMoveApi extends PrivateApiComponentBase {
         /** 查询被移动节点及其子节点关联的解决方案数量，保证移动后页面回显的数据正确 */
         List<EventTypeVo> typeVos = eventTypeMapper.getChildrenByLeftRightCode(self.getLft(), self.getRht());
         typeVos.add(self);
-        List<Map<String,Object>> idSolutionCountMapList = new ArrayList<>();
-        for(EventTypeVo vo : typeVos){
+        List<Map<String, Object>> idSolutionCountMapList = new ArrayList<>();
+        for (EventTypeVo vo : typeVos) {
             EventTypeVo count = eventTypeMapper.getEventTypeSolutionCountByLftRht(vo.getLft(), vo.getRht());
-            Map<String,Object> map = new HashMap<>();
-            map.put("id",vo.getId());
-            map.put("solutionCount",count.getSolutionCount());
+            Map<String, Object> map = new HashMap<>();
+            map.put("id", vo.getId());
+            map.put("solutionCount", count.getSolutionCount());
             idSolutionCountMapList.add(map);
         }
         JSONObject result = new JSONObject();
-        result.put("idSolutionCountMapList",idSolutionCountMapList);
+        result.put("idSolutionCountMapList", idSolutionCountMapList);
         return result;
     }
 
