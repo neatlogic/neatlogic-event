@@ -120,6 +120,14 @@ public class EventTypeSaveApi extends PrivateApiComponentBase {
         return returnObj;
     }
 
+    /**
+     * 校验名称是否重复，规则：同一层级中不能出现重名事件类型
+     *
+     * @param target   待校验的事件类型
+     * @param parent   待校验类型的父类型
+     * @param parentId 父类型id
+     * @param layer    层级
+     */
     private void checkNameIsRepeat(EventTypeVo target, EventTypeVo parent, Long parentId, Integer layer) {
         EventTypeVo searchVo = new EventTypeVo();
         if (!Objects.equals(parentId, EventTypeVo.ROOT_ID)) {
