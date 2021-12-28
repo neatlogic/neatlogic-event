@@ -68,7 +68,7 @@ public class EventProcessComponent extends ProcessStepHandlerBase {
 
     @Override
     public int getSort() {
-        return 4;
+        return 5;
     }
 
     @Override
