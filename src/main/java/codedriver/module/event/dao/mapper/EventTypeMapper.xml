@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="codedriver.module.event.dao.mapper.EventTypeMapper">
 
-	<resultMap id="eventTypeMap" type="codedriver.module.event.dto.EventTypeVo">
+	<resultMap id="eventTypeMap" type="codedriver.framework.event.dto.EventTypeVo">
 		<id property="id" column="id"/>
 		<result property="name" column="name"/>
 		<result property="parentId" column="parentId"/>
@@ -10,7 +10,7 @@
 		<result property="rht" column="rht"/>
 	</resultMap>
 
-	<resultMap id="childrenEventTypeMap" type="codedriver.module.event.dto.EventTypeVo">
+	<resultMap id="childrenEventTypeMap" type="codedriver.framework.event.dto.EventTypeVo">
 		<id property="id" column="id"/>
 		<result property="name" column="name"/>
 		<result property="parentId" column="parentId"/>
@@ -31,7 +31,7 @@
 		SELECT MAX(`rht`) FROM `event_type`
 	</select>
 
-	<select id="searchEventTypeCount" parameterType="codedriver.module.event.dto.EventTypeVo" resultType="int">
+	<select id="searchEventTypeCount" parameterType="codedriver.framework.event.dto.EventTypeVo" resultType="int">
 		SELECT
 		COUNT(1)
 		FROM
@@ -46,7 +46,7 @@
 		</if>
 	</select>
 
-	<select id="searchEventType" parameterType="codedriver.module.event.dto.EventTypeVo" resultMap="eventTypeMap">
+	<select id="searchEventType" parameterType="codedriver.framework.event.dto.EventTypeVo" resultMap="eventTypeMap">
 		SELECT
 		`id`,
 		`name`,
@@ -81,7 +81,7 @@
 		ORDER BY `lft` ASC
 	</select>
 
-	<select id="getTopEventTypeByLftRht" resultType="codedriver.module.event.dto.EventTypeVo">
+	<select id="getTopEventTypeByLftRht" resultType="codedriver.framework.event.dto.EventTypeVo">
 		SELECT
 		a.`id`,
 		a.`name`,
@@ -94,7 +94,7 @@
 		limit 1
 	</select>
 
-	<select id="getChildrenByLftRhtLayer" resultType="codedriver.module.event.dto.EventTypeVo">
+	<select id="getChildrenByLftRhtLayer" resultType="codedriver.framework.event.dto.EventTypeVo">
 		SELECT
 		a.`id`,
 		a.`name`,
@@ -114,7 +114,7 @@
 		WHERE `lft` &lt;= #{lft} AND `rht` &gt;= #{rht}
 	</select>
 
-	<select id="getEventTypeChildCountListByIdList" parameterType="java.util.List" resultType="codedriver.module.event.dto.EventTypeVo">
+	<select id="getEventTypeChildCountListByIdList" parameterType="java.util.List" resultType="codedriver.framework.event.dto.EventTypeVo">
 		SELECT
 		a.`id`,
 		COUNT(DISTINCT c.`id`) AS childCount
@@ -127,7 +127,7 @@
 		GROUP BY a.`id`
 	</select>
 
-	<select id="getEventTypeSolutionCountByLftRht" parameterType="java.lang.Integer" resultType="codedriver.module.event.dto.EventTypeVo">
+	<select id="getEventTypeSolutionCountByLftRht" parameterType="java.lang.Integer" resultType="codedriver.framework.event.dto.EventTypeVo">
 		select count(1) as solutionCount from (
 		SELECT
 		b.`solution_id`
@@ -153,7 +153,7 @@
 	) a
 	</select>
 
-	<select id="getEventTypeById" parameterType="java.lang.Long" resultType="codedriver.module.event.dto.EventTypeVo">
+	<select id="getEventTypeById" parameterType="java.lang.Long" resultType="codedriver.framework.event.dto.EventTypeVo">
 		SELECT
 		a.`id`,
 		a.`name`,
@@ -180,7 +180,7 @@
 		ORDER BY `lft` ASC
 	</select>
 
-	<select id="getEventTypeListByParentId" parameterType="java.lang.Long" resultType="codedriver.module.event.dto.EventTypeVo">
+	<select id="getEventTypeListByParentId" parameterType="java.lang.Long" resultType="codedriver.framework.event.dto.EventTypeVo">
 		SELECT
 		a.`id`,
 		a.`name`,
@@ -196,7 +196,7 @@
 	SELECT COUNT(1) FROM `event_type` WHERE `id` = #{id} AND `lft` &gt; #{lft} AND `rht` &lt; #{rht}
 	</select>
 
-	<select id="getEventTypeByParentIdAndStartNum" resultType="codedriver.module.event.dto.EventTypeVo">
+	<select id="getEventTypeByParentIdAndStartNum" resultType="codedriver.framework.event.dto.EventTypeVo">
 	SELECT
 		a.`id`,
 		a.`name`,
@@ -210,7 +210,7 @@
 		limit #{startNum}, 1
 	</select>
 
-	<select id="getChildrenByLeftRightCode" resultType="codedriver.module.event.dto.EventTypeVo">
+	<select id="getChildrenByLeftRightCode" resultType="codedriver.framework.event.dto.EventTypeVo">
 		SELECT
 		a.`id`,
 		a.`name`,
@@ -268,7 +268,7 @@
 		</if>
 	</select>
 
-	<select id="getSolutionList" parameterType="codedriver.module.event.dto.EventTypeVo" resultType="codedriver.module.event.dto.EventSolutionVo" useCache="false">
+	<select id="getSolutionList" parameterType="codedriver.framework.event.dto.EventTypeVo" resultType="codedriver.framework.event.dto.EventSolutionVo" useCache="false">
 		select
 		s.`id`,
 		s.`name`
@@ -280,7 +280,7 @@
 		</if>
 	</select>
 
-	<select id="getSolutionListByLftRht" resultType="codedriver.module.event.dto.EventSolutionVo" useCache="false">
+	<select id="getSolutionListByLftRht" resultType="codedriver.framework.event.dto.EventSolutionVo" useCache="false">
 		select
 		distinct(s.`id`) as id,
 		s.`name`
@@ -320,7 +320,7 @@
 	</if>
 	</select>
 	
-	<select id="getEventTypeListByIdList" parameterType="java.lang.Long" resultType="codedriver.module.event.dto.EventTypeVo">
+	<select id="getEventTypeListByIdList" parameterType="java.lang.Long" resultType="codedriver.framework.event.dto.EventTypeVo">
 	SELECT
 	`id`,
 	`name`,
@@ -334,7 +334,7 @@
 	</foreach>
 	</select>
 
-	<select id="checkEventTypeNameIsRepeatByLRAndLayer" parameterType="codedriver.module.event.dto.EventTypeVo" resultType="java.lang.Integer">
+	<select id="checkEventTypeNameIsRepeatByLRAndLayer" parameterType="codedriver.framework.event.dto.EventTypeVo" resultType="java.lang.Integer">
 		SELECT
 			count(1)
 		FROM
@@ -343,7 +343,7 @@
 			`lft` &gt;#{lft} and `rht` &lt; #{rht} and `name` = #{name} and `layer` = #{layer} and `id` != #{id}
 	</select>
 
-	<select id="checkEventTypeNameIsRepeatByParentId" parameterType="codedriver.module.event.dto.EventTypeVo" resultType="java.lang.Integer">
+	<select id="checkEventTypeNameIsRepeatByParentId" parameterType="codedriver.framework.event.dto.EventTypeVo" resultType="java.lang.Integer">
 		SELECT
 			count(1)
 		FROM
@@ -352,17 +352,17 @@
 			`name` = #{name} and `id` != #{id} and `parent_id` = #{parentId}
 	</select>
 	
-	<update id="updateEventTypeNameById" parameterType="codedriver.module.event.dto.EventTypeVo">
+	<update id="updateEventTypeNameById" parameterType="codedriver.framework.event.dto.EventTypeVo">
 		UPDATE `event_type` SET
 		`name` = #{name}
 		WHERE `id` = #{id}
 	</update>
 
-	<update id="updateEventTypeParentIdById" parameterType="codedriver.module.event.dto.EventTypeVo">
+	<update id="updateEventTypeParentIdById" parameterType="codedriver.framework.event.dto.EventTypeVo">
 		UPDATE `event_type` SET `parent_id` = #{parentId} WHERE `id` = #{id}
 	</update>
 
-	<update id="updateEventTypeLayer" parameterType="codedriver.module.event.dto.EventTypeVo">
+	<update id="updateEventTypeLayer" parameterType="codedriver.framework.event.dto.EventTypeVo">
 		update `event_type`
 		set `layer` = #{layer}
 		where `id` = #{id}
@@ -384,7 +384,7 @@
 		UPDATE `event_type` set `rht` = `rht` + #{step} WHERE `rht` &gt;= #{minCode}
 	</update>
 
-	<insert id="insertEventType" parameterType="codedriver.module.event.dto.EventTypeVo">
+	<insert id="insertEventType" parameterType="codedriver.framework.event.dto.EventTypeVo">
 		INSERT INTO `event_type` (
 		`id`,
 		`name`,

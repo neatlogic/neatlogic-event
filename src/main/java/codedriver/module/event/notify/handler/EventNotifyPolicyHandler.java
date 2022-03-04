@@ -21,7 +21,7 @@ import codedriver.framework.process.constvalue.ProcessUserType;
 import codedriver.framework.process.notify.constvalue.*;
 import codedriver.framework.process.notify.core.IDefaultTemplate;
 import codedriver.framework.process.notify.core.NotifyDefaultTemplateFactory;
-import codedriver.module.event.constvalue.EventProcessStepHandlerType;
+import codedriver.framework.event.constvalue.EventProcessStepHandlerType;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.collections4.CollectionUtils;

@@ -1,7 +1,7 @@
 package codedriver.module.event.dao.mapper;
 
-import codedriver.module.event.dto.EventVo;
-import codedriver.module.event.dto.ProcessTaskStepEventVo;
+import codedriver.framework.event.dto.EventVo;
+import codedriver.framework.event.dto.ProcessTaskStepEventVo;
 
 public interface EventMapper {
 
