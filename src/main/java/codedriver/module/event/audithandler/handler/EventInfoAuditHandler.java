@@ -1,26 +1,23 @@
 package codedriver.module.event.audithandler.handler;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
+import codedriver.framework.event.constvalue.EventAuditDetailType;
+import codedriver.framework.event.dto.EventSolutionVo;
+import codedriver.framework.event.dto.EventTypeVo;
+import codedriver.framework.event.dto.EventVo;
 import codedriver.framework.process.audithandler.core.IProcessTaskStepAuditDetailHandler;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import codedriver.framework.process.dto.ProcessTaskStepAuditDetailVo;
+import codedriver.module.event.dao.mapper.EventSolutionMapper;
+import codedriver.module.event.dao.mapper.EventTypeMapper;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import codedriver.framework.process.audithandler.core.ProcessTaskStepAuditDetailHandlerBase;
-import codedriver.framework.process.dto.ProcessTaskStepAuditDetailVo;
-import codedriver.module.event.constvalue.EventAuditDetailType;
-import codedriver.module.event.dao.mapper.EventSolutionMapper;
-import codedriver.module.event.dao.mapper.EventTypeMapper;
-import codedriver.module.event.dto.EventSolutionVo;
-import codedriver.module.event.dto.EventTypeVo;
-import codedriver.module.event.dto.EventVo;
+import java.util.List;
+import java.util.stream.Collectors;
 @Service
 public class EventInfoAuditHandler implements IProcessTaskStepAuditDetailHandler {
 

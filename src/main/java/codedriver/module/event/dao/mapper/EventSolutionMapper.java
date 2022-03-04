@@ -1,9 +1,9 @@
 package codedriver.module.event.dao.mapper;
 
-import codedriver.module.event.dto.EventTypeVo;
+import codedriver.framework.event.dto.EventTypeVo;
 import org.apache.ibatis.annotations.Param;
 
-import codedriver.module.event.dto.EventSolutionVo;
+import codedriver.framework.event.dto.EventSolutionVo;
 
 import java.util.List;
 

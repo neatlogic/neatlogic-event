@@ -9,7 +9,7 @@
 	WHERE `processtask_step_id` = #{value}
 	</select>
 
-	<select id="getEventById" parameterType="java.lang.Long" resultType="codedriver.module.event.dto.EventVo">
+	<select id="getEventById" parameterType="java.lang.Long" resultType="codedriver.framework.event.dto.EventVo">
 	SELECT 
 	  `id`,
 	  `event_type_id` AS eventTypeId,
@@ -18,7 +18,7 @@
 	WHERE `id` = #{value}
 	</select>
 
-	<update id="updateEventById" parameterType="codedriver.module.event.dto.EventVo">
+	<update id="updateEventById" parameterType="codedriver.framework.event.dto.EventVo">
 	UPDATE `event` 
 	SET
 	  `event_type_id` = #{eventTypeId},
@@ -26,7 +26,7 @@
 	WHERE `id` = #{id}
 	</update>
 
-    <insert id="insertEvent" parameterType="codedriver.module.event.dto.EventVo">
+    <insert id="insertEvent" parameterType="codedriver.framework.event.dto.EventVo">
     INSERT INTO `event` (
 	  `id`,
 	  `event_type_id`,
@@ -40,7 +40,7 @@
 	  )
     </insert>
 
-    <insert id="insetProcessTaskStepEvent" parameterType="codedriver.module.event.dto.ProcessTaskStepEventVo">
+    <insert id="insetProcessTaskStepEvent" parameterType="codedriver.framework.event.dto.ProcessTaskStepEventVo">
     INSERT INTO `processtask_step_event` (
 	  `processtask_id`,
 	  `processtask_step_id`,

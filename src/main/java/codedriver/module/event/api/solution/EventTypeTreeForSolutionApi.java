@@ -8,7 +8,7 @@ import codedriver.framework.restful.constvalue.OperationTypeEnum;
 import codedriver.framework.restful.core.privateapi.PrivateApiComponentBase;
 import codedriver.module.event.dao.mapper.EventSolutionMapper;
 import codedriver.module.event.dao.mapper.EventTypeMapper;
-import codedriver.module.event.dto.EventTypeVo;
+import codedriver.framework.event.dto.EventTypeVo;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;

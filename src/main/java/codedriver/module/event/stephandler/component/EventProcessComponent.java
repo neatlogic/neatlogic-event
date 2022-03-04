@@ -1,10 +1,9 @@
 package codedriver.module.event.stephandler.component;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import codedriver.module.event.constvalue.EventProcessStepHandlerType;
+import codedriver.framework.event.constvalue.EventProcessStepHandlerType;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Objects;
 
-import codedriver.framework.process.constvalue.ProcessStepHandlerType;
 import codedriver.framework.process.constvalue.ProcessStepMode;
 import codedriver.framework.process.constvalue.ProcessTaskAuditDetailType;
 import codedriver.framework.process.constvalue.ProcessTaskAuditType;
@@ -22,11 +20,11 @@ import codedriver.framework.process.dto.ProcessTaskStepVo;
 import codedriver.framework.process.dto.ProcessTaskStepWorkerVo;
 import codedriver.framework.process.exception.core.ProcessTaskException;
 import codedriver.framework.process.stephandler.core.ProcessStepHandlerBase;
-import codedriver.module.event.constvalue.EventAuditDetailType;
+import codedriver.framework.event.constvalue.EventAuditDetailType;
 import codedriver.module.event.dao.mapper.EventMapper;
-import codedriver.module.event.dto.EventVo;
-import codedriver.module.event.dto.ProcessTaskStepEventVo;
-import codedriver.module.event.exception.core.EventNotFoundException;
+import codedriver.framework.event.dto.EventVo;
+import codedriver.framework.event.dto.ProcessTaskStepEventVo;
+import codedriver.framework.event.exception.core.EventNotFoundException;
 @Service
 public class EventProcessComponent extends ProcessStepHandlerBase {
     

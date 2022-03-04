@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="codedriver.module.event.dao.mapper.EventSolutionMapper">
 
-	<resultMap id="solutionMap" type="codedriver.module.event.dto.EventSolutionVo">
+	<resultMap id="solutionMap" type="codedriver.framework.event.dto.EventSolutionVo">
 		<id property="id" column="id" />
 		<result property="name" column="name" />
 		<result property="isActive" column="isActive" />
@@ -11,13 +11,13 @@
 		<result property="lcu" column="lcu" />
 		<result property="fcd" column="fcd" />
 		<result property="lcd" column="lcd" />
-		<collection property="eventTypeList" ofType="codedriver.module.event.dto.EventTypeVo">
+		<collection property="eventTypeList" ofType="codedriver.framework.event.dto.EventTypeVo">
 			<id property="id" column="eventTypeId" />
 			<result property="name" column="eventTypeName" />
 		</collection>
 	</resultMap>
 
-	<select id="searchSolution" parameterType="codedriver.module.event.dto.EventSolutionVo" resultType="codedriver.module.event.dto.EventSolutionVo">
+	<select id="searchSolution" parameterType="codedriver.framework.event.dto.EventSolutionVo" resultType="codedriver.framework.event.dto.EventSolutionVo">
 		SELECT
 		`id`,
 		`name`,
@@ -41,7 +41,7 @@
 		</if>
 	</select>
 
-	<select id="getSolutionById" parameterType="codedriver.module.event.dto.EventSolutionVo" resultMap="solutionMap">
+	<select id="getSolutionById" parameterType="codedriver.framework.event.dto.EventSolutionVo" resultMap="solutionMap">
 		SELECT
 		s.`id`,
 		s.`name`,
@@ -60,7 +60,7 @@
 		s.`id` = #{id}
 	</select>
 
-	<select id="searchSolutionCount" parameterType="codedriver.module.event.dto.EventSolutionVo" resultType="int">
+	<select id="searchSolutionCount" parameterType="codedriver.framework.event.dto.EventSolutionVo" resultType="int">
 		SELECT
 		COUNT(1)
 		FROM
@@ -72,7 +72,7 @@
 		</if>
 	</select>
 
-	<select id="checkSolutionExistsById" parameterType="java.lang.Long" resultType="codedriver.module.event.dto.EventSolutionVo">
+	<select id="checkSolutionExistsById" parameterType="java.lang.Long" resultType="codedriver.framework.event.dto.EventSolutionVo">
 		SELECT
 		`id`,
 		`name`
@@ -80,14 +80,14 @@
 		where `id` = #{id}
 	</select>
 
-	<select id="checkSolutionNameIsRepeat" parameterType="codedriver.module.event.dto.EventSolutionVo" resultType="int">
+	<select id="checkSolutionNameIsRepeat" parameterType="codedriver.framework.event.dto.EventSolutionVo" resultType="int">
 		SELECT
 		count(`id`)
 		FROM `event_solution`
 		where `name` = #{name} and `id` != #{id}
 	</select>
 
-	<select id="getEventTypeBySolutionId" parameterType="java.lang.Long" resultType="codedriver.module.event.dto.EventTypeVo">
+	<select id="getEventTypeBySolutionId" parameterType="java.lang.Long" resultType="codedriver.framework.event.dto.EventTypeVo">
 		SELECT
 		et.`id` as id,
 		et.`name` as name,
@@ -102,7 +102,7 @@
 	</select>
 
 
-	<update id="updateSolutionById" parameterType="codedriver.module.event.dto.EventSolutionVo">
+	<update id="updateSolutionById" parameterType="codedriver.framework.event.dto.EventSolutionVo">
 		UPDATE `event_solution` set
 		`name` = #{name},
 		`is_active` = #{isActive},
@@ -112,7 +112,7 @@
 		WHERE `id` = #{id}
 	</update>
 
-	<update id="updateSolutionStatus" parameterType="codedriver.module.event.dto.EventSolutionVo">
+	<update id="updateSolutionStatus" parameterType="codedriver.framework.event.dto.EventSolutionVo">
 		UPDATE `event_solution` SET
 		 `is_active` = #{isActive},
 		 `lcu` = #{lcu},
@@ -120,7 +120,7 @@
 		 WHERE `id` = #{id}
 	</update>
 
-	<insert id="insertSolution" parameterType="codedriver.module.event.dto.EventSolutionVo">
+	<insert id="insertSolution" parameterType="codedriver.framework.event.dto.EventSolutionVo">
 		INSERT INTO `event_solution` (
 		`id`,
 		`name`,

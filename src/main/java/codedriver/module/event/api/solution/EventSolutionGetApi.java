@@ -7,8 +7,8 @@ import codedriver.framework.restful.annotation.*;
 import codedriver.framework.restful.constvalue.OperationTypeEnum;
 import codedriver.framework.restful.core.privateapi.PrivateApiComponentBase;
 import codedriver.module.event.dao.mapper.EventSolutionMapper;
-import codedriver.module.event.dto.EventSolutionVo;
-import codedriver.module.event.exception.core.EventSolutionNotFoundException;
+import codedriver.framework.event.dto.EventSolutionVo;
+import codedriver.framework.event.exception.core.EventSolutionNotFoundException;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.stereotype.Service;
 
