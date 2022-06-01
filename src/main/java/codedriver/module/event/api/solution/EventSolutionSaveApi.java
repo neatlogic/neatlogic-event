@@ -4,15 +4,16 @@ import codedriver.framework.asynchronization.threadlocal.UserContext;
 import codedriver.framework.auth.core.AuthAction;
 import codedriver.framework.common.constvalue.ApiParamType;
 import codedriver.framework.dto.FieldValidResultVo;
+import codedriver.framework.event.auth.label.EVENT_SOLUTION_MODIFY;
+import codedriver.framework.event.dto.EventSolutionVo;
+import codedriver.framework.event.exception.core.EventSolutionNotFoundException;
+import codedriver.framework.event.exception.core.EventSolutionRepeatException;
 import codedriver.framework.restful.annotation.*;
 import codedriver.framework.restful.constvalue.OperationTypeEnum;
 import codedriver.framework.restful.core.IValid;
 import codedriver.framework.restful.core.privateapi.PrivateApiComponentBase;
-import codedriver.framework.event.auth.label.EVENT_SOLUTION_MODIFY;
+import codedriver.framework.util.RegexUtils;
 import codedriver.module.event.dao.mapper.EventSolutionMapper;
-import codedriver.framework.event.dto.EventSolutionVo;
-import codedriver.framework.event.exception.core.EventSolutionNotFoundException;
-import codedriver.framework.event.exception.core.EventSolutionRepeatException;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -51,7 +52,7 @@ public class EventSolutionSaveApi extends PrivateApiComponentBase {
 
     @Input({
             @Param(name = "id", type = ApiParamType.LONG, desc = "解决方案ID"),
-            @Param(name = "name", type = ApiParamType.REGEX, rule = "^[A-Za-z_\\d\\u4e00-\\u9fa5]+$", desc = "解决方案名称", isRequired = true, xss = true),
+            @Param(name = "name", type = ApiParamType.REGEX, rule = RegexUtils.NAME, desc = "解决方案名称", isRequired = true, xss = true),
             @Param(name = "isActive", type = ApiParamType.INTEGER, desc = "是否激活", isRequired = true),
             @Param(name = "content", type = ApiParamType.STRING, desc = "内容", isRequired = true),
             @Param(name = "eventTypeList", type = ApiParamType.JSONARRAY, desc = "关联的事件类型ID集合", isRequired = true)

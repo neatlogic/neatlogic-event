@@ -3,15 +3,16 @@ package codedriver.module.event.api.type;
 import codedriver.framework.auth.core.AuthAction;
 import codedriver.framework.common.constvalue.ApiParamType;
 import codedriver.framework.dto.AuthorityVo;
-import codedriver.framework.lrcode.LRCodeManager;
+import codedriver.framework.event.auth.label.EVENT_TYPE_MODIFY;
+import codedriver.framework.event.dto.EventTypeVo;
 import codedriver.framework.event.exception.core.EventTypeNameRepeatException;
 import codedriver.framework.event.exception.core.EventTypeNotFoundException;
+import codedriver.framework.lrcode.LRCodeManager;
 import codedriver.framework.restful.annotation.*;
 import codedriver.framework.restful.constvalue.OperationTypeEnum;
 import codedriver.framework.restful.core.privateapi.PrivateApiComponentBase;
-import codedriver.framework.event.auth.label.EVENT_TYPE_MODIFY;
+import codedriver.framework.util.RegexUtils;
 import codedriver.module.event.dao.mapper.EventTypeMapper;
-import codedriver.framework.event.dto.EventTypeVo;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.collections4.CollectionUtils;
@@ -50,7 +51,7 @@ public class EventTypeSaveApi extends PrivateApiComponentBase {
 
     @Input({
             @Param(name = "id", type = ApiParamType.LONG, desc = "事件类型ID"),
-            @Param(name = "name", type = ApiParamType.REGEX, rule = "^[A-Za-z_\\d\\u4e00-\\u9fa5]+$", desc = "事件类型名称", isRequired = true, xss = true),
+            @Param(name = "name", type = ApiParamType.REGEX, rule = RegexUtils.NAME, desc = "事件类型名称", isRequired = true, xss = true),
             @Param(name = "parentId", type = ApiParamType.LONG, desc = "父类型id"),
             @Param(name = "authorityList", type = ApiParamType.JSONARRAY, desc = "授权对象，可多选，格式[\"user#userUuid\",\"team#teamUuid\",\"role#roleUuid\"]")
     })
