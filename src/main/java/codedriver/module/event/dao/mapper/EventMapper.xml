@@ -13,16 +13,16 @@
 	SELECT 
 	  `id`,
 	  `event_type_id` AS eventTypeId,
-	  `event_solution_id` AS eventsolutionId
+	  `event_solution_id` AS eventSolutionId
 	FROM `event` 
 	WHERE `id` = #{value}
 	</select>
 
-	<update id="updateEventById" parameterType="codedriver.framework.event.dto.EventVo">
+	<update id="updateEvent" parameterType="codedriver.framework.event.dto.EventVo">
 	UPDATE `event` 
 	SET
 	  `event_type_id` = #{eventTypeId},
-	  `event_solution_id` = #{eventsolutionId} 
+	  `event_solution_id` = #{eventSolutionId}
 	WHERE `id` = #{id}
 	</update>
 
