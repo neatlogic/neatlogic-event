@@ -1,7 +1,7 @@
 -- ----------------------------
 -- Table structure for event
 -- ----------------------------
-CREATE TABLE `event` (
+CREATE TABLE IF NOT EXISTS `event` (
   `id` bigint NOT NULL COMMENT '主键',
   `event_type_id` bigint NOT NULL COMMENT '事件类型ID',
   `event_solution_id` bigint DEFAULT NULL COMMENT '解决方案ID',
@@ -11,7 +11,7 @@ CREATE TABLE `event` (
 -- ----------------------------
 -- Table structure for event_solution
 -- ----------------------------
-CREATE TABLE `event_solution` (
+CREATE TABLE IF NOT EXISTS `event_solution` (
   `id` bigint NOT NULL COMMENT '主键',
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '解决方案名称',
   `fcu` char(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '创建人ID',
@@ -26,7 +26,7 @@ CREATE TABLE `event_solution` (
 -- ----------------------------
 -- Table structure for event_type
 -- ----------------------------
-CREATE TABLE `event_type` (
+CREATE TABLE IF NOT EXISTS `event_type` (
   `id` bigint NOT NULL COMMENT '主键',
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '事件类型名称',
   `parent_id` bigint NOT NULL COMMENT '父类型ID',
@@ -41,7 +41,7 @@ CREATE TABLE `event_type` (
 -- ----------------------------
 -- Table structure for event_type_authority
 -- ----------------------------
-CREATE TABLE `event_type_authority` (
+CREATE TABLE IF NOT EXISTS `event_type_authority` (
   `event_type_id` bigint NOT NULL COMMENT '事件类型ID',
   `type` enum('common','user','team','role') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '授权对象类型',
   `uuid` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '授权对象ID',
@@ -53,7 +53,7 @@ CREATE TABLE `event_type_authority` (
 -- ----------------------------
 -- Table structure for event_type_solution
 -- ----------------------------
-CREATE TABLE `event_type_solution` (
+CREATE TABLE IF NOT EXISTS `event_type_solution` (
   `event_type_id` bigint NOT NULL COMMENT '事件类型ID',
   `solution_id` bigint NOT NULL COMMENT '解决方案ID',
   PRIMARY KEY (`event_type_id`,`solution_id`) USING BTREE,
