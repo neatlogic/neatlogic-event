@@ -1,3 +1,19 @@
+/*
+ * Copyright(c) 2023 NeatLogic Co., Ltd. All Rights Reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package neatlogic.module.event.api.type;
 
 import neatlogic.framework.auth.core.AuthAction;
@@ -97,11 +113,11 @@ public class EventTypeSaveApi extends PrivateApiComponentBase {
 //			int layer = eventTypeMapper.calculateLayer(eventType.getLft(), eventType.getRht());
             eventType.setLayer(parentLayer + 1);
             eventTypeMapper.insertEventType(eventType);
-            /** 查询关联的解决方案数量，确保页面回显的数据正确 */
+            /* 查询关联的解决方案数量，确保页面回显的数据正确 */
             EventTypeVo count = eventTypeMapper.getEventTypeSolutionCountByLftRht(eventType.getLft(), eventType.getRht());
             solutionCount = count.getSolutionCount();
 
-            /** 保存授权信息 */
+            /* 保存授权信息 */
             JSONArray authorityArray = jsonObj.getJSONArray("authorityList");
             if (CollectionUtils.isNotEmpty(authorityArray)) {
                 List<String> authorityList = authorityArray.toJavaList(String.class);
