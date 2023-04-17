@@ -19,19 +19,23 @@ package neatlogic.module.event.api.type;
 import neatlogic.framework.auth.core.AuthAction;
 import neatlogic.framework.common.constvalue.ApiParamType;
 import neatlogic.framework.dto.AuthorityVo;
+import neatlogic.framework.dto.FieldValidResultVo;
 import neatlogic.framework.event.auth.label.EVENT_TYPE_MODIFY;
 import neatlogic.framework.event.dto.EventTypeVo;
 import neatlogic.framework.event.exception.core.EventTypeNameRepeatException;
 import neatlogic.framework.event.exception.core.EventTypeNotFoundException;
+import neatlogic.framework.exception.type.ParamNotExistsException;
 import neatlogic.framework.lrcode.LRCodeManager;
 import neatlogic.framework.restful.annotation.*;
 import neatlogic.framework.restful.constvalue.OperationTypeEnum;
+import neatlogic.framework.restful.core.IValid;
 import neatlogic.framework.restful.core.privateapi.PrivateApiComponentBase;
 import neatlogic.framework.util.RegexUtils;
 import neatlogic.module.event.dao.mapper.EventTypeMapper;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -164,6 +168,32 @@ public class EventTypeSaveApi extends PrivateApiComponentBase {
                 throw new EventTypeNameRepeatException();
             }
         }
+    }
+
+    public IValid name() {
+        return jsonObj -> {
+            String name = jsonObj.getString("name");
+            if (StringUtils.isBlank(name)) {
+                throw new ParamNotExistsException("name");
+            }
+            Long parentId = jsonObj.getLong("parentId");
+            if (parentId == null) {
+                parentId = EventTypeVo.ROOT_ID;
+            } else if (!EventTypeVo.ROOT_ID.equals(parentId)) {
+                EventTypeVo parent = eventTypeMapper.getEventTypeById(parentId);
+                if (parent == null) {
+                    throw new EventTypeNotFoundException(parentId);
+                }
+            }
+            EventTypeVo searchVo = new EventTypeVo();
+            searchVo.setId(jsonObj.getLong("id"));
+            searchVo.setName(name);
+            searchVo.setParentId(parentId);
+            if (eventTypeMapper.checkEventTypeNameIsRepeatByParentId(searchVo) > 0) {
+                return new FieldValidResultVo(new EventTypeNameRepeatException());
+            }
+            return new FieldValidResultVo();
+        };
     }
 
 //	private Object backup(JSONObject jsonObj) throws Exception {
