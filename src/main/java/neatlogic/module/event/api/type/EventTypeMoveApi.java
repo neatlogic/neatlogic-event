@@ -2,6 +2,7 @@ package neatlogic.module.event.api.type;
 
 import neatlogic.framework.auth.core.AuthAction;
 import neatlogic.framework.common.constvalue.ApiParamType;
+import neatlogic.framework.event.exception.core.EventTypeNameRepeatException;
 import neatlogic.framework.lrcode.LRCodeManager;
 import neatlogic.framework.lrcode.constvalue.MoveType;
 import neatlogic.framework.lrcode.exception.MoveTargetNodeIllegalException;
@@ -75,6 +76,14 @@ public class EventTypeMoveApi extends PrivateApiComponentBase {
                 throw new EventTypeNotFoundException(parentId);
             }
             parentLayer = parentEventType.getLayer();
+        }
+
+        EventTypeVo checkNameRepeatEventType = new EventTypeVo();
+        checkNameRepeatEventType.setId(eventType.getId());
+        checkNameRepeatEventType.setName(eventType.getName());
+        checkNameRepeatEventType.setParentId(parentId);
+        if (eventTypeMapper.checkEventTypeNameIsRepeatByParentId(checkNameRepeatEventType) > 0) {
+            throw new EventTypeNameRepeatException();
         }
         Long targetId;
         MoveType moveType;
