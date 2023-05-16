@@ -6,6 +6,8 @@ import java.util.Set;
 import neatlogic.framework.event.constvalue.EventProcessStepHandlerType;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +29,8 @@ import neatlogic.framework.event.dto.ProcessTaskStepEventVo;
 import neatlogic.framework.event.exception.core.EventNotFoundException;
 @Service
 public class EventProcessComponent extends ProcessStepHandlerBase {
-    
+
+    private Logger logger = LoggerFactory.getLogger(EventProcessComponent.class);
     @Autowired
     private EventMapper eventMapper;
     
@@ -107,26 +110,31 @@ public class EventProcessComponent extends ProcessStepHandlerBase {
 
     @Override
     protected int myComplete(ProcessTaskStepVo currentProcessTaskStepVo) throws ProcessTaskException {
-        JSONObject paramObj = currentProcessTaskStepVo.getParamObj();
-        JSONObject handlerStepInfoObj = paramObj.getJSONObject("handlerStepInfo");
-        EventVo eventVo = JSON.toJavaObject(handlerStepInfoObj, EventVo.class);
-        if(eventVo != null) {
-            Long eventId = eventMapper.getEventIdByProcessTaskStepId(currentProcessTaskStepVo.getId());
-            if(eventId != null) {
-                EventVo oldEventVo = eventMapper.getEventById(eventId);
-                if(oldEventVo == null) {
-                    throw new EventNotFoundException(eventId);
+        try {
+            JSONObject paramObj = currentProcessTaskStepVo.getParamObj();
+            JSONObject handlerStepInfoObj = paramObj.getJSONObject("handlerStepInfo");
+            EventVo eventVo = JSON.toJavaObject(handlerStepInfoObj, EventVo.class);
+            if (eventVo != null) {
+                Long eventId = eventMapper.getEventIdByProcessTaskStepId(currentProcessTaskStepVo.getId());
+                if (eventId != null) {
+                    EventVo oldEventVo = eventMapper.getEventById(eventId);
+                    if (oldEventVo == null) {
+                        throw new EventNotFoundException(eventId);
+                    }
+                    if (!Objects.equal(oldEventVo.getEventTypeId(), eventVo.getEventTypeId()) || !Objects.equal(oldEventVo.getEventSolutionId(), eventVo.getEventSolutionId())) {
+                        eventVo.setId(oldEventVo.getId());
+                        eventMapper.updateEvent(eventVo);
+                    }
+                } else {
+                    eventMapper.insertEvent(eventVo);
+                    eventMapper.insetProcessTaskStepEvent(new ProcessTaskStepEventVo(currentProcessTaskStepVo.getProcessTaskId(), currentProcessTaskStepVo.getId(), eventVo.getId()));
                 }
-                if(!Objects.equal(oldEventVo.getEventTypeId(), eventVo.getEventTypeId()) || !Objects.equal(oldEventVo.getEventSolutionId(), eventVo.getEventSolutionId())) {
-                    eventVo.setId(oldEventVo.getId());
-                    eventMapper.updateEvent(eventVo);
-                }
-            }else {
-                eventMapper.insertEvent(eventVo);
-                eventMapper.insetProcessTaskStepEvent(new ProcessTaskStepEventVo(currentProcessTaskStepVo.getProcessTaskId(), currentProcessTaskStepVo.getId(), eventVo.getId()));
             }
+            return 1;
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw new ProcessTaskException(e.getMessage());
         }
-        return 1;
     }
 
     @Override
