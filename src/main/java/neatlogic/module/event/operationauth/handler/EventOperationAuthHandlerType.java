@@ -4,7 +4,7 @@ import neatlogic.framework.process.operationauth.core.IOperationAuthHandlerType;
 import neatlogic.framework.util.I18nUtils;
 
 public enum EventOperationAuthHandlerType implements IOperationAuthHandlerType {
-    EVENT("event", "enum.event.eventoperationauthhandlertype.event");
+    EVENT("event", "common.event");
     
     private EventOperationAuthHandlerType(String value, String text) {
         this.value = value;
