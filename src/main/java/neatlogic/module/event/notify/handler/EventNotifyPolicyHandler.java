@@ -24,7 +24,7 @@ import neatlogic.framework.process.constvalue.ProcessUserType;
 import neatlogic.framework.process.notify.constvalue.*;
 import neatlogic.framework.process.notify.core.IDefaultTemplate;
 import neatlogic.framework.process.notify.core.NotifyDefaultTemplateFactory;
-import neatlogic.framework.util.I18nUtils;
+import neatlogic.framework.util.$;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Component;
 
@@ -117,7 +117,7 @@ public class EventNotifyPolicyHandler extends NotifyPolicyHandlerBase {
                     continue;
                 }
                 for(IDefaultTemplate vo : templates){
-                    list.add(new NotifyTriggerTemplateVo(I18nUtils.getMessage(notifyTriggerType.getText()), I18nUtils.getMessage(notifyTriggerType.getText()),vo.getTitle(),vo.getContent(),handler));
+                    list.add(new NotifyTriggerTemplateVo($.t(notifyTriggerType.getText()), $.t(notifyTriggerType.getText()),vo.getTitle(),vo.getContent(),handler));
                 }
             }
         }
