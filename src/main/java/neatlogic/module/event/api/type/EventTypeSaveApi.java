@@ -73,7 +73,7 @@ public class EventTypeSaveApi extends PrivateApiComponentBase {
             @Param(name = "id", type = ApiParamType.LONG, desc = "事件类型ID"),
             @Param(name = "name", type = ApiParamType.REGEX, rule = RegexUtils.NAME, desc = "事件类型名称", isRequired = true, xss = true),
             @Param(name = "parentId", type = ApiParamType.LONG, desc = "父类型id"),
-            @Param(name = "authorityList", type = ApiParamType.JSONARRAY, desc = "授权对象，可多选，格式[\"user#userUuid\",\"team#teamUuid\",\"role#roleUuid\"]")
+            @Param(name = "authorityList", type = ApiParamType.JSONARRAY, desc = "授权对象，可多选，格式[\"common#alluser\",\"user#userUuid\",\"team#teamUuid\",\"role#roleUuid\"]")
     })
     @Output({@Param(name = "eventTypeId", type = ApiParamType.LONG, desc = "保存的事件类型ID")})
     @Description(desc = "保存事件类型信息")
