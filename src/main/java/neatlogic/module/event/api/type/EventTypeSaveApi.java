@@ -60,7 +60,7 @@ public class EventTypeSaveApi extends PrivateApiComponentBase {
 
     @Override
     public String getName() {
-        return "保存事件类型信息";
+        return "nmeat.eventtypesaveapi.getname";
     }
 
     @Override
@@ -70,13 +70,13 @@ public class EventTypeSaveApi extends PrivateApiComponentBase {
 
 
     @Input({
-            @Param(name = "id", type = ApiParamType.LONG, desc = "事件类型ID"),
-            @Param(name = "name", type = ApiParamType.REGEX, rule = RegexUtils.NAME, desc = "事件类型名称", isRequired = true, xss = true),
-            @Param(name = "parentId", type = ApiParamType.LONG, desc = "父类型id"),
-            @Param(name = "authorityList", type = ApiParamType.JSONARRAY, desc = "授权对象，可多选，格式[\"common#alluser\",\"user#userUuid\",\"team#teamUuid\",\"role#roleUuid\"]")
+            @Param(name = "id", type = ApiParamType.LONG, desc = "common.id"),
+            @Param(name = "name", type = ApiParamType.REGEX, rule = RegexUtils.NAME, desc = "common.name", isRequired = true, xss = true),
+            @Param(name = "parentId", type = ApiParamType.LONG, desc = "common.parentid"),
+            @Param(name = "authorityList", type = ApiParamType.JSONARRAY, desc = "nmeat.eventtypesaveapi.input.param.desc.authoritylist")
     })
-    @Output({@Param(name = "eventTypeId", type = ApiParamType.LONG, desc = "保存的事件类型ID")})
-    @Description(desc = "保存事件类型信息")
+    @Output({@Param(name = "eventTypeId", type = ApiParamType.LONG, desc = "term.event.eventtypeid")})
+    @Description(desc = "nmeat.eventtypesaveapi.getname")
     @Override
     public Object myDoService(JSONObject jsonObj) throws Exception {
         Long id = jsonObj.getLong("id");
