@@ -8,7 +8,6 @@ import neatlogic.framework.process.auth.PROCESS_BASE;
 import neatlogic.framework.restful.annotation.*;
 import neatlogic.framework.restful.constvalue.OperationTypeEnum;
 import neatlogic.framework.restful.core.privateapi.PrivateApiComponentBase;
-import neatlogic.framework.service.AuthenticationInfoService;
 import neatlogic.module.event.dao.mapper.EventTypeMapper;
 import neatlogic.framework.event.dto.EventTypeVo;
 import neatlogic.framework.event.exception.core.EventTypeNotFoundException;
@@ -27,8 +26,6 @@ public class EventTypeTreeSearchApi extends PrivateApiComponentBase {
 
     @Resource
     private EventTypeMapper eventTypeMapper;
-    @Resource
-    private AuthenticationInfoService authenticationInfoService;
 
     @Override
     public String getToken() {
@@ -37,7 +34,7 @@ public class EventTypeTreeSearchApi extends PrivateApiComponentBase {
 
     @Override
     public String getName() {
-        return "检索事件类型架构";
+        return "nmeat.eventtypetreesearchapi.getname";
     }
 
     @Override
@@ -46,14 +43,14 @@ public class EventTypeTreeSearchApi extends PrivateApiComponentBase {
     }
 
     @Input({
-            @Param(name = "id", type = ApiParamType.LONG, desc = "主键ID"),
-            @Param(name = "keyword", type = ApiParamType.STRING, xss = true, desc = "关键字"),
-            @Param(name = "isAuthenticate", type = ApiParamType.ENUM, desc = "是否需要鉴权", rule = "0,1")
+            @Param(name = "id", type = ApiParamType.LONG, desc = "common.id"),
+            @Param(name = "keyword", type = ApiParamType.STRING, xss = true, desc = "common.keyword"),
+            @Param(name = "isAuthenticate", type = ApiParamType.ENUM, desc = "common.isauthenticate", rule = "0,1")
     })
     @Output({
-            @Param(name = "children", type = ApiParamType.JSONARRAY, explode = EventTypeVo[].class, desc = "事件类型架构集合")
+            @Param(name = "children", type = ApiParamType.JSONARRAY, explode = EventTypeVo[].class, desc = "common.children")
     })
-    @Description(desc = "检索事件类型架构")
+    @Description(desc = "nmeat.eventtypetreesearchapi.getname")
     @Override
     public Object myDoService(JSONObject jsonObj) throws Exception {
         JSONObject resultObj = new JSONObject();
@@ -61,7 +58,7 @@ public class EventTypeTreeSearchApi extends PrivateApiComponentBase {
         List<Long> authorizedEventTypeIdList = new ArrayList<>();
         Integer isAuthenticate = jsonObj.getInteger("isAuthenticate");
         if (Objects.equals(isAuthenticate, 1)) {
-            AuthenticationInfoVo authenticationInfoVo = authenticationInfoService.getAuthenticationInfo(UserContext.get().getUserUuid(true));
+            AuthenticationInfoVo authenticationInfoVo = UserContext.get().getAuthenticationInfoVo();
             authorizedEventTypeIdList = eventTypeMapper.getCurrentUserAuthorizedEventTypeIdList(UserContext.get().getUserUuid(true), authenticationInfoVo.getTeamUuidList(), authenticationInfoVo.getRoleUuidList());
         }
         List<EventTypeVo> eventTypeList = new ArrayList<>();
