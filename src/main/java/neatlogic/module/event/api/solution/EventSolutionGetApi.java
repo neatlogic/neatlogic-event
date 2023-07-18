@@ -8,7 +8,7 @@ import neatlogic.framework.restful.constvalue.OperationTypeEnum;
 import neatlogic.framework.restful.core.privateapi.PrivateApiComponentBase;
 import neatlogic.module.event.dao.mapper.EventSolutionMapper;
 import neatlogic.framework.event.dto.EventSolutionVo;
-import neatlogic.framework.event.exception.core.EventSolutionNotFoundException;
+import neatlogic.framework.event.exception.core.EventSolutionNotFoundEditTargetException;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +29,7 @@ public class EventSolutionGetApi extends PrivateApiComponentBase {
 
     @Override
     public String getName() {
-        return "获取单个解决方案";
+        return "nmeas.eventsolutiongetapi.getname";
     }
 
     @Override
@@ -39,28 +39,28 @@ public class EventSolutionGetApi extends PrivateApiComponentBase {
 
 
     @Input({
-            @Param(name = "id", type = ApiParamType.LONG, desc = "解决方案ID", isRequired = true)
+            @Param(name = "id", type = ApiParamType.LONG, desc = "common.id", isRequired = true)
     })
     @Output({
-            @Param(name = "id", type = ApiParamType.LONG, desc = "解决方案ID"),
-            @Param(name = "name", type = ApiParamType.STRING, desc = "解决方案名称"),
-            @Param(name = "isActive", type = ApiParamType.INTEGER, desc = "是否启用"),
-            @Param(name = "content", type = ApiParamType.STRING, desc = "内容"),
-            @Param(name = "fcu", type = ApiParamType.STRING, desc = "创建人ID"),
-            @Param(name = "lcu", type = ApiParamType.STRING, desc = "更新人ID"),
-            @Param(name = "fcd", desc = "创建时间"),
-            @Param(name = "lcd", desc = "更新时间"),
-            @Param(name = "eventTypeList", type = ApiParamType.JSONARRAY, desc = "关联的事件类型"),
+            @Param(name = "id", type = ApiParamType.LONG, desc = "common.id"),
+            @Param(name = "name", type = ApiParamType.STRING, desc = "common.name"),
+            @Param(name = "isActive", type = ApiParamType.INTEGER, desc = "common.isactive"),
+            @Param(name = "content", type = ApiParamType.STRING, desc = "common.content"),
+            @Param(name = "fcu", type = ApiParamType.STRING, desc = "common.createuser"),
+            @Param(name = "lcu", type = ApiParamType.STRING, desc = "common.editor"),
+            @Param(name = "fcd", desc = "common.createdate"),
+            @Param(name = "lcd", desc = "common.editdate"),
+            @Param(name = "eventTypeList", type = ApiParamType.JSONARRAY, desc = "term.event.eventtypelist"),
     })
-    @Description(desc = "获取单个解决方案")
+    @Description(desc = "nmeas.eventsolutiongetapi.getname")
     @Override
     public Object myDoService(JSONObject jsonObj) throws Exception {
         JSONObject result = new JSONObject();
         Long id = jsonObj.getLong("id");
-        if (eventSolutionMapper.checkSolutionExistsById(id) == null) {
-            throw new EventSolutionNotFoundException(id);
-        }
         EventSolutionVo solution = eventSolutionMapper.getSolutionById(id);
+        if (solution == null) {
+            throw new EventSolutionNotFoundEditTargetException(id);
+        }
         result.put("solution", solution);
         return result;
     }
