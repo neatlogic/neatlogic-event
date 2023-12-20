@@ -11,7 +11,6 @@ import neatlogic.framework.dto.ConditionParamVo;
 import neatlogic.framework.dto.ExpressionVo;
 import neatlogic.framework.event.constvalue.EventProcessStepHandlerType;
 import neatlogic.framework.form.constvalue.FormConditionModel;
-import neatlogic.framework.notify.core.INotifyPolicyHandlerGroup;
 import neatlogic.framework.notify.core.NotifyHandlerFactory;
 import neatlogic.framework.notify.core.NotifyHandlerType;
 import neatlogic.framework.notify.core.NotifyPolicyHandlerBase;
@@ -69,10 +68,10 @@ public class EventNotifyPolicyHandler extends NotifyPolicyHandlerBase {
         return PROCESS_MODIFY.class.getSimpleName();
     }
 
-    @Override
-    public INotifyPolicyHandlerGroup getGroup() {
-        return ProcessNotifyPolicyHandlerGroup.TASKSTEP;
-    }
+//    @Override
+//    public INotifyPolicyHandlerGroup getGroup() {
+//        return ProcessNotifyPolicyHandlerGroup.TASKSTEP;
+//    }
 
     @Override
     protected List<NotifyTriggerVo> myNotifyTriggerList() {
