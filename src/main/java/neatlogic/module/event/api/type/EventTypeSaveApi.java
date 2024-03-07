@@ -20,7 +20,7 @@ import neatlogic.framework.auth.core.AuthAction;
 import neatlogic.framework.common.constvalue.ApiParamType;
 import neatlogic.framework.dto.AuthorityVo;
 import neatlogic.framework.dto.FieldValidResultVo;
-import neatlogic.framework.event.auth.label.EVENT_TYPE_MODIFY;
+import neatlogic.module.event.auth.label.EVENT_TYPE_MODIFY;
 import neatlogic.framework.event.dto.EventTypeVo;
 import neatlogic.framework.event.exception.core.EventTypeNameRepeatException;
 import neatlogic.framework.event.exception.core.EventTypeNotFoundException;

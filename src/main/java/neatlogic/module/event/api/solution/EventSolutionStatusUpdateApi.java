@@ -9,7 +9,7 @@ import neatlogic.framework.restful.annotation.Output;
 import neatlogic.framework.restful.annotation.Param;
 import neatlogic.framework.restful.constvalue.OperationTypeEnum;
 import neatlogic.framework.restful.core.privateapi.PrivateApiComponentBase;
-import neatlogic.framework.event.auth.label.EVENT_SOLUTION_MODIFY;
+import neatlogic.module.event.auth.label.EVENT_SOLUTION_MODIFY;
 import neatlogic.module.event.dao.mapper.EventSolutionMapper;
 import neatlogic.framework.event.dto.EventSolutionVo;
 import neatlogic.framework.event.exception.core.EventSolutionNotFoundException;

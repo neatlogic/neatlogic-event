@@ -4,7 +4,7 @@ import neatlogic.framework.asynchronization.threadlocal.UserContext;
 import neatlogic.framework.auth.core.AuthAction;
 import neatlogic.framework.common.constvalue.ApiParamType;
 import neatlogic.framework.dto.FieldValidResultVo;
-import neatlogic.framework.event.auth.label.EVENT_SOLUTION_MODIFY;
+import neatlogic.module.event.auth.label.EVENT_SOLUTION_MODIFY;
 import neatlogic.framework.event.dto.EventSolutionVo;
 import neatlogic.framework.event.exception.core.EventSolutionNotFoundException;
 import neatlogic.framework.event.exception.core.EventSolutionRepeatException;

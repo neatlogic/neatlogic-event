@@ -9,7 +9,7 @@ import neatlogic.framework.lrcode.exception.MoveTargetNodeIllegalException;
 import neatlogic.framework.restful.annotation.*;
 import neatlogic.framework.restful.constvalue.OperationTypeEnum;
 import neatlogic.framework.restful.core.privateapi.PrivateApiComponentBase;
-import neatlogic.framework.event.auth.label.EVENT_TYPE_MODIFY;
+import neatlogic.module.event.auth.label.EVENT_TYPE_MODIFY;
 import neatlogic.module.event.dao.mapper.EventTypeMapper;
 import neatlogic.framework.event.dto.EventTypeVo;
 import neatlogic.framework.event.exception.core.EventTypeNotFoundException;

@@ -9,7 +9,7 @@ import neatlogic.framework.restful.annotation.OperationType;
 import neatlogic.framework.restful.annotation.Param;
 import neatlogic.framework.restful.constvalue.OperationTypeEnum;
 import neatlogic.framework.restful.core.privateapi.PrivateApiComponentBase;
-import neatlogic.framework.event.auth.label.EVENT_TYPE_MODIFY;
+import neatlogic.module.event.auth.label.EVENT_TYPE_MODIFY;
 import neatlogic.module.event.dao.mapper.EventTypeMapper;
 import neatlogic.framework.event.dto.EventTypeVo;
 import com.alibaba.fastjson.JSONArray;
