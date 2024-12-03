@@ -1,6 +1,7 @@
 package neatlogic.module.event.operationauth.handler;
 
 import com.alibaba.fastjson.JSONObject;
+import neatlogic.framework.event.constvalue.EventProcessStepHandlerType;
 import neatlogic.framework.process.operationauth.core.IOperationType;
 import neatlogic.framework.process.dto.ProcessTaskStepVo;
 import neatlogic.framework.process.dto.ProcessTaskVo;
@@ -32,7 +33,7 @@ public class EventOperationAuthHandler extends OperationAuthHandlerBase {
 
     @Override
     public String getHandler() {
-        return EventOperationAuthHandlerType.EVENT.getValue();
+        return EventProcessStepHandlerType.EVENT.getHandler();
     }
 
 }
