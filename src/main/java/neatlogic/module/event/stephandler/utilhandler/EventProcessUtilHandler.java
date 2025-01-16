@@ -5,6 +5,7 @@ import neatlogic.framework.event.dto.EventSolutionVo;
 import neatlogic.framework.event.dto.EventTypeVo;
 import neatlogic.framework.event.dto.EventVo;
 import neatlogic.framework.event.exception.core.EventNotFoundException;
+import neatlogic.framework.notify.core.INotifyPolicyHandler;
 import neatlogic.framework.process.constvalue.ProcessTaskOperationType;
 import neatlogic.framework.process.constvalue.ProcessTaskStepOperationType;
 import neatlogic.framework.process.dto.ProcessTaskStepVo;
@@ -13,6 +14,7 @@ import neatlogic.framework.process.stephandler.core.ProcessStepInternalHandlerBa
 import neatlogic.module.event.dao.mapper.EventMapper;
 import neatlogic.module.event.dao.mapper.EventSolutionMapper;
 import neatlogic.module.event.dao.mapper.EventTypeMapper;
+import neatlogic.module.event.notify.handler.EventNotifyPolicyHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -90,6 +92,11 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
                 ProcessTaskOperationType.PROCESSTASK_RECOVER,
                 ProcessTaskStepOperationType.STEP_REAPPROVAL
         };
+    }
+
+    @Override
+    public Class<? extends INotifyPolicyHandler> getNotifyPolicyHandlerClass() {
+        return EventNotifyPolicyHandler.class;
     }
 
     @Override
