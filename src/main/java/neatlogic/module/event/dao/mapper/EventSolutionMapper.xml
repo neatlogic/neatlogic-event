@@ -106,7 +106,7 @@
 		UPDATE `event_solution` set
 		`name` = #{name},
 		`is_active` = #{isActive},
-		`content` = #{content},
+		`content` = #{content, typeHandler=CompressHandler},
 		`lcu` = #{lcu},
 		`lcd` = #{lcd}
 		WHERE `id` = #{id}
@@ -134,7 +134,7 @@
 		#{id},
 		#{name},
 		#{isActive},
-		#{content},
+		#{content, typeHandler=CompressHandler},
 		#{fcu},
 		#{fcu},
 		NOW(3),
