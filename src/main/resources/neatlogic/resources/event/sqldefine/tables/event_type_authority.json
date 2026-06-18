@@ -1,0 +1,57 @@
+{
+  "moduleId": "event",
+  "name": "event_type_authority",
+  "label": "事件类型授权表",
+  "description": "事件类型授权表 可用于事件相关的关联查询等报表查询场景。",
+  "fields": [
+    {
+      "name": "event_type_id",
+      "type": "bigint",
+      "description": "事件类型ID，作为当前表记录的主键或唯一定位字段。"
+    },
+    {
+      "name": "type",
+      "type": "enum('common','user','team','role')",
+      "description": "授权对象类型，作为当前表记录的主键或唯一定位字段。"
+    },
+    {
+      "name": "uuid",
+      "type": "varchar(50)",
+      "description": "授权对象ID，作为当前表记录的主键或唯一定位字段。"
+    }
+  ],
+  "indexes": [
+    {
+      "name": "PRIMARY",
+      "type": "BTREE",
+      "unique": true,
+      "primary": true,
+      "columns": [
+        "event_type_id",
+        "type",
+        "uuid"
+      ],
+      "description": "主键索引，覆盖 event_type_id、type、uuid 字段，适合用于唯一定位记录和主表关联查询。"
+    },
+    {
+      "name": "idx_event_type_id",
+      "type": "BTREE",
+      "unique": false,
+      "primary": false,
+      "columns": [
+        "event_type_id"
+      ],
+      "description": "普通索引，覆盖 event_type_id 字段，适合用于过滤、关联或排序查询。"
+    },
+    {
+      "name": "idx_uuid",
+      "type": "BTREE",
+      "unique": false,
+      "primary": false,
+      "columns": [
+        "uuid"
+      ],
+      "description": "普通索引，覆盖 uuid 字段，适合用于过滤、关联或排序查询。"
+    }
+  ]
+}

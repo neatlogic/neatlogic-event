@@ -1,0 +1,60 @@
+{
+  "moduleId": "event",
+  "name": "event_solution",
+  "label": "事件解决方案表",
+  "description": "事件解决方案表 可用于事件相关的启用状态筛选、时间维度统计等报表查询场景。",
+  "fields": [
+    {
+      "name": "id",
+      "type": "bigint",
+      "description": "主键，作为当前表记录的主键或唯一定位字段。"
+    },
+    {
+      "name": "name",
+      "type": "varchar(50)",
+      "description": "解决方案名称。"
+    },
+    {
+      "name": "fcu",
+      "type": "char(32)",
+      "description": "创建人ID。"
+    },
+    {
+      "name": "lcu",
+      "type": "char(32)",
+      "description": "更新人ID。"
+    },
+    {
+      "name": "is_active",
+      "type": "tinyint",
+      "description": "是否启用。"
+    },
+    {
+      "name": "fcd",
+      "type": "timestamp(3)",
+      "description": "创建时间。"
+    },
+    {
+      "name": "lcd",
+      "type": "timestamp(3)",
+      "description": "更新时间。"
+    },
+    {
+      "name": "content",
+      "type": "mediumtext",
+      "description": "内容。"
+    }
+  ],
+  "indexes": [
+    {
+      "name": "PRIMARY",
+      "type": "BTREE",
+      "unique": true,
+      "primary": true,
+      "columns": [
+        "id"
+      ],
+      "description": "主键索引，覆盖 id 字段，适合用于唯一定位记录和主表关联查询。"
+    }
+  ]
+}

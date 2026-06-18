@@ -1,0 +1,35 @@
+{
+  "moduleId": "event",
+  "name": "event",
+  "label": "事件表",
+  "description": "事件表 可用于事件相关的关联查询等报表查询场景。",
+  "fields": [
+    {
+      "name": "id",
+      "type": "bigint",
+      "description": "主键，作为当前表记录的主键或唯一定位字段。"
+    },
+    {
+      "name": "event_type_id",
+      "type": "bigint",
+      "description": "事件类型ID。"
+    },
+    {
+      "name": "event_solution_id",
+      "type": "bigint",
+      "description": "解决方案ID。"
+    }
+  ],
+  "indexes": [
+    {
+      "name": "PRIMARY",
+      "type": "BTREE",
+      "unique": true,
+      "primary": true,
+      "columns": [
+        "id"
+      ],
+      "description": "主键索引，覆盖 id 字段，适合用于唯一定位记录和主表关联查询。"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "moduleId": "event",
+  "tables": [
+    {
+      "name": "event",
+      "label": "事件表",
+      "description": "事件表 可用于事件相关的关联查询等报表查询场景。"
+    },
+    {
+      "name": "event_solution",
+      "label": "事件解决方案表",
+      "description": "事件解决方案表 可用于事件相关的启用状态筛选、时间维度统计等报表查询场景。"
+    },
+    {
+      "name": "event_type",
+      "label": "事件类型表",
+      "description": "事件类型表 可用于事件相关的关联查询等报表查询场景。"
+    },
+    {
+      "name": "event_type_authority",
+      "label": "事件类型授权表",
+      "description": "事件类型授权表 可用于事件相关的关联查询等报表查询场景。"
+    },
+    {
+      "name": "event_type_solution",
+      "label": "事件类型-解决方案关联表",
+      "description": "事件类型-解决方案关联表 可用于事件相关的关联查询等报表查询场景。"
+    }
+  ]
+}
