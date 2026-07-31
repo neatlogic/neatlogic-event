@@ -101,7 +101,7 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
 
     @Override
     public String[] getRegulateKeyList() {
-        return new String[]{"authorityList", "notifyPolicyConfig", "actionConfig", "customButtonList", "customStatusList", "replaceableTextList", "workerPolicyConfig", "taskConfig", "enableReapproval", "formSceneUuid", "formSceneName", "autoStart", "isNeedUploadFile", "isNeedContent", "isRequired", "commentTemplateId", "tagList"};
+        return new String[]{"authorityList", "notifyPolicyConfig", "actionConfig", "customButtonList", "customStatusList", "replaceableTextList", "workerPolicyConfig", "taskConfig", "enableReapproval", "formSceneUuid", "formSceneName", "autoStart", "isNeedUploadFile", "isNeedContent", "isRequired", "commentTemplateId", "tagList", "isAllowProcessOnMobile"};
     }
 
 }
