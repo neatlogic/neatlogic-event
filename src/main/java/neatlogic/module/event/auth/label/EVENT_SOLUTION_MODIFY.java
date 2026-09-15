@@ -6,16 +6,17 @@ import neatlogic.framework.process.auth.PROCESS_BASE;
 import java.util.Collections;
 import java.util.List;
 
+/** 权限名称与说明使用国际化键，权限标识及校验规则保持不变。 */
 public class EVENT_SOLUTION_MODIFY extends AuthBase {
 
 	@Override
 	public String getAuthDisplayName() {
-		return "解决方案管理权限";
+		return "auth.event_solution_modify.name";
 	}
 
 	@Override
 	public String getAuthIntroduction() {
-		return "对解决方案进行添加、修改和删除";
+		return "auth.event_solution_modify.description";
 	}
 
 	@Override
