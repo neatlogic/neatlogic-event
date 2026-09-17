@@ -1,5 +1,6 @@
 package neatlogic.module.event.notify.handler;
 
+import neatlogic.framework.auth.core.AuthBase;
 import neatlogic.framework.dto.ConditionParamVo;
 import neatlogic.framework.event.constvalue.EventProcessStepHandlerType;
 import neatlogic.framework.notify.dto.NotifyTriggerVo;
@@ -31,8 +32,8 @@ public class EventNotifyPolicyHandler extends ProcessTaskNotifyHandlerBase {
      * 绑定权限，每种handler对应不同的权限
      */
     @Override
-    public String getAuthName() {
-        return PROCESS_MODIFY.class.getSimpleName();
+    public Class<? extends AuthBase> getAuthClass() {
+        return PROCESS_MODIFY.class;
     }
 
 //    @Override
