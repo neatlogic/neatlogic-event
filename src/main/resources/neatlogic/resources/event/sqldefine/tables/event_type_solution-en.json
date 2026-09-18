@@ -1,0 +1,51 @@
+{
+  "moduleId": "event",
+  "name": "event_type_solution",
+  "label": "Event Type -- Solution Association Table",
+  "description": "Event type - solution association table used for Event-Related association queries and reporting scenarios.",
+  "fields": [
+    {
+      "name": "event_type_id",
+      "type": "bigint",
+      "description": "Event type ID, used as the primary key or unique identifier for records in this table."
+    },
+    {
+      "name": "solution_id",
+      "type": "bigint",
+      "description": "Solution ID, used as the primary key or unique identifier for records in this table."
+    }
+  ],
+  "indexes": [
+    {
+      "name": "PRIMARY",
+      "type": "BTREE",
+      "unique": true,
+      "primary": true,
+      "columns": [
+        "event_type_id",
+        "solution_id"
+      ],
+      "description": "Primary key index covering the event_type_id, solution_id fields, suitable for uniquely identifying records and queries that join the primary table."
+    },
+    {
+      "name": "idx_event_type_id",
+      "type": "BTREE",
+      "unique": false,
+      "primary": false,
+      "columns": [
+        "event_type_id"
+      ],
+      "description": "Standard index covering the event_type_id field, suitable for filtering, join, and sort queries."
+    },
+    {
+      "name": "idx_solution_id",
+      "type": "BTREE",
+      "unique": false,
+      "primary": false,
+      "columns": [
+        "solution_id"
+      ],
+      "description": "Standard index covering the solution_id field, suitable for filtering, join, and sort queries."
+    }
+  ]
+}

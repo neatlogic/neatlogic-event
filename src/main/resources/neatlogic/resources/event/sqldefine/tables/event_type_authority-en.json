@@ -1,0 +1,57 @@
+{
+  "moduleId": "event",
+  "name": "event_type_authority",
+  "label": "Event Type Authorization Table",
+  "description": "Event type authorization table is used for related queries and report scenarios involving event-related associations.",
+  "fields": [
+    {
+      "name": "event_type_id",
+      "type": "bigint",
+      "description": "Event type ID, used as the primary key or unique identifier for records in this table."
+    },
+    {
+      "name": "type",
+      "type": "enum('common','user','team','role')",
+      "description": "Authorization object type, used as the primary key or unique identifier for records in this table."
+    },
+    {
+      "name": "uuid",
+      "type": "varchar(50)",
+      "description": "Authorization object ID, used as the primary key or unique identifier for records in this table."
+    }
+  ],
+  "indexes": [
+    {
+      "name": "PRIMARY",
+      "type": "BTREE",
+      "unique": true,
+      "primary": true,
+      "columns": [
+        "event_type_id",
+        "type",
+        "uuid"
+      ],
+      "description": "Primary key index covering the event_type_id, type, UUID fields, suitable for uniquely identifying records and queries that join the primary table."
+    },
+    {
+      "name": "idx_event_type_id",
+      "type": "BTREE",
+      "unique": false,
+      "primary": false,
+      "columns": [
+        "event_type_id"
+      ],
+      "description": "Standard index covering the event_type_id field, suitable for filtering, join, and sort queries."
+    },
+    {
+      "name": "idx_uuid",
+      "type": "BTREE",
+      "unique": false,
+      "primary": false,
+      "columns": [
+        "uuid"
+      ],
+      "description": "Standard index covering the UUID field, suitable for filtering, join, and sort queries."
+    }
+  ]
+}

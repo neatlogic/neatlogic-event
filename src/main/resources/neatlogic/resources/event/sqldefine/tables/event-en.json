@@ -1,0 +1,35 @@
+{
+  "moduleId": "event",
+  "name": "event",
+  "label": "Event Table",
+  "description": "The event table is used for related queries and report queries related to events.",
+  "fields": [
+    {
+      "name": "id",
+      "type": "bigint",
+      "description": "Primary key, used as the primary key or unique identifier for records in this table."
+    },
+    {
+      "name": "event_type_id",
+      "type": "bigint",
+      "description": "Event type ID."
+    },
+    {
+      "name": "event_solution_id",
+      "type": "bigint",
+      "description": "Solution ID."
+    }
+  ],
+  "indexes": [
+    {
+      "name": "PRIMARY",
+      "type": "BTREE",
+      "unique": true,
+      "primary": true,
+      "columns": [
+        "id"
+      ],
+      "description": "Primary key index covering the ID field, suitable for uniquely identifying records and queries that join the primary table."
+    }
+  ]
+}

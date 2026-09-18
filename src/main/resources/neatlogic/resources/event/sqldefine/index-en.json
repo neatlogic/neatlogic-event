@@ -1,0 +1,30 @@
+{
+  "moduleId": "event",
+  "tables": [
+    {
+      "name": "event",
+      "label": "Event Table",
+      "description": "The event table is used for related queries and report queries related to events."
+    },
+    {
+      "name": "event_solution",
+      "label": "Event Solution Table",
+      "description": "The event solution table is used for filtering by event-related enabled statuses and time dimension statistics in report queries."
+    },
+    {
+      "name": "event_type",
+      "label": "Event Type Table",
+      "description": "Event type table used for related queries and reporting scenarios related to events."
+    },
+    {
+      "name": "event_type_authority",
+      "label": "Event Type Authorization Table",
+      "description": "Event type authorization table is used for related queries and report scenarios involving event-related associations."
+    },
+    {
+      "name": "event_type_solution",
+      "label": "Event Type -- Solution Association Table",
+      "description": "Event type - solution association table used for Event-Related association queries and reporting scenarios."
+    }
+  ]
+}

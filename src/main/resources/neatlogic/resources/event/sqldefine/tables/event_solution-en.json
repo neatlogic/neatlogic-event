@@ -1,0 +1,60 @@
+{
+  "moduleId": "event",
+  "name": "event_solution",
+  "label": "Event Solution Table",
+  "description": "The event solution table is used for filtering by event-related enabled statuses and time dimension statistics in report queries.",
+  "fields": [
+    {
+      "name": "id",
+      "type": "bigint",
+      "description": "Primary key, used as the primary key or unique identifier for records in this table."
+    },
+    {
+      "name": "name",
+      "type": "varchar(50)",
+      "description": "Solution name."
+    },
+    {
+      "name": "fcu",
+      "type": "char(32)",
+      "description": "Creator ID."
+    },
+    {
+      "name": "lcu",
+      "type": "char(32)",
+      "description": "Updated by ID."
+    },
+    {
+      "name": "is_active",
+      "type": "tinyint",
+      "description": "ENABLED."
+    },
+    {
+      "name": "fcd",
+      "type": "timestamp(3)",
+      "description": "Creation time."
+    },
+    {
+      "name": "lcd",
+      "type": "timestamp(3)",
+      "description": "Update time."
+    },
+    {
+      "name": "content",
+      "type": "mediumtext",
+      "description": "Content."
+    }
+  ],
+  "indexes": [
+    {
+      "name": "PRIMARY",
+      "type": "BTREE",
+      "unique": true,
+      "primary": true,
+      "columns": [
+        "id"
+      ],
+      "description": "Primary key index covering the ID field, suitable for uniquely identifying records and queries that join the primary table."
+    }
+  ]
+}
