@@ -1,0 +1,32 @@
+{
+  "auth": {
+    "event_solution_modify": {
+      "description": "对解决方案进行添加、修改和删除",
+      "name": "解决方案管理权限"
+    },
+    "event_type_modify": {
+      "description": "对事件类型进行添加、修改和删除",
+      "name": "事件类型管理权限"
+    }
+  },
+  "nmeas": {
+    "eventsolutiongetapi": {
+      "getname": "获取单个解决方案"
+    }
+  },
+  "nmeat": {
+    "eventtypesaveapi": {
+      "getname": "保存事件类型信息",
+      "input": {
+        "param": {
+          "desc": {
+            "authoritylist": "授权对象，可多选，格式[\\\"common#alluser\\\",\\\"user#userUuid\\\",\\\"team#teamUuid\\\",\\\"role#roleUuid\\\"]"
+          }
+        }
+      }
+    },
+    "eventtypetreesearchapi": {
+      "getname": "检索事件类型架构"
+    }
+  }
+}

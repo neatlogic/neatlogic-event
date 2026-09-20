@@ -1,0 +1,32 @@
+{
+  "auth": {
+    "event_solution_modify": {
+      "description": "Add, modify, and delete solutions.",
+      "name": "Solution Management Permission"
+    },
+    "event_type_modify": {
+      "description": "Add, modify, and delete event types.",
+      "name": "Event Type Management Permission"
+    }
+  },
+  "nmeas": {
+    "eventsolutiongetapi": {
+      "getname": "Obtain a single solution"
+    }
+  },
+  "nmeat": {
+    "eventtypesaveapi": {
+      "getname": "Save event type information",
+      "input": {
+        "param": {
+          "desc": {
+            "authoritylist": "Authorization object, multiple choices allowed, format [ \"common # alluser \",  \"user # userUuid \",  \"team # teamUuid \",  \"role # roleUuid \"]"
+          }
+        }
+      }
+    },
+    "eventtypetreesearchapi": {
+      "getname": "Retrieve event type schema"
+    }
+  }
+}
