@@ -99,7 +99,6 @@ public class EventProcessUtilHandler extends ProcessStepInternalHandlerBase {
         return EventNotifyPolicyHandler.class;
     }
 
-    /** 事件人工节点补充空附件类型配置，上传端仍可沿用原类型。 */
     @Override
     public String[] getRegulateKeyList() {
         return new String[]{"authorityList", "notifyPolicyConfig", "actionConfig", "customButtonList", "customStatusList", "replaceableTextList", "workerPolicyConfig", "taskConfig", "enableReapproval", "formSceneUuid", "formSceneName", "autoStart", "isNeedUploadFile", "isNeedContent", "isRequired", "commentTemplateId", "tagList", "isAllowProcessOnMobile", "fileTypeHandler"};
